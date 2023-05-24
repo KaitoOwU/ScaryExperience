@@ -6,7 +6,7 @@ using Etouch = UnityEngine.InputSystem.EnhancedTouch;
 public class MoveBubble : MonoBehaviour
 {
     [SerializeField] float _movementAmount;
-    Vector3 _movementDirection = new Vector3();
+    [SerializeField] GameManage manager;
     bool _isMoving = false;
 
     Vector3 _goToPosition;
@@ -15,15 +15,6 @@ public class MoveBubble : MonoBehaviour
 
     [SerializeField] float _delayLerpMove;
     [SerializeField] AnimationCurve _curveLerp;
-
-    private void OnEnable()
-    {
-        Etouch.EnhancedTouchSupport.Enable();
-    }
-    private void OnDisable()
-    {
-        Etouch.EnhancedTouchSupport.Disable();
-    }
 
     private void Awake()
     {
@@ -34,6 +25,7 @@ public class MoveBubble : MonoBehaviour
         Etouch.Touch.onFingerUp += Touch_onFingerUp;
 
         _goToPosition = transform.position;
+        _movementAmount = manager.grid.cellSize.x;
     }
 
 
@@ -70,7 +62,9 @@ public class MoveBubble : MonoBehaviour
             //move right
             if (fingerTouchDelta.x > 0)
             {
+                
                 _goToPosition += new Vector3(_movementAmount, 0, 0);
+                _goToPosition = manager.grid.WorldToCell(_goToPosition) + manager.grid.cellSize/2;
             }
 
             //move left
