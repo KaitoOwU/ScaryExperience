@@ -8,6 +8,9 @@ TagManager:
   - Grass
   - Wood
   - Ice
+  - Row3
+  - Row2
+  - Row1
   layers:
   - Default
   - TransparentFX
