@@ -1,0 +1,52 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using Unity.Rendering.Universal;
+using UnityEngine.Rendering.Universal;
+
+public class FlameManager : MonoBehaviour
+{
+    float _value;
+    [SerializeField] int _max;
+    [SerializeField] Light2D _light;
+    [SerializeField] float _maxRadius;
+    [SerializeField] Color _maxColor;
+    [SerializeField] Color _minColor;
+    void Start()
+    {
+        _value = _max;
+        _maxRadius = _light.pointLightOuterRadius;
+    }
+
+
+    public void SubstractFlame(bool substract, int amount)
+    {
+        if (substract)
+        {
+            _value -= amount;
+        }
+        else 
+        {
+            _value += amount;
+        }
+        _value = Mathf.Clamp(_value, 0, _max);
+        switch (_value)
+        {
+            case <= 10 and > 7:
+                _light.pointLightOuterRadius = _maxRadius;
+                break;
+            case <= 7 and > 4:
+                _light.pointLightOuterRadius = (int)(2 * (_maxRadius / 3));
+                break;
+            case <= 4 and > 1:
+                _light.pointLightOuterRadius = (int)(_maxRadius / 3);
+                break;
+            case <= 1:
+                _light.pointLightOuterRadius = 0;
+                break;
+        }
+        _light.color = new Color(Mathf.Lerp(_minColor.r, _maxColor.r, _value / 10), Mathf.Lerp(_minColor.g, _maxColor.g, _value / 10), Mathf.Lerp(_minColor.b, _maxColor.b, _value / 10));
+        
+
+    }
+}
