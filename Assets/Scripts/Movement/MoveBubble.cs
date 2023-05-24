@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Etouch = UnityEngine.InputSystem.EnhancedTouch;
+using UnityEngine.Tilemaps;
 
 public class MoveBubble : MonoBehaviour
 {
@@ -25,7 +26,8 @@ public class MoveBubble : MonoBehaviour
         Etouch.Touch.onFingerUp += Touch_onFingerUp;
 
         _goToPosition = transform.position;
-        _movementAmount = manager.grid.cellSize.x;
+        _movementAmount = 1f;
+        Debug.Log(_movementAmount);
     }
 
 
@@ -62,9 +64,7 @@ public class MoveBubble : MonoBehaviour
             //move right
             if (fingerTouchDelta.x > 0)
             {
-                
                 _goToPosition += new Vector3(_movementAmount, 0, 0);
-                _goToPosition = manager.grid.WorldToCell(_goToPosition) + manager.grid.cellSize/2;
             }
 
             //move left
@@ -86,6 +86,16 @@ public class MoveBubble : MonoBehaviour
             else
             {
                 _goToPosition += new Vector3(0, -_movementAmount, 0);
+            }
+        }
+
+        _goToPosition = manager.grid.GetCellCenterWorld(manager.grid.WorldToCell(_goToPosition));
+
+        foreach (Tilemap tileMap in manager.grid.GetComponentsInChildren<Tilemap>())
+        {
+            if (tileMap.CompareTag("Ice") && tileMap.HasTile(Vector3Int.FloorToInt(_goToPosition)))
+            {
+                Touch_onFingerUp(finger);
             }
         }
 
