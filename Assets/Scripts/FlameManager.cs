@@ -32,6 +32,7 @@ public class FlameManager : MonoBehaviour
             _value += amount;
         }
         _value = Mathf.Clamp(_value, 0, _max);
+        Debug.LogWarning(_value);
         switch (_value)
         {
             case <= 10 and > 7:

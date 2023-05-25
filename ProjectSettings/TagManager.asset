@@ -11,6 +11,7 @@ TagManager:
   - Row3
   - Row2
   - Row1
+  - Windy
   layers:
   - Default
   - TransparentFX

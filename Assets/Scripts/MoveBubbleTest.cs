@@ -4,11 +4,12 @@ using UnityEngine;
 using Etouch = UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.Tilemaps;
 
-public class MoveBubble : MonoBehaviour
+public class MoveBubbleTest : MonoBehaviour
 {
     [SerializeField] float _movementAmount;
     [SerializeField] GameManage manager;
     bool _isMoving = false;
+    [SerializeField] bool isSliding = false;
 
     Vector3 _goToPosition;
     Vector2 _startPositionFinger;
@@ -56,7 +57,6 @@ public class MoveBubble : MonoBehaviour
 
             _buddy.transform.position = Vector3.Lerp(startPos + distFromPlayer, _goToPosition + distFromPlayer, _curveBuddy.Evaluate(moveTimer / _delayLerpMove));
 
-            GetComponent<FlameManager>().ModifyFlame(true, 1);
             yield return new WaitForFixedUpdate();
         }
 
@@ -106,20 +106,29 @@ public class MoveBubble : MonoBehaviour
         {
             if (tileMap.CompareTag("Ice") && tileMap.HasTile(Vector3Int.FloorToInt(_goToPosition)))
             {
-                GetComponent<FlameManager>().ModifyFlame(true, 1);
+                if (!isSliding)
+                {
+                    GetComponent<FlameManager>().ModifyFlame(true, 1);
+                    isSliding = true;
+                }
+                
                 Touch_onFingerUp(finger);
             }
             else if (tileMap.CompareTag("Windy") && tileMap.HasTile(Vector3Int.FloorToInt(_goToPosition)))
             {
                 GetComponent<FlameManager>().ModifyFlame(true, 3);
-                for(int i = 0; i < 3; i++)
+                for (int i = 0; i < 3; i++)
                 {
                     Touch_onFingerUp(finger);
                 }
             }
+            else if (tileMap.CompareTag("Rock") && tileMap.HasTile(Vector3Int.FloorToInt(_goToPosition)))
+            {
+                GetComponent<FlameManager>().ModifyFlame(true, 1);
+            }
         }
 
-
+        isSliding = false;
         StartCoroutine(MoveToPosition());
         _isMoving = true;
 
