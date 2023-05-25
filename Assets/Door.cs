@@ -4,15 +4,8 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
-    public bool isOpen;
-    void Start()
+    public void Open()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+        Debug.LogWarning("Open");
+    }  
 }

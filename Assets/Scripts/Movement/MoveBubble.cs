@@ -59,7 +59,7 @@ public class MoveBubble : MonoBehaviour
 
             yield return new WaitForFixedUpdate();
         }
-        GetComponent<FlameManager>().SubstractFlame(true, 1);
+        GetComponent<FlameManager>().ModifyFlame(true, 1);
         _isMoving = false;
     }
 
