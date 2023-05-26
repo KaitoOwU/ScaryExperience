@@ -12,6 +12,8 @@ public class FlameManager : MonoBehaviour
     [SerializeField] float _maxRadius;
     [SerializeField] Color _maxColor;
     [SerializeField] Color _minColor;
+
+    [SerializeField] float _fadeDuration;
     void Start()
     {
         _value = _max;
@@ -19,7 +21,7 @@ public class FlameManager : MonoBehaviour
     }
 
 
-    public void SubstractFlame(bool substract, int amount)
+    public void ModifyFlame(bool substract, int amount)
     {
         if (substract)
         {
@@ -30,23 +32,46 @@ public class FlameManager : MonoBehaviour
             _value += amount;
         }
         _value = Mathf.Clamp(_value, 0, _max);
+        Debug.LogWarning(_value);
         switch (_value)
         {
             case <= 10 and > 7:
-                _light.pointLightOuterRadius = _maxRadius;
+                StartCoroutine(Fade(substract, _light, _light.pointLightOuterRadius, _maxRadius));
+                _light.intensity = 1;
+
                 break;
             case <= 7 and > 4:
-                _light.pointLightOuterRadius = (int)(2 * (_maxRadius / 3));
+                StartCoroutine(Fade(substract, _light, _light.pointLightOuterRadius, (int)(2 * (_maxRadius / 3))));
+                _light.intensity = 1;
                 break;
             case <= 4 and > 1:
-                _light.pointLightOuterRadius = (int)(_maxRadius / 3);
+                StartCoroutine(Fade(substract, _light, _light.pointLightOuterRadius, (int)(_maxRadius / 3)));
+                _light.intensity = 1;
                 break;
             case <= 1:
-                _light.pointLightOuterRadius = 0;
+                StartCoroutine(Fade(substract, _light, _light.pointLightOuterRadius, 0));
+                _light.intensity = 0;
                 break;
         }
         _light.color = new Color(Mathf.Lerp(_minColor.r, _maxColor.r, _value / 10), Mathf.Lerp(_minColor.g, _maxColor.g, _value / 10), Mathf.Lerp(_minColor.b, _maxColor.b, _value / 10));
         
 
+    }
+
+    IEnumerator Fade(bool substract, Light2D light, float startValue, float endValue)
+    {
+        float elapsedTime = 0f;
+        while (elapsedTime < _fadeDuration)
+        {
+            float t = elapsedTime / _fadeDuration;
+
+            light.pointLightOuterRadius = Mathf.Lerp(startValue, endValue, t);
+            elapsedTime += Time.fixedDeltaTime;
+            yield return new WaitForFixedUpdate();
+        }
+        
+        
+        
+        
     }
 }
