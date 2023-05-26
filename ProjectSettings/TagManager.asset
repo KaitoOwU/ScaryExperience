@@ -10,7 +10,8 @@ TagManager:
   - Ice
   - Row3
   - Row2
-  - Row1
+  - Void
+  - Water
   layers:
   - Default
   - TransparentFX

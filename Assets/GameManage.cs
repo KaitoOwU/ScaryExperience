@@ -5,7 +5,8 @@ using Etouch = UnityEngine.InputSystem.EnhancedTouch;
 
 public class GameManage : MonoBehaviour
 {
-    [SerializeField] public Grid grid;
+    [SerializeField] public TileMap tileMap;
+    [SerializeField] public TileUpMap tileUpMap;
 
     private void Start()
     {
