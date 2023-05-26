@@ -56,7 +56,7 @@ public class MoveBubble : MonoBehaviour
 
             _buddy.transform.position = Vector3.Lerp(startPos + distFromPlayer, _goToPosition + distFromPlayer, _curveBuddy.Evaluate(moveTimer / _delayLerpMove));
 
-            GetComponent<FlameManager>().ModifyFlame(true, 1);
+
             yield return new WaitForFixedUpdate();
         }
 
@@ -105,17 +105,17 @@ public class MoveBubble : MonoBehaviour
         foreach (Tilemap tileMap in manager.grid.GetComponentsInChildren<Tilemap>())
         {
             if (tileMap.CompareTag("Ice") && tileMap.HasTile(Vector3Int.FloorToInt(_goToPosition)))
-            {
+            {
                 GetComponent<FlameManager>().ModifyFlame(true, 1);
                 Touch_onFingerUp(finger);
             }
-            else if (tileMap.CompareTag("Windy") && tileMap.HasTile(Vector3Int.FloorToInt(_goToPosition)))
-            {
-                GetComponent<FlameManager>().ModifyFlame(true, 3);
-                for(int i = 0; i < 3; i++)
-                {
-                    Touch_onFingerUp(finger);
-                }
+            else if (tileMap.CompareTag("Windy") && tileMap.HasTile(Vector3Int.FloorToInt(_goToPosition)))
+            {
+                GetComponent<FlameManager>().ModifyFlame(true, 3);
+                for(int i = 0; i < 3; i++)
+                {
+                    Touch_onFingerUp(finger);
+                }
             }
         }
 
