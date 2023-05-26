@@ -16,7 +16,7 @@ public class TileUpMap : MonoBehaviour
     private void Awake()
     {
         AddAllTiles();
-        tileSize = _tileMap[1].size;
+        tileSize = _tileMap[0].GetComponent<SpriteRenderer>().bounds.size.x;
     }
 
     private void AddAllTiles()

@@ -7,5 +7,5 @@ public class Door : MonoBehaviour
     public void Open()
     {
         Debug.LogWarning("Open");
-    }  
+    }
 }

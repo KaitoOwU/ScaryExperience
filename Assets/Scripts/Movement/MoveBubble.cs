@@ -41,14 +41,16 @@ public class MoveBubble : MonoBehaviour
         Ice,
         Void,
         Water,
-        Wind
+        Wind,
+        Breakable
     }
 
     public enum TileUpType
     {
         None,
         Wall,
-        Door
+        Door,
+        Lever
     }
 
     private void Awake()
@@ -84,7 +86,7 @@ public class MoveBubble : MonoBehaviour
 
             transform.position = Vector3.Lerp(_startPos, _goToPosition, _currentAnimCurve.Evaluate(_moveTimer / _currentDelayLerpMove));
 
-            _buddy.transform.position = Vector3.Lerp(_startPos + _distFromPlayer, _goToPosition + _distFromPlayer, _curveBuddy.Evaluate(_moveTimer / _currentDelayLerpMove));
+            //_buddy.transform.position = Vector3.Lerp(_startPos + _distFromPlayer, _goToPosition + _distFromPlayer, _curveBuddy.Evaluate(_moveTimer / _currentDelayLerpMove));
 
             yield return new WaitForFixedUpdate();
         }
@@ -94,7 +96,7 @@ public class MoveBubble : MonoBehaviour
         _tileMoving = TileType.Rock;
     }
 
-    private void CheckNextTileEffect (Etouch.Finger finger)
+    private void CheckNextTileEffect(TileDown.Direction direction)
     {
         TileDown tempTile = manager.tileMap.FindTileWithPos(_goToPosition);
         TileUp tempTileUp = manager.tileUpMap.FindTileWithPos(_goToPosition);
@@ -102,10 +104,25 @@ public class MoveBubble : MonoBehaviour
         switch (tempTileUp.type)
         {
             case TileUpType.Wall:
-                GoBack(finger);
+                GoBack(direction);
                 return;
+
             case TileUpType.Door:
-                return;
+                if (!tempTileUp.isActivated)
+                {
+                    GoBack(direction);
+                    return;
+                }
+                else
+                {
+                    break;
+                }
+
+            case TileUpType.Lever:
+                tempTileUp.isActivated = true;
+                tempTileUp.door.GetComponent<TileUp>().isActivated = true;
+                break;
+
             default:
                 break;
         }
@@ -114,14 +131,17 @@ public class MoveBubble : MonoBehaviour
         {
             case TileType.Rock:
                 //rock solid !
-                GetComponent<FlameManager>().SubstractFlame(true, 1);
+                GetComponent<FlameManager>().ModifyFlame(true, 1);
                 break;
 
             case TileType.Ice:
-                //zooppppppp ice
-                MoveNextTile(finger);
-                _currentDelayLerpMove += _delayLerpMove;
-                _tileMoving = TileType.Ice;
+                if (_tileMoving != TileType.Wind)
+                {
+                    //zooppppppp ice
+                    MoveNextTile(direction);
+                    _currentDelayLerpMove += _delayLerpMove;
+                    _tileMoving = TileType.Ice;
+                }
                 break;
 
             case TileType.Void:
@@ -136,26 +156,48 @@ public class MoveBubble : MonoBehaviour
 
             case TileType.Wind:
                 //wind fiouuuuuu
+                _tileMoving = TileType.Wind;
+
+                Tile temp = null;
+                Tile tempNext = manager.tileMap.FindTileWithPos(_goToPosition);
+
                 for (int i = 0; i < tempTile.pushNumberTiles; i++)
                 {
-                    MoveNextTile(tempTile.direction);
-                    _currentDelayLerpMove += _delayLerpMove;
-                    GetComponent<FlameManager>().SubstractFlame(true, 1);
+                    if (temp != tempNext)
+                    {
+                        temp = tempNext;
+                        tempNext = MoveNextTile(tempTile.direction);
+                        _currentDelayLerpMove += _delayLerpMove;
+                        if (i != 0 && i != 1)
+                        {
+                            GetComponent<FlameManager>().ModifyFlame(true, 1);
+                        }
+                    }
                 };
-                _tileMoving = TileType.Wind;
                 break;
+
+            case TileType.Breakable:
+                if (!tempTile.isActivated)
+                {
+                    tempTile.isActivated = true;
+                    break;
+                }
+                else
+                {
+                    //Tu meurs bozooo
+                    Die();
+                    break;
+                }
 
             default:
                 break;
         }
     }
 
-    private void GoBack (Etouch.Finger finger)
+    private void GoBack(TileDown.Direction direction)
     {
-        Vector2 fingerTouchDelta = finger.screenPosition - _startPositionFinger;
-
         //trouve le vector d'ajout de position selon la direction du slide
-        _goToPosition -= VectorAddMovePos(fingerTouchDelta);
+        _goToPosition -= DirectionAddMovePos(direction);
 
         //trouve le millieu de la tile ou l'on atterie
         _goToPosition = manager.tileMap.FindTileWithPos(_goToPosition).transform.position;
@@ -181,27 +223,20 @@ public class MoveBubble : MonoBehaviour
         }
     }
 
-    private void MoveNextTile (Etouch.Finger finger)
-    {
-        Vector2 fingerTouchDelta = finger.screenPosition - _startPositionFinger;
 
-        //trouve le vector d'ajout de position selon la direction du slide
-        _goToPosition += VectorAddMovePos(fingerTouchDelta);
-
-        //trouve le millieu de la tile ou l'on atterie
-        _goToPosition = manager.tileMap.FindTileWithPos(_goToPosition).transform.position;
-
-        //verifie si la tile ou l'on va bouger contiens un effet, si oui applique l'effet
-        CheckNextTileEffect(finger);
-    }
-
-    private void MoveNextTile(TileDown.Direction direction)
+    private Tile MoveNextTile(TileDown.Direction direction)
     {
         //trouve le vector d'ajout de position selon la direction du slide
         _goToPosition += DirectionAddMovePos(direction);
+        Tile tileToMove = manager.tileMap.FindTileWithPos(_goToPosition);
 
         //trouve le millieu de la tile ou l'on atterie
-        _goToPosition = manager.tileMap.FindTileWithPos(_goToPosition).transform.position;
+        _goToPosition = tileToMove.transform.position;
+
+        //verifie si la tile ou l'on va bouger contiens un effet, si oui applique l'effet
+        CheckNextTileEffect(direction);
+
+        return tileToMove;
     }
 
     private void Touch_onFingerUp(Etouch.Finger finger) 
@@ -233,8 +268,9 @@ public class MoveBubble : MonoBehaviour
         //trouve le millieu de la tile ou l'on atterie
         _goToPosition = manager.tileMap.FindTileWithPos(_goToPosition).transform.position;
 
+
         //verifie si la tile ou l'on va bouger contiens un effet, si oui applique l'effet
-        CheckNextTileEffect(finger);
+        CheckNextTileEffect(FingerToDirection(finger));
 
         //change anim curve based on tile type current moving
         ChangeAnimCurve();
@@ -336,9 +372,47 @@ public class MoveBubble : MonoBehaviour
         return Vector3.zero;
     }
 
+    private TileDown.Direction FingerToDirection (Etouch.Finger finger)
+    {
+        Vector2 fingerTouchDelta = finger.screenPosition - _startPositionFinger;
+
+        //x
+        if (Mathf.Abs(fingerTouchDelta.x) > Mathf.Abs(fingerTouchDelta.y))
+        {
+            //move right
+            if (fingerTouchDelta.x > 0)
+            {
+                return TileDown.Direction.Right;
+            }
+
+            //move left
+            else
+            {
+                return TileDown.Direction.Left;
+            }
+        }
+
+        //y
+        else if (Mathf.Abs(fingerTouchDelta.y) > Mathf.Abs(fingerTouchDelta.x))
+        {
+            //move up
+            if (fingerTouchDelta.y > 0)
+            {
+                return TileDown.Direction.Up;
+            }
+            //move down
+            else
+            {
+                return TileDown.Direction.Down;
+            }
+        }
+
+        return TileDown.Direction.Left;
+    }
+
     private void Die ()
     {
-        GetComponent<FlameManager>().SubstractFlame(true, 10000);
+        GetComponent<FlameManager>().ModifyFlame(true, 10000);
     }
 
     private void Touch_onFingerDown(Etouch.Finger finger)

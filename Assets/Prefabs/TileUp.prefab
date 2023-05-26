@@ -97,5 +97,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 448919422a46d074e9d69395e723e88a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
   size: 0
+  height: 0
+  type: 0
+  door: {fileID: 0}
+  colorNone: {r: 1, g: 1, b: 1, a: 1}
+  colorWall: {r: 0, g: 0.014428139, b: 1, a: 1}
+  colorDoor: {r: 0, g: 1, b: 0.011091232, a: 1}
+  colorLever: {r: 0.17785056, g: 0.38679248, b: 0.03794944, a: 1}
+  isActivated: 0
