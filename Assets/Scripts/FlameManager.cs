@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Rendering.Universal;
 using UnityEngine.Rendering.Universal;
+using System;
+using DG.Tweening;
+using static System.TimeZoneInfo;
 
 public class FlameManager : MonoBehaviour
 {
@@ -14,6 +17,10 @@ public class FlameManager : MonoBehaviour
     [SerializeField] Color _minColor;
 
     [SerializeField] float _fadeDuration;
+
+    public Action<float> OnFlameValueChange;
+    public float MaxValue { get => _max; }
+
     void Start()
     {
         _value = _max;
@@ -32,46 +39,26 @@ public class FlameManager : MonoBehaviour
             _value += amount;
         }
         _value = Mathf.Clamp(_value, 0, _max);
-        Debug.LogWarning(_value);
         switch (_value)
         {
-            case <= 10 and > 7:
-                StartCoroutine(Fade(substract, _light, _light.pointLightOuterRadius, _maxRadius));
+            case 10:
                 _light.intensity = 1;
-
+                DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, 2.5f, 1f).SetEase(Ease.OutExpo);
                 break;
-            case <= 7 and > 4:
-                StartCoroutine(Fade(substract, _light, _light.pointLightOuterRadius, (int)(2 * (_maxRadius / 3))));
-                _light.intensity = 1;
+            case 7:
+                _light.intensity = .9f;
+                DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, 2f, 1f).SetEase(Ease.OutExpo);
                 break;
-            case <= 4 and > 1:
-                StartCoroutine(Fade(substract, _light, _light.pointLightOuterRadius, (int)(_maxRadius / 3)));
-                _light.intensity = 1;
+            case 4:
+                _light.intensity = .8f;
+                DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, 1f, 1f).SetEase(Ease.OutExpo);
                 break;
-            case <= 1:
-                StartCoroutine(Fade(substract, _light, _light.pointLightOuterRadius, 0));
-                _light.intensity = 0;
+            case 1:
+                DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, 0f, 1f).SetEase(Ease.OutExpo);
                 break;
         }
         _light.color = new Color(Mathf.Lerp(_minColor.r, _maxColor.r, _value / 10), Mathf.Lerp(_minColor.g, _maxColor.g, _value / 10), Mathf.Lerp(_minColor.b, _maxColor.b, _value / 10));
-        
 
-    }
-
-    IEnumerator Fade(bool substract, Light2D light, float startValue, float endValue)
-    {
-        float elapsedTime = 0f;
-        while (elapsedTime < _fadeDuration)
-        {
-            float t = elapsedTime / _fadeDuration;
-
-            light.pointLightOuterRadius = Mathf.Lerp(startValue, endValue, t);
-            elapsedTime += Time.fixedDeltaTime;
-            yield return new WaitForFixedUpdate();
-        }
-        
-        
-        
-        
+        OnFlameValueChange?.Invoke(_value);
     }
 }
