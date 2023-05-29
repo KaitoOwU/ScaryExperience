@@ -55,7 +55,6 @@ public class FlameManager : MonoBehaviour
         }
         _light.color = new Color(Mathf.Lerp(_minColor.r, _maxColor.r, _value / 10), Mathf.Lerp(_minColor.g, _maxColor.g, _value / 10), Mathf.Lerp(_minColor.b, _maxColor.b, _value / 10));
         
-
     }
 
     IEnumerator Fade(bool substract, Light2D light, float startValue, float endValue)

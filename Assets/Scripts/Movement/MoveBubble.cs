@@ -29,12 +29,17 @@ public class MoveBubble : MonoBehaviour
     Vector3 _startPos;
     Vector2 _startPositionFinger;
     AnimationCurve _currentAnimCurve;
+
     //use for current standing
     TileType _tileStanding;
     TileUpType _tileStandingUp;
+    private int _keyFragmentNumber;
+    private int _keyNumber;
 
     //use for current movement ex: ice skatting
     TileType _tileMoving;
+    TileUpType _tileMovingUp;
+
     public enum TileType
     {
         Rock,
@@ -50,34 +55,85 @@ public class MoveBubble : MonoBehaviour
         None,
         Wall,
         Door,
-        Lever
+        Lever,
+        KeyFragment,
+        KeyDoor,
+        OneWayWall,
+        Brasero,
+        PortalDoor
     }
 
     private void Awake()
     {
         Etouch.EnhancedTouchSupport.Enable();
 
-        Etouch.Touch.onFingerMove += Touch_onFingerMove;
         Etouch.Touch.onFingerDown += Touch_onFingerDown;
         Etouch.Touch.onFingerUp += Touch_onFingerUp;
 
-        _goToPosition = transform.position;
-       
-
         _distFromPlayer = _buddy.transform.position - transform.position;
         _currentDelayLerpMove = _delayLerpMove;
+        _goToPosition = transform.position;
     }
 
     private void Start()
     {
         _movementAmount = manager.tileMap.tileSize;
-        Debug.LogWarning(_movementAmount);
+        //Debug.LogWarning(_movementAmount);
+    }
+
+    //coroutine qui deplace le joueur vers la position (simple)
+    private IEnumerator MoveToPos (Vector3 prePos, float delay)
+    {
+        _startPos = transform.position;
+        _moveTimer = 0;
+
+        while (_moveTimer < delay)
+        {
+            _moveTimer += Time.fixedDeltaTime;
+
+            transform.position = Vector3.Lerp(_startPos, prePos, _currentAnimCurve.Evaluate(_moveTimer / delay));
+
+            yield return new WaitForFixedUpdate();
+        }
+    }
+
+    // check if going in diagonal and return
+    private Vector3 CheckReturnDiagonal ()
+    {
+        Vector3 preGoToPosition;
+
+        //Debug.LogWarning("start x : " + _startPos.x + " / y : " + _startPos.y);
+        //Debug.LogWarning("end x : " + _goToPosition.x + " / y : " + _goToPosition.y);
+
+        if (_startPos.y != _goToPosition.y && _startPos.x != _goToPosition.x)
+        {
+            if (Mathf.Abs(_goToPosition.y - _startPos.y) < Mathf.Abs(_goToPosition.x - _startPos.x))
+            {
+                preGoToPosition = new Vector3(_startPos.x, _goToPosition.y, 0);
+            }
+            else
+            {
+                preGoToPosition = new Vector3(_goToPosition.x, _startPos.y, 0);
+            }
+
+            return preGoToPosition;
+        }
+
+        return Vector3.zero;
     }
 
     private IEnumerator MoveToPosition ()
     {
-        _moveTimer = 0;
         _startPos = transform.position;
+
+        // si l'on va en diagonal
+        if ((_startPos.y != _goToPosition.y && _startPos.x != _goToPosition.x) && _tileMovingUp != TileUpType.PortalDoor)
+        {
+            yield return StartCoroutine(MoveToPos(CheckReturnDiagonal(), 0.1f)); 
+        }
+
+        _startPos = transform.position;
+        _moveTimer = 0;
 
         while (_moveTimer < _currentDelayLerpMove)
         {
@@ -86,7 +142,7 @@ public class MoveBubble : MonoBehaviour
 
             transform.position = Vector3.Lerp(_startPos, _goToPosition, _currentAnimCurve.Evaluate(_moveTimer / _currentDelayLerpMove));
 
-            //_buddy.transform.position = Vector3.Lerp(_startPos + _distFromPlayer, _goToPosition + _distFromPlayer, _curveBuddy.Evaluate(_moveTimer / _currentDelayLerpMove));
+            _buddy.transform.position = Vector3.Lerp(_startPos + _distFromPlayer, _goToPosition + _distFromPlayer, _curveBuddy.Evaluate(_moveTimer / _currentDelayLerpMove));
 
             yield return new WaitForFixedUpdate();
         }
@@ -115,6 +171,7 @@ public class MoveBubble : MonoBehaviour
                 }
                 else
                 {
+                    tempTileUp.GoBackToWhite();
                     break;
                 }
 
@@ -122,6 +179,53 @@ public class MoveBubble : MonoBehaviour
                 tempTileUp.isActivated = true;
                 tempTileUp.door.GetComponent<TileUp>().isActivated = true;
                 break;
+
+            case TileUpType.KeyFragment:
+                if (!tempTileUp.isActivated)
+                {
+                    tempTileUp.isActivated = true;
+                    AddKeyFragment(1);
+                    tempTileUp.GoBackToWhite();
+                }
+                break;
+
+            case TileUpType.KeyDoor:
+                if (!tempTileUp.isActivated)
+                {
+                    if (UseKey(tempTileUp.numberKeyRequired))
+                    {
+                        tempTileUp.isActivated = true;
+                        tempTileUp.GoBackToWhite();
+                    }
+                }
+                break;
+
+            case TileUpType.OneWayWall:
+                if (direction == tempTileUp.directionToGoThrough)
+                {
+                    break;
+                }
+                else
+                {
+                    GoBack(direction);
+                    return;
+                }
+
+            case TileUpType.Brasero:
+                if (!tempTileUp.isActivated)
+                {
+                    GetComponent<FlameManager>().ModifyFlame(false, tempTileUp.refillAmount);
+                    tempTileUp.isActivated = true;
+                    tempTileUp.GoBackToWhite();
+                }
+                break;
+
+            case TileUpType.PortalDoor:
+                _startPos = tempTileUp.otherDoor.transform.position;
+                _goToPosition = tempTileUp.otherDoor.transform.position;
+                GoBack(direction);
+                _tileMovingUp = TileUpType.PortalDoor;
+                return;
 
             default:
                 break;
@@ -191,6 +295,28 @@ public class MoveBubble : MonoBehaviour
 
             default:
                 break;
+        }
+    }
+
+    private void AddKeyFragment (int number)
+    {
+        _keyFragmentNumber += number;
+
+        _keyNumber += _keyFragmentNumber / 3;
+        Debug.LogWarning(_keyFragmentNumber / 3);
+        _keyFragmentNumber %= 3;
+    }
+
+    private bool UseKey (int number)
+    {
+        if (_keyNumber >= number)
+        {
+            _keyNumber -= number;
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
@@ -328,9 +454,6 @@ public class MoveBubble : MonoBehaviour
 
             case TileDown.Direction.Down:
                 return new Vector3(0, -_movementAmount, 0);
-
-            default:
-                break;
         }
 
         return Vector3.zero;
@@ -342,31 +465,18 @@ public class MoveBubble : MonoBehaviour
         if (Mathf.Abs(fingerTouchDelta.x) > Mathf.Abs(fingerTouchDelta.y))
         {
             //move right
-            if (fingerTouchDelta.x > 0)
-            {
-                return new Vector3(_movementAmount, 0, 0);
-            }
-
+            if (fingerTouchDelta.x > 0) { return new Vector3(_movementAmount, 0, 0); }
             //move left
-            else
-            {
-                return new Vector3(-_movementAmount, 0, 0);
-            }
+            else { return new Vector3(-_movementAmount, 0, 0); }
         }
 
         //y
         else if (Mathf.Abs(fingerTouchDelta.y) > Mathf.Abs(fingerTouchDelta.x))
         {
             //move up
-            if (fingerTouchDelta.y > 0)
-            {
-                return new Vector3(0, _movementAmount, 0);
-            }
+            if (fingerTouchDelta.y > 0) { return new Vector3(0, _movementAmount, 0); }
             //move down
-            else
-            {
-                return new Vector3(0, -_movementAmount, 0);
-            }
+            else { return new Vector3(0, -_movementAmount, 0); }
         }
 
         return Vector3.zero;
@@ -380,31 +490,20 @@ public class MoveBubble : MonoBehaviour
         if (Mathf.Abs(fingerTouchDelta.x) > Mathf.Abs(fingerTouchDelta.y))
         {
             //move right
-            if (fingerTouchDelta.x > 0)
-            {
-                return TileDown.Direction.Right;
-            }
+            if (fingerTouchDelta.x > 0) { return TileDown.Direction.Right; }
 
             //move left
-            else
-            {
-                return TileDown.Direction.Left;
-            }
+            else { return TileDown.Direction.Left; }
         }
 
         //y
         else if (Mathf.Abs(fingerTouchDelta.y) > Mathf.Abs(fingerTouchDelta.x))
         {
             //move up
-            if (fingerTouchDelta.y > 0)
-            {
-                return TileDown.Direction.Up;
-            }
+            if (fingerTouchDelta.y > 0) { return TileDown.Direction.Up; }
+
             //move down
-            else
-            {
-                return TileDown.Direction.Down;
-            }
+            else { return TileDown.Direction.Down; }
         }
 
         return TileDown.Direction.Left;
@@ -418,9 +517,5 @@ public class MoveBubble : MonoBehaviour
     private void Touch_onFingerDown(Etouch.Finger finger)
     {
         _startPositionFinger = finger.screenPosition;
-    }
-
-    private void Touch_onFingerMove(Etouch.Finger finger)
-    {
     }
 }
