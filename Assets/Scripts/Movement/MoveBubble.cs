@@ -7,7 +7,7 @@ using UnityEngine.Tilemaps;
 public class MoveBubble : MonoBehaviour
 {
     [Header ("- References -")]
-    [SerializeField] GameManage manager;
+    [SerializeField] GameManager manager;
 
     [Header("- Stats -")]
     [SerializeField] float _delayLerpMove;
