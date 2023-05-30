@@ -14,6 +14,7 @@ public class TileDown : Tile
     public int pushNumberTiles;
 
     [SerializeField] Color colorRock;
+    [SerializeField] List<Sprite> spriteRock;
     [SerializeField] Color colorIce;
     [SerializeField] Color colorVoid;
     [SerializeField] Color colorWater;
@@ -27,7 +28,8 @@ public class TileDown : Tile
         switch (type)
         {
             case MoveBubble.TileType.Rock:
-                GetComponent<SpriteRenderer>().color = colorRock;
+                /*                GetComponent<SpriteRenderer>().color = colorRock;*/
+                GetComponent<SpriteRenderer>().sprite = spriteRock[Random.Range(0, spriteRock.Count)];
                 break;
             case MoveBubble.TileType.Ice:
                 GetComponent<SpriteRenderer>().color = colorIce;
