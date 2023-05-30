@@ -6,11 +6,29 @@ using Etouch = UnityEngine.InputSystem.EnhancedTouch;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance;
+
     [SerializeField] public TileMap tileMap;
     [SerializeField] public TileUpMap tileUpMap;
 
     [SerializeField] GameObject _loseScreen, _winScreen;
     [SerializeField] FlameManager _flameManager;
+
+    Dictionary<int, LevelData> _levelData = new();
+    public IReadOnlyDictionary<int, LevelData> LevelData { get => _levelData; }
+
+    private void Awake()
+    {
+        Instance = this;
+
+        if(SaveSystem.LoadData() == null)
+        {
+            SaveSystem.SaveData(_levelData);
+        } else
+        {
+            _levelData = SaveSystem.LoadData().levelData;
+        }
+    }
 
     private void OnEnable()
     {
@@ -38,4 +56,17 @@ public class GameManager : MonoBehaviour
 
 
 
+}
+
+[System.Serializable]
+public struct LevelData
+{
+    public bool isUnlocked;
+    public int coins;
+
+    public LevelData(bool isUnlocked = false, int coins = 0)
+    {
+        this.isUnlocked = isUnlocked;
+        this.coins = coins;
+    }
 }
