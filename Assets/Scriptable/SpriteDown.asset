@@ -26,7 +26,7 @@ MonoBehaviour:
   - {fileID: 0}
   spriteBreakable:
   - {fileID: 0}
-  colorRock: {r: 0.5188679, g: 0.5188679, b: 0.5188679, a: 1}
+  colorRock: {r: 1, g: 1, b: 1, a: 1}
   colorIce: {r: 0, g: 0.6054748, b: 0.8207547, a: 1}
   colorVoid: {r: 0.16979694, g: 0.11904589, b: 0.41509432, a: 1}
   colorWater: {r: 0.20188677, g: 0.3048692, b: 1, a: 1}
