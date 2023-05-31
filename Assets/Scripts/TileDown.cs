@@ -13,12 +13,7 @@ public class TileDown : Tile
     [ShowIf("isWind")]
     public int pushNumberTiles;
 
-    [SerializeField] Color colorRock;
-    [SerializeField] Color colorIce;
-    [SerializeField] Color colorVoid;
-    [SerializeField] Color colorWater;
-    [SerializeField] Color colorWind;
-    [SerializeField] Color colorBreakable;
+    [SerializeField] SpriteDown sprites;
 
     [HideInInspector] public bool isActivated = false;
 
@@ -27,22 +22,22 @@ public class TileDown : Tile
         switch (type)
         {
             case MoveBubble.TileType.Rock:
-                GetComponent<SpriteRenderer>().color = colorRock;
+                GetComponent<SpriteRenderer>().color = sprites.colorRock;
                 break;
             case MoveBubble.TileType.Ice:
-                GetComponent<SpriteRenderer>().color = colorIce;
+                GetComponent<SpriteRenderer>().color = sprites.colorIce;
                 break;
             case MoveBubble.TileType.Void:
-                GetComponent<SpriteRenderer>().color = colorVoid;
+                GetComponent<SpriteRenderer>().color = sprites.colorVoid;
                 break;
             case MoveBubble.TileType.Water:
-                GetComponent<SpriteRenderer>().color = colorWater;
+                GetComponent<SpriteRenderer>().color = sprites.colorWater;
                 break;
             case MoveBubble.TileType.Wind:
-                GetComponent<SpriteRenderer>().color = colorWind;
+                GetComponent<SpriteRenderer>().color = sprites.colorWind;
                 break;
             case MoveBubble.TileType.Breakable:
-                GetComponent<SpriteRenderer>().color = colorBreakable;
+                GetComponent<SpriteRenderer>().color = sprites.colorBreakable;
                 break;
         }
     }
