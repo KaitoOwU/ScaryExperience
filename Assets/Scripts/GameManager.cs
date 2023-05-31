@@ -30,8 +30,6 @@ public class GameManager : MonoBehaviour
         {
             _levelData = SaveSystem.LoadData().levelData;
         }
-
-        GameManager.Instance.LevelData[1].Complete(2);
     }
 
     private void OnEnable()
