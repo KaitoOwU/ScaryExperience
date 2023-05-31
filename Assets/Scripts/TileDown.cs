@@ -22,7 +22,7 @@ public class TileDown : Tile
         switch (type)
         {
             case MoveBubble.TileType.Rock:
-                GetComponent<SpriteRenderer>().color = sprites.colorRock;
+                GetComponent<SpriteRenderer>().sprite = sprites.spriteRock[Random.Range(0, sprites.spriteRock.Count)];
                 break;
             case MoveBubble.TileType.Ice:
                 GetComponent<SpriteRenderer>().color = sprites.colorIce;
