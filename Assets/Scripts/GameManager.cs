@@ -23,11 +23,15 @@ public class GameManager : MonoBehaviour
 
         if(SaveSystem.LoadData() == null)
         {
+            _levelData[0] = new(0);
+            _levelData[0].IsUnlocked = true;
             SaveSystem.SaveData(_levelData);
         } else
         {
             _levelData = SaveSystem.LoadData().levelData;
         }
+
+        GameManager.Instance.LevelData[1].Complete(2);
     }
 
     private void OnEnable()
@@ -59,14 +63,33 @@ public class GameManager : MonoBehaviour
 }
 
 [System.Serializable]
-public struct LevelData
+public class LevelData
 {
-    public bool isUnlocked;
-    public int coins;
+    int _levelId;
+    bool _isUnlocked;
+    int _coins;
 
-    public LevelData(bool isUnlocked = false, int coins = 0)
+    public bool IsUnlocked { get => _isUnlocked; set => _isUnlocked = value; }
+    public int Coins { get => _coins; set => _coins = value; }
+
+    public LevelData(int levelId)
     {
-        this.isUnlocked = isUnlocked;
-        this.coins = coins;
+        _levelId = levelId;
+        _isUnlocked = false;
+        _coins = 0;
+    }
+
+    public void Complete(int amountOfCoins)
+    {
+        if (0 > amountOfCoins && amountOfCoins > 3)
+        {
+            throw new ArgumentException("Nique ta mère la pute on a que 3 coins max gros débile.");
+        }
+
+        _coins = amountOfCoins;
+        if (GameManager.Instance.LevelData.ContainsKey(_levelId+1))
+        {
+            GameManager.Instance.LevelData[_levelId + 1].IsUnlocked = true;
+        }
     }
 }
