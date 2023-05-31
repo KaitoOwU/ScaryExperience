@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaaa17679de0bd7488207dca62b0e204, type: 3}
+  m_Name: SpriteDown
+  m_EditorClassIdentifier: 
+  spriteRock: {fileID: 0}
+  spriteIce: {fileID: 0}
+  spriteVoid: {fileID: 0}
+  spriteWater: {fileID: 0}
+  spriteWind: {fileID: 0}
+  spriteBreakable: {fileID: 0}
+  colorRock: {r: 0.5188679, g: 0.5188679, b: 0.5188679, a: 1}
+  colorIce: {r: 0, g: 0.6054748, b: 0.8207547, a: 1}
+  colorVoid: {r: 0.16979694, g: 0.11904589, b: 0.41509432, a: 1}
+  colorWater: {r: 0.20188677, g: 0.3048692, b: 1, a: 1}
+  colorWind: {r: 0.42207193, g: 0.7169812, b: 0.4668349, a: 1}
+  colorBreakable: {r: 0.3018868, g: 0.22125366, b: 0.13214666, a: 1}
