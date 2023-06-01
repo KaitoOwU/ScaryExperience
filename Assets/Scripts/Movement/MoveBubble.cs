@@ -414,12 +414,12 @@ public class MoveBubble : MonoBehaviour
         Vector2 fingerTouchDelta = finger.screenPosition - _startPositionFinger;
 
         // check if swipe < slide horizontal
-        if (Mathf.Abs(fingerTouchDelta.x) > Mathf.Abs(fingerTouchDelta.y) && Mathf.Abs(fingerTouchDelta.x) < _slideSensitivity)
+        if (Mathf.Abs(fingerTouchDelta.x) >= Mathf.Abs(fingerTouchDelta.y) && Mathf.Abs(fingerTouchDelta.x) <= _slideSensitivity)
         {
             return;
         }
         // check if swipe < slide vertical
-        else if (Mathf.Abs(fingerTouchDelta.y) > Mathf.Abs(fingerTouchDelta.x) && Mathf.Abs(fingerTouchDelta.y) < _slideSensitivity)
+        else if (Mathf.Abs(fingerTouchDelta.y) >= Mathf.Abs(fingerTouchDelta.x) && Mathf.Abs(fingerTouchDelta.y) <= _slideSensitivity)
         {
             return;
         }
@@ -562,5 +562,18 @@ public class MoveBubble : MonoBehaviour
     private void Touch_onFingerDown(Etouch.Finger finger)
     {
         _startPositionFinger = finger.screenPosition;
+    }
+
+    internal void SetTouchControlsActive(bool active)
+    {
+        if (active)
+        {
+            Etouch.Touch.onFingerDown += Touch_onFingerDown;
+            Etouch.Touch.onFingerUp += Touch_onFingerUp;
+        } else
+        {
+            Etouch.Touch.onFingerDown -= Touch_onFingerDown;
+            Etouch.Touch.onFingerUp -= Touch_onFingerUp;
+        }
     }
 }

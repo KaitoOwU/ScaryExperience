@@ -11,15 +11,17 @@ public class GameManager : MonoBehaviour
     [SerializeField] public TileMap tileMap;
     [SerializeField] public TileUpMap tileUpMap;
 
-    [SerializeField] GameObject _loseScreen, _winScreen;
+    [SerializeField] GameObject _loseScreen, _winScreen, _pauseScreen;
     [SerializeField] FlameManager _flameManager;
+    [SerializeField] MoveBubble _moveBubble;
 
     Dictionary<int, LevelData> _levelData = new();
     int _currentLevel;
     public Dictionary<int, LevelData> LevelData { get => _levelData; }
     public int CurrentLevel { get => _currentLevel; private set => _currentLevel = value; }
-    public GameObject LoseScreen { get => _loseScreen; set => _loseScreen = value; }
-    public GameObject WinScreen { get => _winScreen; set => _winScreen = value; }
+    public GameObject LoseScreen { get => _loseScreen; private set => _loseScreen = value; }
+    public GameObject WinScreen { get => _winScreen; private set => _winScreen = value; }
+    public GameObject PauseScreen { get => _pauseScreen; private set => _pauseScreen = value; }
 
     private void Awake()
     {
@@ -60,8 +62,10 @@ public class GameManager : MonoBehaviour
         Etouch.EnhancedTouchSupport.Enable();
     }
 
-
-
+    internal void SetTouchControlsActive(bool active)
+    {
+        _moveBubble.SetTouchControlsActive(active);
+    }
 }
 
 [System.Serializable]
