@@ -15,7 +15,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] FlameManager _flameManager;
 
     Dictionary<int, LevelData> _levelData = new();
-    public IReadOnlyDictionary<int, LevelData> LevelData { get => _levelData; }
+    int _currentLevel;
+    public Dictionary<int, LevelData> LevelData { get => _levelData; }
+    public int CurrentLevel { get => _currentLevel; private set => _currentLevel = value; }
+    public GameObject LoseScreen { get => _loseScreen; set => _loseScreen = value; }
+    public GameObject WinScreen { get => _winScreen; set => _winScreen = value; }
 
     private void Awake()
     {
@@ -23,6 +27,8 @@ public class GameManager : MonoBehaviour
 
         if(SaveSystem.LoadData() == null)
         {
+            _levelData[0] = new(0);
+            _levelData[0].IsUnlocked = true;
             SaveSystem.SaveData(_levelData);
         } else
         {
@@ -59,14 +65,29 @@ public class GameManager : MonoBehaviour
 }
 
 [System.Serializable]
-public struct LevelData
+public class LevelData
 {
-    public bool isUnlocked;
-    public int coins;
+    int _levelId;
+    bool _isUnlocked;
+    bool _collectibleAcquired;
 
-    public LevelData(bool isUnlocked = false, int coins = 0)
+    public bool IsUnlocked { get => _isUnlocked; set => _isUnlocked = value; }
+    public bool CollectibleAcquired { get => _collectibleAcquired; set => _collectibleAcquired = value; }
+
+    public LevelData(int levelId)
     {
-        this.isUnlocked = isUnlocked;
-        this.coins = coins;
+        _levelId = levelId;
+        _isUnlocked = false;
+        _collectibleAcquired = false;
+    }
+
+    public void Complete(bool withCollectible)
+    {
+
+        _collectibleAcquired = withCollectible;
+        if (GameManager.Instance.LevelData.ContainsKey(_levelId+1))
+        {
+            GameManager.Instance.LevelData[_levelId + 1].IsUnlocked = true;
+        }
     }
 }

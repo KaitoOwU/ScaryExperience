@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using NaughtyAttributes;
+using UnityEngine.Rendering.Universal;
 
 public class TileUp : Tile
 {
@@ -48,7 +49,7 @@ public class TileUp : Tile
     // change la door lorqu'on la met dans l'inspecteur
     private void OnValidate()
     {
-        // si l'on ne désigne plus la case comme étant block, on delete le block (object)
+        // si l'on ne dï¿½signe plus la case comme ï¿½tant block, on delete le block (object)
         if (type != TileUpType.Block && block != null)
         {
             UnityEditor.EditorApplication.delayCall += () =>
@@ -59,10 +60,84 @@ public class TileUp : Tile
 
         if (oldType != type)
         {
-            RefreshColorSprite(true);
+            switch (type)
+            {
+                case MoveBubble.TileUpType.None:
+                    GetComponent<SpriteRenderer>().color = sprites.colorNone;
+                    break;
+                case MoveBubble.TileUpType.Wall:
+                    GetComponent<SpriteRenderer>().color = Color.white;
+                    GetComponent<SpriteRenderer>().sprite = sprites.spriteWall[0];
+                    gameObject.AddComponent<ShadowCaster2D>();
+
+                    break;
+                case MoveBubble.TileUpType.Door:
+                    GetComponent<SpriteRenderer>().color = sprites.colorDoor;
+                    break;
+                case MoveBubble.TileUpType.Lever:
+                    GetComponent<SpriteRenderer>().color = sprites.colorLever;
+                    break;
+                case MoveBubble.TileUpType.KeyFragment:
+                    GetComponent<SpriteRenderer>().color = sprites.colorKeyFragment;
+                    break;
+                case MoveBubble.TileUpType.KeyDoor:
+                    GetComponent<SpriteRenderer>().color = sprites.colorDoorKey;
+                    break;
+                case MoveBubble.TileUpType.OneWayWall:
+                    GetComponent<SpriteRenderer>().color = sprites.colorOneWayWall;
+                    break;
+                case MoveBubble.TileUpType.PortalDoor:
+                    GetComponent<SpriteRenderer>().color = sprites.colorPortalDoor;
+                    break;
+                case MoveBubble.TileUpType.Block:
+                    if (block == null)
+                    {
+                        GameObject temp = Instantiate(blockPrefab, transform);
+                        block = temp;
+                    }
+                    break;
+                case MoveBubble.TileUpType.PressurePlate:
+                    GetComponent<SpriteRenderer>().color = sprites.colorPressurePlate;
+                    break;
+                case MoveBubble.TileUpType.WinBlock:
+                    GetComponent<SpriteRenderer>().color = sprites.colorWin;
+                    break;
+
+                default:
+                    break;
+            }
 
             switch (oldType)
             {
+                case MoveBubble.TileUpType.Lever:
+                    if (door != null)
+                    {
+                        door.GetComponent<TileUp>().type = MoveBubble.TileUpType.None;
+                        door.GetComponent<SpriteRenderer>().color = Color.white;
+                        door = null;
+                    }
+                    break;
+
+                case MoveBubble.TileUpType.PressurePlate:
+                    if (doorPressurePlate != null)
+                    {
+                        doorPressurePlate.GetComponent<TileUp>().type = MoveBubble.TileUpType.None;
+                        doorPressurePlate.GetComponent<SpriteRenderer>().color = Color.white;
+                        doorPressurePlate = null;
+                    }
+                    break;
+
+                case MoveBubble.TileUpType.PortalDoor:
+                    if (otherDoor != null)
+                    {
+                        otherDoor.GetComponent<SpriteRenderer>().color = Color.white;
+                        otherDoor.GetComponent<TileUp>().otherDoor = null;
+                        otherDoor.GetComponent<TileUp>().type = MoveBubble.TileUpType.None;
+                    }
+                    break;
+                case MoveBubble.TileUpType.Wall:
+                    DestroyImmediate(GetComponent<ShadowCaster2D>());
+                    break;
                 default:
                     break;
             }

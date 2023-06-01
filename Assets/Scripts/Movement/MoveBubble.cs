@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Etouch = UnityEngine.InputSystem.EnhancedTouch;
+using System;
 
 public class MoveBubble : MonoBehaviour
 {
@@ -25,6 +26,8 @@ public class MoveBubble : MonoBehaviour
     //runtime private
     float _movementAmount;
     bool _isMoving = false;
+    bool _canMove = true;
+    public float currentDelayLerpMove;
     float _moveTimer = 0;
     Vector3 _goToPosition;
     Vector3 _distFromPlayer;
@@ -33,6 +36,7 @@ public class MoveBubble : MonoBehaviour
     AnimationCurve _currentAnimCurve;
     bool _shouldStopCheckingTile;
     private int _keyFragmentNumber;
+    bool _collectibleAcquired = false;
 
     //use for current standing
     TileDown.TileType _tileStanding;
@@ -42,13 +46,18 @@ public class MoveBubble : MonoBehaviour
     TileDown.TileType _tileMoving;
     TileUp.TileUpType _tileMovingUp;
 
-
+    public Action OnDie;
+    public Action OnWin;
+    
     private void Awake()
     {
         Etouch.EnhancedTouchSupport.Enable();
 
         Etouch.Touch.onFingerDown += Touch_onFingerDown;
         Etouch.Touch.onFingerUp += Touch_onFingerUp;
+
+        OnWin += Win;
+        OnDie += Die;
 
         _distFromPlayer = _buddy.transform.position - transform.position;
         currentDelayLerpMove = _delayLerpMove;
@@ -80,10 +89,22 @@ public class MoveBubble : MonoBehaviour
     private void Win()
     {
         Debug.LogWarning("WINNN !!!!");
+
+        Etouch.Touch.onFingerDown -= Touch_onFingerDown;
+        Etouch.Touch.onFingerUp -= Touch_onFingerUp;
+
+        GameManager.Instance.LevelData[GameManager.Instance.CurrentLevel].Complete(_collectibleAcquired);
+        SaveSystem.SaveData(GameManager.Instance.LevelData);
+
+        GameManager.Instance.WinScreen.SetActive(true);
     }
     private void Die ()
     {
         GetComponent<FlameManager>().ModifyFlame(true, 10000);
+        Etouch.Touch.onFingerDown -= Touch_onFingerDown;
+        Etouch.Touch.onFingerUp -= Touch_onFingerUp;
+
+        GameManager.Instance.LoseScreen.SetActive(true);
     }
 
     private void ChangeRendering (bool isVisible)
@@ -141,7 +162,7 @@ public class MoveBubble : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
-        // reset variables après mouvement
+        // reset variables aprï¿½s mouvement
         _isMoving = false;
         currentDelayLerpMove = _delayLerpMove;
         _tileMoving = TileDown.TileType.Rock;
@@ -166,8 +187,20 @@ public class MoveBubble : MonoBehaviour
                     tempTileUp.GoBackToWhite();
                 }
                 break;
+                
+            case TileUpType.KeyDoor:
+                if (!tempTileUp.isActivated)
+                {
+                    if (UseKey(tempTileUp.numberKeyRequired))
+                    {
+                        tempTileUp.isActivated = true;
+                        tempTileUp.GoBackToWhite();
+                        OnWin?.Invoke();
+                    }
+                }
+                break;
 
-            case TileUp.TileUpType.OneWayWall:
+            case TileUpType.OneWayWall:
                 if (direction == tempTileUp.directionToGoThrough)
                 {
                     break;
@@ -217,7 +250,21 @@ public class MoveBubble : MonoBehaviour
                         _shouldStopCheckingTile = true;
                         return;
                     }
+                    
+                tempTileUp.isActivated = false;
+                break;
+
+            case TileUpType.Collectible:
+                if (!tempTileUp.isActivated)
+                {
+                    tempTileUp.isActivated = true;
+                    _collectibleAcquired = true;
+                    tempTileUp.GoBackToWhite();
                 }
+                break;
+
+            case TileUpType.WinBlock:
+                OnWin?.Invoke();
                 break;
 
             default:
@@ -244,14 +291,11 @@ public class MoveBubble : MonoBehaviour
                 }
                 break;
 
-            case TileDown.TileType.Void:
-                //die void
-                Die();
-                break;
-
-            case TileDown.TileType.Water:
-                //glou glou water
-                Die();
+            case TileType.Void:
+            // die
+            case TileType.Water:
+            //glou glou water
+                OnDie?.Invoke();
                 break;
 
             case TileDown.TileType.Wind:
@@ -285,7 +329,7 @@ public class MoveBubble : MonoBehaviour
                 else
                 {
                     //Tu meurs bozooo
-                    Die();
+                    OnDie?.Invoke();
                     break;
                 }
 
@@ -528,7 +572,6 @@ public class MoveBubble : MonoBehaviour
 
         return TileDown.Direction.Left;
     }
-
 
     private void Touch_onFingerDown(Etouch.Finger finger)
     {
