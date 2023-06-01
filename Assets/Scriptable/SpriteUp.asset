@@ -16,6 +16,32 @@ MonoBehaviour:
   - {fileID: 0}
   spriteWall:
   - {fileID: 21300000, guid: 18e4db4e5ea0f58428243dbc4300f16d, type: 3}
+  spriteSideWall:
+  - {fileID: 21300000, guid: 2cb717b00627e584f8a43721a1ab33fe, type: 3}
+  - {fileID: 21300000, guid: f261244726fe9fe40a8f2f44dc814a16, type: 3}
+  - {fileID: 21300000, guid: 7600eb0c5a2576f4bb7f4743df6daa71, type: 3}
+  - {fileID: 21300000, guid: 3b83dceb09cc3624f84e38859733f404, type: 3}
+  - {fileID: 21300000, guid: 8674f1d9a9bdf4b40aa06fb5aa972561, type: 3}
+  - {fileID: 21300000, guid: d6590fec98836fc41811d5e784f3c858, type: 3}
+  - {fileID: 21300000, guid: 4e2eab55c5e3e0b4d949386040bfa58b, type: 3}
+  - {fileID: 21300000, guid: e0c01814a3bc1df468c523aa14cc83fc, type: 3}
+  - {fileID: 21300000, guid: 3308033f1c4657346979aca72fc85f4e, type: 3}
+  - {fileID: 21300000, guid: 70490ee63db1a3e4589a264412fc1cff, type: 3}
+  - {fileID: 21300000, guid: 3d2b5a08ea21ded4ea7bdf4e7ff0305f, type: 3}
+  - {fileID: 21300000, guid: 559c1923a7e78af42b155d2873f2872e, type: 3}
+  - {fileID: 21300000, guid: fc5c729861f18a74694890bddda542f7, type: 3}
+  - {fileID: 21300000, guid: b89ec60a8aa47d04e880dc2c2abd521c, type: 3}
+  spriteCornerWall:
+  - {fileID: 21300000, guid: f67b19795d60ea144b4a157689a85355, type: 3}
+  - {fileID: 21300000, guid: b89d763f251a4734da30b39b3ac3955d, type: 3}
+  - {fileID: 21300000, guid: 4504461c951097541aad13cf5da25a49, type: 3}
+  - {fileID: 21300000, guid: 9a7cb4a960072eb42baa69bfcf7742b2, type: 3}
+  - {fileID: 21300000, guid: 5ca3a542601221346b6b91d6b8d25552, type: 3}
+  - {fileID: 21300000, guid: a1b3f6b6b15511847940e93d665efed5, type: 3}
+  - {fileID: 21300000, guid: 8a6eda21c4616384f8e1271f8b51f6ea, type: 3}
+  - {fileID: 21300000, guid: a85f2388e337fd24eb938fd01d6482c5, type: 3}
+  spriteDoor:
+  - {fileID: 0}
   spriteKeyFragment:
   - {fileID: 0}
   spriteOneWayWall:
