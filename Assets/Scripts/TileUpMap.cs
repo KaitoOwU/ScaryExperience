@@ -67,6 +67,16 @@ public class TileUpMap : MonoBehaviour
         }
     }
 
+    [Button("RefreshMap")]
+    private void RefreshMap()
+    {
+        Debug.LogWarning("Refreshing ...");
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            transform.GetChild(i).GetComponent<TileUp>().RefreshColorSprite(false);
+        }
+    }
+
     public TileUp FindTileWithPos(Vector3 pos)
     {
         foreach (TileUp tile in _tileMap)

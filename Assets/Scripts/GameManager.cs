@@ -48,8 +48,8 @@ public class GameManager : MonoBehaviour
 
     private void CheckForLoseCondition(float flameValue)
     {
-        Debug.LogWarning(flameValue);
-        if(flameValue <= 0)
+        //Debug.LogWarning(flameValue);
+        if(flameValue <= 0 && _loseScreen != null)
         {
             _loseScreen.SetActive(true);
         }

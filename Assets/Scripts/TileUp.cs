@@ -7,15 +7,11 @@ using UnityEngine.Rendering.Universal;
 public class TileUp : Tile
 {
     [Header("- Stats -")]
-    public MoveBubble.TileUpType type;
-    private MoveBubble.TileUpType oldType;
+    public TileUpType type;
+    private TileUpType oldType;
 
-    [ShowIf("isLever")]
-    public GameObject door;
-    private GameObject oldDoor;
-
-    [ShowIf("isKeyDoor")]
-    public int numberKeyRequired = 1;
+    [ShowIf("isWinTrappe")]
+    public int numberPartKeyRequired = 1;
 
     [ShowIf("isBrasero")]
     public int refillAmount = 10;
@@ -23,22 +19,27 @@ public class TileUp : Tile
     [ShowIf("isOneWayWall")]
     public TileDown.Direction directionToGoThrough;
 
-    [ShowIf("isPortalDoor")]
-    public GameObject otherDoor;
-    private GameObject oldOtherDoor;
-
     [ShowIf("isBlock")]
     public GameObject block;
-
-    [ShowIf("isPressurePlate")]
-    public GameObject doorPressurePlate;
-    private GameObject oldDoorPressurePlate;
 
     [Header("- ToHook -")]
     [SerializeField] GameObject blockPrefab;
     [SerializeField] SpriteUp sprites;
 
+    //public hide
     [HideInInspector] public bool isActivated = false;
+
+    public enum TileUpType
+    {
+        None,
+        Wall,
+        KeyFragment,
+        OneWayWall,
+        Brasero,
+        Torch,
+        Block,
+        WinTrappe,
+    }
 
     public void GoBackToWhite ()
     {
@@ -48,54 +49,13 @@ public class TileUp : Tile
     // change la door lorqu'on la met dans l'inspecteur
     private void OnValidate()
     {
-        // si l'on ne désigne plus la case comme étant block, on delete le block (object)
-        if (type != MoveBubble.TileUpType.Block && block != null)
+        // si l'on ne dï¿½signe plus la case comme ï¿½tant block, on delete le block (object)
+        if (type != TileUpType.Block && block != null)
         {
             UnityEditor.EditorApplication.delayCall += () =>
             {
                 DestroyImmediate(block);
             };
-        }
-
-        if (doorPressurePlate != null && type == MoveBubble.TileUpType.PressurePlate)
-        {
-            if (oldDoorPressurePlate != null)
-            {
-                oldDoorPressurePlate.GetComponent<TileUp>().type = MoveBubble.TileUpType.None;
-                oldDoorPressurePlate.GetComponent<SpriteRenderer>().color = Color.white;
-            }
-
-            doorPressurePlate.GetComponent<TileUp>().type = MoveBubble.TileUpType.Door;
-            doorPressurePlate.GetComponent<SpriteRenderer>().color = sprites.colorDoor;
-            oldDoorPressurePlate = doorPressurePlate;
-        }
-
-
-        if (door != null && type == MoveBubble.TileUpType.Lever)
-        {
-            if (oldDoor != null)
-            {
-                oldDoor.GetComponent<TileUp>().type = MoveBubble.TileUpType.None;
-                oldDoor.GetComponent<SpriteRenderer>().color = Color.white;
-            }
-
-            door.GetComponent<TileUp>().type = MoveBubble.TileUpType.Door;
-            door.GetComponent<SpriteRenderer>().color = sprites.colorDoor;
-            oldDoor = door;
-        }
-
-        if (otherDoor != null && type == MoveBubble.TileUpType.PortalDoor)
-        {
-            if (oldOtherDoor != null)
-            {
-                oldOtherDoor.GetComponent<TileUp>().type = MoveBubble.TileUpType.None;
-                oldOtherDoor.GetComponent<SpriteRenderer>().color = Color.white;
-            }
-
-            otherDoor.GetComponent<TileUp>().type = MoveBubble.TileUpType.PortalDoor;
-            otherDoor.GetComponent<TileUp>().otherDoor = gameObject;
-            otherDoor.GetComponent<SpriteRenderer>().color = sprites.colorPortalDoor;
-            oldOtherDoor = otherDoor;
         }
 
         if (oldType != type)
@@ -186,14 +146,46 @@ public class TileUp : Tile
         oldType = type;
     }
 
+    public void RefreshColorSprite(bool checkBlock)
+    {
+        switch (type)
+        {
+            case TileUpType.None:
+                GetComponent<SpriteRenderer>().color = sprites.colorNone;
+                break;
+            case TileUpType.Wall:
+                GetComponent<SpriteRenderer>().color = sprites.colorWall;
+                break;
+            case TileUpType.KeyFragment:
+                GetComponent<SpriteRenderer>().color = sprites.colorKeyFragment;
+                break;
+            case TileUpType.OneWayWall:
+                GetComponent<SpriteRenderer>().color = sprites.colorOneWayWall;
+                break;
+            case TileUpType.Torch:
+                GetComponent<SpriteRenderer>().color = sprites.colorTorch;
+                break;
+            case TileUpType.Brasero:
+                GetComponent<SpriteRenderer>().color = sprites.colorBrasero;
+                break;
+            case TileUpType.WinTrappe:
+                GetComponent<SpriteRenderer>().color = sprites.colorWinTrappe;
+                break;
 
-    private bool isWall() { return type == MoveBubble.TileUpType.Wall; }
-    private bool isDoor() { return type == MoveBubble.TileUpType.Door; }
-    private bool isLever() { return type == MoveBubble.TileUpType.Lever; }
-    private bool isKeyDoor() { return type == MoveBubble.TileUpType.KeyDoor;}
-    private bool isOneWayWall() { return type == MoveBubble.TileUpType.OneWayWall; }
-    private bool isBrasero() { return type == MoveBubble.TileUpType.Brasero; }
-    private bool isPortalDoor() { return type == MoveBubble.TileUpType.PortalDoor; }
-    private bool isBlock() { return type == MoveBubble.TileUpType.Block; }
-    private bool isPressurePlate() { return type == MoveBubble.TileUpType.PressurePlate; }
+            case TileUpType.Block:
+                if (block == null && checkBlock)
+                {
+                    GameObject temp = Instantiate(blockPrefab, transform);
+                    block = temp;
+                }
+                break;
+        }
+    }
+
+
+    private bool isWall() { return type == TileUpType.Wall; }
+    private bool isOneWayWall() { return type == TileUpType.OneWayWall; }
+    private bool isBrasero() { return type == TileUpType.Brasero; }
+    private bool isBlock() { return type == TileUpType.Block; }
+    private bool isWinTrappe() { return type == TileUpType.WinTrappe; }
 }

@@ -6,7 +6,8 @@ using NaughtyAttributes;
 public class TileDown : Tile
 {
     [Header("- Stats -")]
-    public MoveBubble.TileType type;
+    public TileType type;
+    private TileType oldType;
 
     [ShowIf("isWind")]
     public Direction direction;
@@ -25,9 +26,24 @@ public class TileDown : Tile
 
     [HideInInspector] public bool isActivated = false;
 
+    public enum TileType
+    {
+        Rock,
+        Ice,
+        Void,
+        Water,
+        Wind,
+        Breakable
+    }
+
     private void OnValidate()
     {
-        switch (type)
+        RefreshColorSprite();
+    }
+
+    public void RefreshColorSprite()
+    {
+        if (oldType != type)
         {
             case MoveBubble.TileType.Rock:
                 
@@ -88,6 +104,8 @@ public class TileDown : Tile
                 GetComponent<SpriteRenderer>().color = sprites.colorBreakable;
                 break;
         }
+
+        oldType = type;
     }
 
     public enum Direction
@@ -122,8 +140,8 @@ public class TileDown : Tile
     }
 
 
-    private bool isWind() { return type == MoveBubble.TileType.Wind; }
-    private bool isRock() { return type == MoveBubble.TileType.Rock; }
+    private bool isWind() { return type == TileType.Wind; }
+    private bool isRock() { return type == TileType.Rock; }
     private bool isSide() { return position == Position.Side; }
     private bool isCorner() { return position == Position.Corner; }
 
