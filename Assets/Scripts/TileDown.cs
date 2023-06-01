@@ -31,7 +31,7 @@ public class TileDown : Tile
                 GetComponent<SpriteRenderer>().color = sprites.colorVoid;
                 break;
             case MoveBubble.TileType.Water:
-                GetComponent<SpriteRenderer>().color = sprites.colorWater;
+                GetComponent<SpriteRenderer>().sprite = sprites.spriteWater[0];
                 break;
             case MoveBubble.TileType.Wind:
                 GetComponent<SpriteRenderer>().color = sprites.colorWind;

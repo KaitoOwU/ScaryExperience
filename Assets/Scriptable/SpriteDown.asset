@@ -21,7 +21,7 @@ MonoBehaviour:
   spriteVoid:
   - {fileID: 0}
   spriteWater:
-  - {fileID: 0}
+  - {fileID: 21300000, guid: 84537ef695284a54fa74d166669f7332, type: 3}
   spriteWind:
   - {fileID: 0}
   spriteBreakable:
