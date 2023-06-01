@@ -15,7 +15,7 @@ MonoBehaviour:
   spriteNone:
   - {fileID: 0}
   spriteWall:
-  - {fileID: 0}
+  - {fileID: 21300000, guid: 18e4db4e5ea0f58428243dbc4300f16d, type: 3}
   spriteKeyFragment:
   - {fileID: 0}
   spriteOneWayWall:

@@ -39,6 +39,7 @@ public class TileUp : Tile
         Torch,
         Block,
         WinTrappe,
+        Collectible
     }
 
     public void GoBackToWhite ()
@@ -60,83 +61,17 @@ public class TileUp : Tile
 
         if (oldType != type)
         {
-            switch (type)
-            {
-                case MoveBubble.TileUpType.None:
-                    GetComponent<SpriteRenderer>().color = sprites.colorNone;
-                    break;
-                case MoveBubble.TileUpType.Wall:
-                    GetComponent<SpriteRenderer>().color = Color.white;
-                    GetComponent<SpriteRenderer>().sprite = sprites.spriteWall[0];
-                    gameObject.AddComponent<ShadowCaster2D>();
-
-                    break;
-                case MoveBubble.TileUpType.Door:
-                    GetComponent<SpriteRenderer>().color = sprites.colorDoor;
-                    break;
-                case MoveBubble.TileUpType.Lever:
-                    GetComponent<SpriteRenderer>().color = sprites.colorLever;
-                    break;
-                case MoveBubble.TileUpType.KeyFragment:
-                    GetComponent<SpriteRenderer>().color = sprites.colorKeyFragment;
-                    break;
-                case MoveBubble.TileUpType.KeyDoor:
-                    GetComponent<SpriteRenderer>().color = sprites.colorDoorKey;
-                    break;
-                case MoveBubble.TileUpType.OneWayWall:
-                    GetComponent<SpriteRenderer>().color = sprites.colorOneWayWall;
-                    break;
-                case MoveBubble.TileUpType.PortalDoor:
-                    GetComponent<SpriteRenderer>().color = sprites.colorPortalDoor;
-                    break;
-                case MoveBubble.TileUpType.Block:
-                    if (block == null)
-                    {
-                        GameObject temp = Instantiate(blockPrefab, transform);
-                        block = temp;
-                    }
-                    break;
-                case MoveBubble.TileUpType.PressurePlate:
-                    GetComponent<SpriteRenderer>().color = sprites.colorPressurePlate;
-                    break;
-                case MoveBubble.TileUpType.WinBlock:
-                    GetComponent<SpriteRenderer>().color = sprites.colorWin;
-                    break;
-
-                default:
-                    break;
-            }
+            RefreshColorSprite(true);
 
             switch (oldType)
             {
-                case MoveBubble.TileUpType.Lever:
-                    if (door != null)
-                    {
-                        door.GetComponent<TileUp>().type = MoveBubble.TileUpType.None;
-                        door.GetComponent<SpriteRenderer>().color = Color.white;
-                        door = null;
-                    }
-                    break;
-
-                case MoveBubble.TileUpType.PressurePlate:
-                    if (doorPressurePlate != null)
-                    {
-                        doorPressurePlate.GetComponent<TileUp>().type = MoveBubble.TileUpType.None;
-                        doorPressurePlate.GetComponent<SpriteRenderer>().color = Color.white;
-                        doorPressurePlate = null;
-                    }
-                    break;
-
-                case MoveBubble.TileUpType.PortalDoor:
-                    if (otherDoor != null)
-                    {
-                        otherDoor.GetComponent<SpriteRenderer>().color = Color.white;
-                        otherDoor.GetComponent<TileUp>().otherDoor = null;
-                        otherDoor.GetComponent<TileUp>().type = MoveBubble.TileUpType.None;
-                    }
-                    break;
-                case MoveBubble.TileUpType.Wall:
+                case TileUpType.Wall:
                     DestroyImmediate(GetComponent<ShadowCaster2D>());
+                    break;
+
+                case TileUpType.Block:
+                    DestroyImmediate(block);
+                    block = null;
                     break;
                 default:
                     break;
@@ -154,7 +89,7 @@ public class TileUp : Tile
                 GetComponent<SpriteRenderer>().color = sprites.colorNone;
                 break;
             case TileUpType.Wall:
-                GetComponent<SpriteRenderer>().color = sprites.colorWall;
+                GetComponent<SpriteRenderer>().sprite = sprites.spriteWall[0];
                 break;
             case TileUpType.KeyFragment:
                 GetComponent<SpriteRenderer>().color = sprites.colorKeyFragment;

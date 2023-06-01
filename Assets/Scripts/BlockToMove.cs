@@ -61,6 +61,7 @@ public class BlockToMove : MonoBehaviour
         //trouve le vector d'ajout de position selon la direction du slide
         toGoPosBlock += bubble.DirectionAddMovePos(direction);
         TileUp tileUpToMove = bubble.manager.tileUpMap.FindTileWithPos(toGoPosBlock);
+        Debug.LogWarning(tileUpToMove);
 
         // si la case n'est pas libre on ne push pas le block
         if (tileUpToMove.type != TileUp.TileUpType.None)

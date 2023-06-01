@@ -28,7 +28,6 @@ public class FlameManager : MonoBehaviour
         _value = _max;
     }
 
-
     public void ModifyFlame(bool substract, int amount)
     {
         if (substract)

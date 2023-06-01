@@ -27,7 +27,6 @@ public class MoveBubble : MonoBehaviour
     float _movementAmount;
     bool _isMoving = false;
     bool _canMove = true;
-    public float currentDelayLerpMove;
     float _moveTimer = 0;
     Vector3 _goToPosition;
     Vector3 _distFromPlayer;
@@ -187,20 +186,8 @@ public class MoveBubble : MonoBehaviour
                     tempTileUp.GoBackToWhite();
                 }
                 break;
-                
-            case TileUpType.KeyDoor:
-                if (!tempTileUp.isActivated)
-                {
-                    if (UseKey(tempTileUp.numberKeyRequired))
-                    {
-                        tempTileUp.isActivated = true;
-                        tempTileUp.GoBackToWhite();
-                        OnWin?.Invoke();
-                    }
-                }
-                break;
 
-            case TileUpType.OneWayWall:
+            case TileUp.TileUpType.OneWayWall:
                 if (direction == tempTileUp.directionToGoThrough)
                 {
                     break;
@@ -246,25 +233,18 @@ public class MoveBubble : MonoBehaviour
                     }
                     else
                     {
-                        GoBack(direction);
-                        _shouldStopCheckingTile = true;
-                        return;
+                        break;
                     }
-                    
-                tempTileUp.isActivated = false;
+                }
                 break;
 
-            case TileUpType.Collectible:
+            case TileUp.TileUpType.Collectible:
                 if (!tempTileUp.isActivated)
                 {
                     tempTileUp.isActivated = true;
                     _collectibleAcquired = true;
                     tempTileUp.GoBackToWhite();
                 }
-                break;
-
-            case TileUpType.WinBlock:
-                OnWin?.Invoke();
                 break;
 
             default:
@@ -291,9 +271,9 @@ public class MoveBubble : MonoBehaviour
                 }
                 break;
 
-            case TileType.Void:
+            case TileDown.TileType.Void:
             // die
-            case TileType.Water:
+            case TileDown.TileType.Water:
             //glou glou water
                 OnDie?.Invoke();
                 break;
@@ -324,6 +304,7 @@ public class MoveBubble : MonoBehaviour
                 if (!tempTile.isActivated)
                 {
                     tempTile.isActivated = true;
+                    tempTile.GetComponent<SpriteRenderer>().sprite = tempTile.sprites.spriteBreakable[1];
                     break;
                 }
                 else

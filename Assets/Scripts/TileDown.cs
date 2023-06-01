@@ -22,7 +22,7 @@ public class TileDown : Tile
     public CornerOrientation orientationCorner;
 
 
-    [SerializeField] SpriteDown sprites;
+    public SpriteDown sprites;
 
     [HideInInspector] public bool isActivated = false;
 
@@ -38,20 +38,25 @@ public class TileDown : Tile
 
     private void OnValidate()
     {
-        RefreshColorSprite();
+        if (oldType != type)
+        {
+            RefreshColorSprite();
+        }
+
+        oldType = type;
     }
 
     public void RefreshColorSprite()
     {
-        if (oldType != type)
+        switch (type)
         {
-            case MoveBubble.TileType.Rock:
-                
+            case TileType.Rock:
                 switch (position)
                 {
                     case Position.Normal:
                         GetComponent<SpriteRenderer>().sprite = sprites.spriteRock[Random.Range(0, sprites.spriteRock.Count)];
                         break;
+
                     case Position.Side:
                         switch (orientationSide)
                         {
@@ -88,24 +93,29 @@ public class TileDown : Tile
                         break;
                 }
                 break;
-            case MoveBubble.TileType.Ice:
+
+            case TileType.Ice:
+                GetComponent<SpriteRenderer>().sprite = sprites.spriteIce[Random.Range(0, sprites.spriteIce.Count)];
                 GetComponent<SpriteRenderer>().color = sprites.colorIce;
                 break;
-            case MoveBubble.TileType.Void:
+
+            case TileType.Void:
+                GetComponent<SpriteRenderer>().sprite = sprites.spriteVoid[Random.Range(0, sprites.spriteVoid.Count)];
                 GetComponent<SpriteRenderer>().color = sprites.colorVoid;
                 break;
-            case MoveBubble.TileType.Water:
-                GetComponent<SpriteRenderer>().sprite = sprites.spriteWater[0];
+            case TileType.Water:
+                GetComponent<SpriteRenderer>().sprite = sprites.spriteWater[Random.Range(0, sprites.spriteWater.Count)];
+                GetComponent<SpriteRenderer>().color = sprites.colorWater;
                 break;
-            case MoveBubble.TileType.Wind:
+            case TileType.Wind:
+                GetComponent<SpriteRenderer>().sprite = sprites.spriteWind[Random.Range(0, sprites.spriteWind.Count)];
                 GetComponent<SpriteRenderer>().color = sprites.colorWind;
                 break;
-            case MoveBubble.TileType.Breakable:
+            case TileType.Breakable:
+                GetComponent<SpriteRenderer>().sprite = sprites.spriteBreakable[Random.Range(0, sprites.spriteBreakable.Count)];
                 GetComponent<SpriteRenderer>().color = sprites.colorBreakable;
                 break;
         }
-
-        oldType = type;
     }
 
     public enum Direction
