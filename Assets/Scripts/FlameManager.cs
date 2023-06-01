@@ -6,13 +6,15 @@ using UnityEngine.Rendering.Universal;
 using System;
 using DG.Tweening;
 using static System.TimeZoneInfo;
+using static Tile;
 
 public class FlameManager : MonoBehaviour
 {
     float _value;
     [SerializeField] int _max;
-    [SerializeField] Light2D _light;
-    [SerializeField] float _maxRadius;
+    [SerializeField] Light2D _lightBig;
+    [SerializeField] Light2D _lightMedium;
+    [SerializeField] Light2D _lightLittle;
     [SerializeField] Color _maxColor;
     [SerializeField] Color _minColor;
 
@@ -24,7 +26,6 @@ public class FlameManager : MonoBehaviour
     void Start()
     {
         _value = _max;
-        _maxRadius = _light.pointLightOuterRadius;
     }
 
 
@@ -39,26 +40,95 @@ public class FlameManager : MonoBehaviour
             _value += amount;
         }
         _value = Mathf.Clamp(_value, 0, _max);
-        switch (_value)
+        if(amount == 1)
         {
-            case 10:
-                _light.intensity = 1;
-                DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, 2.5f, 1f).SetEase(Ease.OutExpo);
-                break;
-            case 7:
-                _light.intensity = .9f;
-                DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, 2f, 1f).SetEase(Ease.OutExpo);
-                break;
-            case 4:
-                _light.intensity = .8f;
-                DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, 1f, 1f).SetEase(Ease.OutExpo);
-                break;
-            case 1:
-                DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, 0f, 1f).SetEase(Ease.OutExpo);
-                break;
+            if (substract)
+            {
+                switch (_value)
+                {
+                    case 7:
+                        /*_light.intensity = .9f;
+                        DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, 2f, 1f).SetEase(Ease.OutExpo);*/
+                        DOTween.To(() => _lightBig.intensity, x => _lightBig.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
+                        DOTween.To(() => _lightMedium.intensity, x => _lightMedium.intensity = x, 1, _fadeDuration).SetEase(Ease.OutExpo);
+                        break;
+                    case 4:
+                        /*_light.intensity = .8f;
+                        DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, 1f, 1f).SetEase(Ease.OutExpo);*/
+                        DOTween.To(() => _lightMedium.intensity, x => _lightMedium.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
+                        DOTween.To(() => _lightLittle.intensity, x => _lightLittle.intensity = x, 1, _fadeDuration).SetEase(Ease.OutExpo);
+                        break;
+                    case 1:
+                        /*DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, 0f, 1f).SetEase(Ease.OutExpo);*/
+                        DOTween.To(() => _lightLittle.intensity, x => _lightLittle.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
+                        break;
+                }
+            }
+            else
+            {
+                switch (_value)
+                {
+                    case 8:
+                        /*_light.intensity = .9f;
+                        DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, 2f, 1f).SetEase(Ease.OutExpo);*/
+                        DOTween.To(() => _lightMedium.intensity, x => _lightMedium.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
+                        DOTween.To(() => _lightBig.intensity, x => _lightBig.intensity = x, 1, _fadeDuration).SetEase(Ease.OutExpo);
+                        break;
+                    case 5:
+                        /*_light.intensity = .8f;
+                        DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, 1f, 1f).SetEase(Ease.OutExpo);*/
+                        DOTween.To(() => _lightLittle.intensity, x => _lightLittle.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
+                        DOTween.To(() => _lightMedium.intensity, x => _lightMedium.intensity = x, 1, _fadeDuration).SetEase(Ease.OutExpo);
+                        break;
+                    case 2:
+                        /*DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, 0f, 1f).SetEase(Ease.OutExpo);*/
+                        DOTween.To(() => _lightLittle.intensity, x => _lightLittle.intensity = x, 1, _fadeDuration).SetEase(Ease.OutExpo);
+                        break;
+                }
+            }
+            
         }
-        _light.color = new Color(Mathf.Lerp(_minColor.r, _maxColor.r, _value / 10), Mathf.Lerp(_minColor.g, _maxColor.g, _value / 10), Mathf.Lerp(_minColor.b, _maxColor.b, _value / 10));
+        else
+        {
+
+            switch (_value)
+            {
+                case <= 10 and > 7:
+                    /*_light.intensity = .9f;
+                    DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, 2f, 1f).SetEase(Ease.OutExpo);*/
+                    DOTween.To(() => _lightLittle.intensity, x => _lightBig.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
+                    DOTween.To(() => _lightMedium.intensity, x => _lightMedium.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
+                    DOTween.To(() => _lightBig.intensity, x => _lightBig.intensity = x, 1, _fadeDuration).SetEase(Ease.OutExpo);
+                    break;
+                case <= 7 and > 4:
+                    /*_light.intensity = .8f;
+                    DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, 1f, 1f).SetEase(Ease.OutExpo);*/
+                    DOTween.To(() => _lightBig.intensity, x => _lightBig.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
+                    DOTween.To(() => _lightLittle.intensity, x => _lightLittle.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
+                    DOTween.To(() => _lightMedium.intensity, x => _lightMedium.intensity = x, 1, _fadeDuration).SetEase(Ease.OutExpo);
+                    break;
+                case <= 4 and > 1:
+                    /*_light.intensity = .8f;
+                    DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, 1f, 1f).SetEase(Ease.OutExpo);*/
+                    DOTween.To(() => _lightBig.intensity, x => _lightBig.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
+                    DOTween.To(() => _lightMedium.intensity, x => _lightMedium.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
+                    DOTween.To(() => _lightLittle.intensity, x => _lightLittle.intensity = x, 1, _fadeDuration).SetEase(Ease.OutExpo);
+                    break;
+                case <= 1:
+                    /*DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, 0f, 1f).SetEase(Ease.OutExpo);*/
+                    DOTween.To(() => _lightLittle.intensity, x => _lightLittle.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
+                    DOTween.To(() => _lightBig.intensity, x => _lightBig.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
+                    DOTween.To(() => _lightMedium.intensity, x => _lightMedium.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
+                    break;
+            }
+
+        }
         
+        _lightBig.color = new Color(Mathf.Lerp(_minColor.r, _maxColor.r, _value / 10), Mathf.Lerp(_minColor.g, _maxColor.g, _value / 10), Mathf.Lerp(_minColor.b, _maxColor.b, _value / 10));
+        _lightMedium.color = new Color(Mathf.Lerp(_minColor.r, _maxColor.r, _value / 10), Mathf.Lerp(_minColor.g, _maxColor.g, _value / 10), Mathf.Lerp(_minColor.b, _maxColor.b, _value / 10));
+        _lightLittle.color = new Color(Mathf.Lerp(_minColor.r, _maxColor.r, _value / 10), Mathf.Lerp(_minColor.g, _maxColor.g, _value / 10), Mathf.Lerp(_minColor.b, _maxColor.b, _value / 10));
+
+        OnFlameValueChange?.Invoke(_value);
     }
 
     IEnumerator Fade(bool substract, Light2D light, float startValue, float endValue)

@@ -18,6 +18,5 @@ public class Tile : MonoBehaviour
     private void Awake()
     {
         size = GetComponent<SpriteRenderer>().bounds.size.x;
-        Debug.LogWarning(size);
     }
 }
