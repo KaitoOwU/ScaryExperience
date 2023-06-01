@@ -16,6 +16,20 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 4e7c85a1bf99bf643b925648bad8f37d, type: 3}
   - {fileID: 21300000, guid: 2fa3f22364fdb6e48a11fb39e23b728b, type: 3}
   - {fileID: 21300000, guid: 008e6fc0b71ca2d43b371fe3baeb15ab, type: 3}
+  spriteSideRock:
+  - {fileID: 21300000, guid: 6ed2cc251031a014bb05ae28bba041a9, type: 3}
+  - {fileID: 21300000, guid: 30330a3606c33264095a21a5800c97b8, type: 3}
+  - {fileID: 21300000, guid: 3853296da48166c44b6c57783096a41b, type: 3}
+  - {fileID: 21300000, guid: 6cb9ed32afe88254b98bba1042d2c3c3, type: 3}
+  - {fileID: 21300000, guid: 3a97d208634cc364d99b6e36bf5026e9, type: 3}
+  - {fileID: 21300000, guid: c97b5f7a832375842b94479c911640c6, type: 3}
+  - {fileID: 21300000, guid: 029a585192059a94aad187a0095c98cf, type: 3}
+  - {fileID: 21300000, guid: f667d0cd1c1dbbb4185beab37a442321, type: 3}
+  spriteCornerRock:
+  - {fileID: 21300000, guid: 1cdc6b32e2b7f2c459a44e881d365ba7, type: 3}
+  - {fileID: 21300000, guid: 489ab9e4473f08f46bf1b1d33b07c0ef, type: 3}
+  - {fileID: 21300000, guid: d17ad145408ad0447ba5e990f0f39f4d, type: 3}
+  - {fileID: 21300000, guid: 4b85c123f3fddef43b1dc2b519368d51, type: 3}
   spriteIce:
   - {fileID: 0}
   spriteVoid:
