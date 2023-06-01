@@ -86958,7 +86958,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   size: 0
   height: 0
-  type: 2
+  type: 12
   door: {fileID: 0}
   numberKeyRequired: 1
   refillAmount: 1
@@ -129051,6 +129051,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manager: {fileID: 891472412}
+  _winScreen: {fileID: 0}
+  _loseScreen: {fileID: 0}
   _delayLerpMove: 0.5
   _curveLerp:
     serializedVersion: 2

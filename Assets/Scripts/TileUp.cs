@@ -136,7 +136,6 @@ public class TileUp : Tile
                     GetComponent<SpriteRenderer>().color = sprites.colorPressurePlate;
                     break;
                 case MoveBubble.TileUpType.WinBlock:
-                case MoveBubble.TileUpType.WinDoor:
                     GetComponent<SpriteRenderer>().color = sprites.colorWin;
                     break;
 
