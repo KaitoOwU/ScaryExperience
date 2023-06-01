@@ -21,10 +21,8 @@ public class TileDown : Tile
     [ShowIf("isCorner")]
     public CornerOrientation orientationCorner;
 
-
     public SpriteDown sprites;
-
-    [HideInInspector] public bool isActivated = false;
+    public bool isActivated = false;
 
     public enum TileType
     {
@@ -33,7 +31,8 @@ public class TileDown : Tile
         Void,
         Water,
         Wind,
-        Breakable
+        Breakable,
+        WaterRock
     }
 
     private void OnValidate()
@@ -105,15 +104,12 @@ public class TileDown : Tile
                 break;
             case TileType.Water:
                 GetComponent<SpriteRenderer>().sprite = sprites.spriteWater[Random.Range(0, sprites.spriteWater.Count)];
-                GetComponent<SpriteRenderer>().color = sprites.colorWater;
                 break;
             case TileType.Wind:
                 GetComponent<SpriteRenderer>().sprite = sprites.spriteWind[Random.Range(0, sprites.spriteWind.Count)];
-                GetComponent<SpriteRenderer>().color = sprites.colorWind;
                 break;
             case TileType.Breakable:
-                GetComponent<SpriteRenderer>().sprite = sprites.spriteBreakable[Random.Range(0, sprites.spriteBreakable.Count)];
-                GetComponent<SpriteRenderer>().color = sprites.colorBreakable;
+                GetComponent<SpriteRenderer>().sprite = sprites.spriteBreakable[0];
                 break;
         }
     }

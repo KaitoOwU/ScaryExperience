@@ -31,10 +31,6 @@ public class TileUp : Tile
     [ShowIf("isWallCorner")]
     public WallCornerOrientation _wallCornerOrientation;
 
-    [ShowIf("isPressurePlate")]
-    public GameObject doorPressurePlate;
-    private GameObject oldDoorPressurePlate;
-
     [Header("- ToHook -")]
     [SerializeField] GameObject blockPrefab;
     [SerializeField] SpriteUp sprites;
@@ -58,6 +54,7 @@ public class TileUp : Tile
     public void GoBackToWhite ()
     {
         GetComponent<SpriteRenderer>().color = Color.white;
+        GetComponent<SpriteRenderer>().sprite = sprites.spriteNone[0];
     }
 
     // change la door lorqu'on la met dans l'inspecteur
@@ -81,11 +78,6 @@ public class TileUp : Tile
                 case TileUpType.Wall:
                     DestroyImmediate(GetComponent<ShadowCaster2D>());
                     break;
-
-                case TileUpType.Block:
-                    DestroyImmediate(block);
-                    block = null;
-                    break;
                 default:
                     break;
             }
@@ -99,7 +91,8 @@ public class TileUp : Tile
         switch (type)
         {
             case TileUpType.None:
-                GetComponent<SpriteRenderer>().color = sprites.colorNone;
+                GetComponent<SpriteRenderer>().sprite = sprites.spriteNone[0];
+                
                 break;
             case TileUpType.Wall:
                 GetComponent<SpriteRenderer>().color = Color.white;
@@ -175,19 +168,19 @@ public class TileUp : Tile
                 break;
 
             case TileUpType.KeyFragment:
-                GetComponent<SpriteRenderer>().color = sprites.colorKeyFragment;
+                GetComponent<SpriteRenderer>().sprite = sprites.spriteKeyFragment[0];
                 break;
             case TileUpType.OneWayWall:
-                GetComponent<SpriteRenderer>().color = sprites.colorOneWayWall;
+                GetComponent<SpriteRenderer>().sprite = sprites.spriteOneWayWall[0];
                 break;
             case TileUpType.Torch:
-                GetComponent<SpriteRenderer>().color = sprites.colorTorch;
+                GetComponent<SpriteRenderer>().sprite = sprites.spriteTorch[0];
                 break;
             case TileUpType.Brasero:
-                GetComponent<SpriteRenderer>().color = sprites.colorBrasero;
+                GetComponent<SpriteRenderer>().sprite = sprites.spriteBrasero[0];
                 break;
             case TileUpType.WinTrappe:
-                GetComponent<SpriteRenderer>().color = sprites.colorWinTrappe;
+                GetComponent<SpriteRenderer>().sprite = sprites.spriteWinTrappe[0];
                 break;
 
             case TileUpType.Block:
@@ -202,6 +195,7 @@ public class TileUp : Tile
 
     public enum WallPosition
     {
+        None,
         Side,
         Corner
     }

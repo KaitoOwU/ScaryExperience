@@ -92,8 +92,8 @@ public class MoveBubble : MonoBehaviour
         Etouch.Touch.onFingerDown -= Touch_onFingerDown;
         Etouch.Touch.onFingerUp -= Touch_onFingerUp;
 
-        GameManager.Instance.LevelData[GameManager.Instance.CurrentLevel].Complete(_collectibleAcquired);
-        SaveSystem.SaveData(GameManager.Instance.LevelData);
+        //GameManager.Instance.LevelData[GameManager.Instance.CurrentLevel].Complete(_collectibleAcquired);
+        //SaveSystem.SaveData(GameManager.Instance.LevelData);
 
         GameManager.Instance.WinScreen.SetActive(true);
     }
@@ -257,6 +257,7 @@ public class MoveBubble : MonoBehaviour
         switch (tempTile.type)
         {
             case TileDown.TileType.Rock:
+            case TileDown.TileType.WaterRock:
                 //rock solid !
                 GetComponent<FlameManager>().ModifyFlame(true, 1);
                 break;
@@ -280,24 +281,28 @@ public class MoveBubble : MonoBehaviour
 
             case TileDown.TileType.Wind:
                 //wind fiouuuuuu
-                _tileMoving = TileDown.TileType.Wind;
 
-                Tile temp = null;
-                Tile tempNext = manager.tileMap.FindTileWithPos(_goToPosition);
-
-                for (int i = 0; i < tempTile.pushNumberTiles; i++)
+                if (_tileMoving != TileDown.TileType.Wind && !tempTile.isActivated)
                 {
-                    if (temp != tempNext)
+                    _tileMoving = TileDown.TileType.Wind;
+                
+                    Tile temp = null;
+                    Tile tempNext = manager.tileMap.FindTileWithPos(_goToPosition);
+
+                    for (int i = 0; i < tempTile.pushNumberTiles; i++)
                     {
-                        temp = tempNext;
-                        tempNext = MoveNextTile(tempTile.direction);
-                        currentDelayLerpMove += _delayLerpMove;
-                        if (i != 0 && i != 1)
+                        if (temp != tempNext)
                         {
-                            GetComponent<FlameManager>().ModifyFlame(true, 1);
+                            temp = tempNext;
+                            tempNext = MoveNextTile(tempTile.direction);
+                            currentDelayLerpMove += _delayLerpMove;
+                            if (i != 0 && i != 1)
+                            {
+                                GetComponent<FlameManager>().ModifyFlame(true, 1);
+                            }
                         }
-                    }
-                };
+                    };
+                }
                 break;
 
             case TileDown.TileType.Breakable:

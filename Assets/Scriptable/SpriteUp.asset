@@ -13,9 +13,7 @@ MonoBehaviour:
   m_Name: SpriteUp
   m_EditorClassIdentifier: 
   spriteNone:
-  - {fileID: 0}
-  spriteWall:
-  - {fileID: 21300000, guid: 18e4db4e5ea0f58428243dbc4300f16d, type: 3}
+  - {fileID: 7482667652216324306, guid: 3e1447669fd29d9479c1e672b447d7d7, type: 3}
   spriteSideWall:
   - {fileID: 21300000, guid: 2cb717b00627e584f8a43721a1ab33fe, type: 3}
   - {fileID: 21300000, guid: f261244726fe9fe40a8f2f44dc814a16, type: 3}
@@ -40,16 +38,16 @@ MonoBehaviour:
   - {fileID: 21300000, guid: a1b3f6b6b15511847940e93d665efed5, type: 3}
   - {fileID: 21300000, guid: 8a6eda21c4616384f8e1271f8b51f6ea, type: 3}
   - {fileID: 21300000, guid: a85f2388e337fd24eb938fd01d6482c5, type: 3}
-  spriteDoor:
-  - {fileID: 0}
   spriteKeyFragment:
-  - {fileID: 0}
+  - {fileID: 21300000, guid: 3cd93677c7b7b45479dbe885d5605fd8, type: 3}
   spriteOneWayWall:
   - {fileID: 0}
   spriteBrasero:
-  - {fileID: 0}
-  spriteWinTrappe: []
-  spriteTorch: []
+  - {fileID: 7482667652216324306, guid: 2d15888ac195138439b91c5fdc944ee0, type: 3}
+  spriteWinTrappe:
+  - {fileID: 7482667652216324306, guid: 23cf5e265144ca5409c9081825ff940e, type: 3}
+  spriteTorch:
+  - {fileID: 7482667652216324306, guid: d2b9d9af98e3ad44f9fad850b80160c3, type: 3}
   colorNone: {r: 1, g: 1, b: 1, a: 1}
   colorWall: {r: 0, g: 0.03729542, b: 0.509434, a: 1}
   colorKeyFragment: {r: 0.37905586, g: 0, b: 0.6792453, a: 1}

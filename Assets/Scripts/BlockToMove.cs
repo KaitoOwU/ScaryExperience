@@ -10,6 +10,7 @@ public class BlockToMove : MonoBehaviour
     [HideInInspector] public Vector3 toGoPosBlock;
     [HideInInspector] public TileUp lastTileUp;
     private MoveBubble _bubble;
+    [SerializeField] Sprite waterRock;
 
     public IEnumerator PushBlockCorout(MoveBubble playerMovement)
     {
@@ -89,6 +90,33 @@ public class BlockToMove : MonoBehaviour
         return;
     }
 
+    private void ActivateWindStop (Vector3 startPos ,TileDown.Direction direction, bool isStopped, Sprite spriteReplace)
+    {
+        TileDown tempTileDown = _bubble.manager.tileMap.FindTileWithPos(startPos);
+        Vector3 nextTilePos = startPos;
+
+        Debug.LogWarning(tempTileDown.pushNumberTiles);
+
+        for (int i = 0; i < tempTileDown.pushNumberTiles; i++)
+        {
+            TileDown tempTileNext = _bubble.manager.tileMap.FindTileWithPos(nextTilePos);
+
+            Debug.LogWarning(tempTileNext);
+
+            if (tempTileNext.type == TileDown.TileType.Wind)
+            {
+                tempTileNext.isActivated = isStopped;
+                tempTileNext.GetComponent<SpriteRenderer>().sprite = spriteReplace;
+            }
+            else
+            {
+                return;
+            }
+
+            nextTilePos += _bubble.DirectionAddMovePos(direction);
+        }
+    }
+
     private void CheckNextTileEffect(TileDown.Direction direction)
     {
         SwitchOnTileDown(direction);
@@ -96,7 +124,15 @@ public class BlockToMove : MonoBehaviour
 
     private void SwitchOnTileDown(TileDown.Direction direction)
     {
+        TileDown tempTileActual = _bubble.manager.tileMap.FindTileWithPos(transform.position);
+
         TileDown tempTile = _bubble.manager.tileMap.FindTileWithPos(toGoPosBlock);
+        TileUp tempTileUp = _bubble.manager.tileUpMap.FindTileWithPos(toGoPosBlock);
+
+        if (tempTileActual.type == TileDown.TileType.Wind)
+        {
+            ActivateWindStop(tempTileActual.transform.position , tempTileActual.direction, false, tempTileActual.sprites.spriteWind[0]);
+        }
 
         switch (tempTile.type)
         {
@@ -106,9 +142,18 @@ public class BlockToMove : MonoBehaviour
                 break;
 
             case TileDown.TileType.Void:
-            case TileDown.TileType.Water:
-                //glou glou water
                 GoBack(direction);
+                break;
+
+            case TileDown.TileType.Water:
+                tempTile.type = TileDown.TileType.WaterRock;
+                tempTile.GetComponent<SpriteRenderer>().sprite = waterRock;
+                Destroy(gameObject, 0.4f);
+                tempTileUp.type = TileUp.TileUpType.None;
+                break;
+
+            case TileDown.TileType.Wind:
+                ActivateWindStop(toGoPosBlock ,tempTile.direction, true, tempTileActual.sprites.spriteRock[0]);
                 break;
 
             default:
