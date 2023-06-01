@@ -203,8 +203,6 @@ public class MoveBubble : MonoBehaviour
                     break;
                 }
 
-
-
             case TileUp.TileUpType.WinTrappe:
                 if (!tempTileUp.isActivated)
                 {
