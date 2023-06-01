@@ -10,7 +10,7 @@ public class SpriteDown : ScriptableObject
     public List<Sprite> spriteRock;
     public List<Sprite> spriteSideRock;
     public List<Sprite> spriteCornerRock;
-    [Header("- Ice -")]
+    [Header("- Others -")]
     public List<Sprite> spriteIce;
     public List<Sprite> spriteVoid;
     public List<Sprite> spriteWater;
