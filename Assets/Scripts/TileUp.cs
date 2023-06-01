@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using NaughtyAttributes;
+using UnityEngine.Rendering.Universal;
 
 public class TileUp : Tile
 {
@@ -106,6 +107,7 @@ public class TileUp : Tile
                     break;
                 case MoveBubble.TileUpType.Wall:
                     GetComponent<SpriteRenderer>().color = sprites.colorWall;
+                    gameObject.AddComponent<ShadowCaster2D>();
                     break;
                 case MoveBubble.TileUpType.Door:
                     GetComponent<SpriteRenderer>().color = sprites.colorDoor;
@@ -136,7 +138,6 @@ public class TileUp : Tile
                     GetComponent<SpriteRenderer>().color = sprites.colorPressurePlate;
                     break;
                 case MoveBubble.TileUpType.WinBlock:
-                case MoveBubble.TileUpType.WinDoor:
                     GetComponent<SpriteRenderer>().color = sprites.colorWin;
                     break;
 
@@ -172,7 +173,9 @@ public class TileUp : Tile
                         otherDoor.GetComponent<TileUp>().type = MoveBubble.TileUpType.None;
                     }
                     break;
-
+                case MoveBubble.TileUpType.Wall:
+                    DestroyImmediate(GetComponent<ShadowCaster2D>());
+                    break;
                 default:
                     break;
             }

@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4567674033034044756}
   - component: {fileID: 4567674033034044759}
-  - component: {fileID: 5778450117238579301}
+  - component: {fileID: 6571607938308805259}
   m_Layer: 0
-  m_Name: Tile
+  m_Name: TileUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -53,7 +53,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: e6e35d6c38690f046ac81507002ae7b6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -73,8 +73,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
-  m_Sprite: {fileID: 21300000, guid: 2fa3f22364fdb6e48a11fb39e23b728b, type: 3}
+  m_SortingOrder: 10
+  m_Sprite: {fileID: 7482667652216324306, guid: f5ee8f579e48da24891e9f443061a856, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &5778450117238579301
+--- !u!114 &6571607938308805259
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,13 +94,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 4567674033034044758}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e7f384868ca4534480a73dfa7c625e9, type: 3}
+  m_Script: {fileID: 11500000, guid: 448919422a46d074e9d69395e723e88a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   size: 0
-  height: 1
+  height: 0
   type: 0
-  direction: 0
-  pushNumberTiles: 0
-  sprites: {fileID: 11400000, guid: 7ac51c4c3e540e542a391fd563d3e822, type: 2}
+  door: {fileID: 0}
+  numberKeyRequired: 1
+  refillAmount: 1
+  directionToGoThrough: 0
+  otherDoor: {fileID: 0}
+  block: {fileID: 0}
+  doorPressurePlate: {fileID: 0}
+  blockPrefab: {fileID: 1736951253104726918, guid: ce9c315f6b3600e49b79f75265d6f83d, type: 3}
+  sprites: {fileID: 11400000, guid: 8283f955754fdc840b48fa33532ced97, type: 2}
   isActivated: 0

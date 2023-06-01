@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Etouch = UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.Tilemaps;
+using System;
 
 public class MoveBubble : MonoBehaviour
 {
@@ -24,6 +25,7 @@ public class MoveBubble : MonoBehaviour
     //runtime
     float _movementAmount;
     bool _isMoving = false;
+    bool _canMove = true;
     public float currentDelayLerpMove;
     float _moveTimer = 0;
     Vector3 _goToPosition;
@@ -31,6 +33,7 @@ public class MoveBubble : MonoBehaviour
     Vector3 _startPos;
     Vector2 _startPositionFinger;
     AnimationCurve _currentAnimCurve;
+    bool _collectibleAcquired = false;
 
     //use for current standing
     TileType _tileStanding;
@@ -41,6 +44,9 @@ public class MoveBubble : MonoBehaviour
     //use for current movement ex: ice skatting
     TileType _tileMoving;
     TileUpType _tileMovingUp;
+
+    public Action OnDie;
+    public Action OnWin;
 
     public enum TileType
     {
@@ -65,8 +71,8 @@ public class MoveBubble : MonoBehaviour
         PortalDoor,
         PressurePlate,
         Block,
-        WinDoor,
         WinBlock,
+        Collectible
     }
 
     private void Awake()
@@ -75,6 +81,9 @@ public class MoveBubble : MonoBehaviour
 
         Etouch.Touch.onFingerDown += Touch_onFingerDown;
         Etouch.Touch.onFingerUp += Touch_onFingerUp;
+
+        OnWin += Win;
+        OnDie += Die;
 
         _distFromPlayer = _buddy.transform.position - transform.position;
         currentDelayLerpMove = _delayLerpMove;
@@ -230,6 +239,7 @@ public class MoveBubble : MonoBehaviour
                     {
                         tempTileUp.isActivated = true;
                         tempTileUp.GoBackToWhite();
+                        OnWin?.Invoke();
                     }
                 }
                 break;
@@ -274,25 +284,17 @@ public class MoveBubble : MonoBehaviour
                 tempTileUp.isActivated = false;
                 tempTileUp.doorPressurePlate.GetComponent<TileUp>().isActivated = false;
                 break;
-
-            case TileUpType.WinBlock:
-                Win();
-                break;
-
-            case TileUpType.WinDoor:
+            case TileUpType.Collectible:
                 if (!tempTileUp.isActivated)
                 {
-                    if (UseKey(tempTileUp.numberKeyRequired))
-                    {
-                        tempTileUp.isActivated = true;
-                        Win();
-                    }
-                    else
-                    {
-                        GoBack(direction);
-                        return;
-                    }
+                    tempTileUp.isActivated = true;
+                    _collectibleAcquired = true;
+                    tempTileUp.GoBackToWhite();
                 }
+                break;
+
+            case TileUpType.WinBlock:
+                OnWin?.Invoke();
                 break;
 
             default:
@@ -317,13 +319,8 @@ public class MoveBubble : MonoBehaviour
                 break;
 
             case TileType.Void:
-                //die void
-                Die();
-                break;
-
             case TileType.Water:
-                //glou glou water
-                Die();
+                OnDie?.Invoke();
                 break;
 
             case TileType.Wind:
@@ -357,7 +354,7 @@ public class MoveBubble : MonoBehaviour
                 else
                 {
                     //Tu meurs bozooo
-                    Die();
+                    OnDie?.Invoke();
                     break;
                 }
 
@@ -368,7 +365,13 @@ public class MoveBubble : MonoBehaviour
 
     private void Win()
     {
-        Debug.LogWarning("WINNN !!!!");
+        Etouch.Touch.onFingerDown -= Touch_onFingerDown;
+        Etouch.Touch.onFingerUp -= Touch_onFingerUp;
+
+        GameManager.Instance.LevelData[GameManager.Instance.CurrentLevel].Complete(_collectibleAcquired);
+        SaveSystem.SaveData(GameManager.Instance.LevelData);
+
+        GameManager.Instance.WinScreen.SetActive(true);
     }
 
     private void AddKeyFragment (int number)
@@ -633,9 +636,13 @@ public class MoveBubble : MonoBehaviour
         return TileDown.Direction.Left;
     }
 
-    private void Die ()
+    private void Die()
     {
         GetComponent<FlameManager>().ModifyFlame(true, 10000);
+        Etouch.Touch.onFingerDown -= Touch_onFingerDown;
+        Etouch.Touch.onFingerUp -= Touch_onFingerUp;
+
+        GameManager.Instance.LoseScreen.SetActive(true);
     }
 
     private void Touch_onFingerDown(Etouch.Finger finger)

@@ -12,13 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aaaa17679de0bd7488207dca62b0e204, type: 3}
   m_Name: SpriteDown
   m_EditorClassIdentifier: 
-  spriteRock: {fileID: 0}
-  spriteIce: {fileID: 0}
-  spriteVoid: {fileID: 0}
-  spriteWater: {fileID: 0}
-  spriteWind: {fileID: 0}
-  spriteBreakable: {fileID: 0}
-  colorRock: {r: 0.5188679, g: 0.5188679, b: 0.5188679, a: 1}
+  spriteRock:
+  - {fileID: 21300000, guid: 4e7c85a1bf99bf643b925648bad8f37d, type: 3}
+  - {fileID: 21300000, guid: 2fa3f22364fdb6e48a11fb39e23b728b, type: 3}
+  - {fileID: 21300000, guid: 008e6fc0b71ca2d43b371fe3baeb15ab, type: 3}
+  spriteIce:
+  - {fileID: 0}
+  spriteVoid:
+  - {fileID: 0}
+  spriteWater:
+  - {fileID: 0}
+  spriteWind:
+  - {fileID: 0}
+  spriteBreakable:
+  - {fileID: 0}
+  colorRock: {r: 1, g: 1, b: 1, a: 1}
   colorIce: {r: 0, g: 0.6054748, b: 0.8207547, a: 1}
   colorVoid: {r: 0.16979694, g: 0.11904589, b: 0.41509432, a: 1}
   colorWater: {r: 0.20188677, g: 0.3048692, b: 1, a: 1}
