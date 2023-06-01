@@ -15,7 +15,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] FlameManager _flameManager;
 
     Dictionary<int, LevelData> _levelData = new();
-    public IReadOnlyDictionary<int, LevelData> LevelData { get => _levelData; }
+    int _currentLevel;
+    public Dictionary<int, LevelData> LevelData { get => _levelData; }
+    public int CurrentLevel { get => _currentLevel; private set => _currentLevel = value; }
+    public GameObject LoseScreen { get => _loseScreen; set => _loseScreen = value; }
+    public GameObject WinScreen { get => _winScreen; set => _winScreen = value; }
 
     private void Awake()
     {
@@ -65,26 +69,22 @@ public class LevelData
 {
     int _levelId;
     bool _isUnlocked;
-    int _coins;
+    bool _collectibleAcquired;
 
     public bool IsUnlocked { get => _isUnlocked; set => _isUnlocked = value; }
-    public int Coins { get => _coins; set => _coins = value; }
+    public bool CollectibleAcquired { get => _collectibleAcquired; set => _collectibleAcquired = value; }
 
     public LevelData(int levelId)
     {
         _levelId = levelId;
         _isUnlocked = false;
-        _coins = 0;
+        _collectibleAcquired = false;
     }
 
-    public void Complete(int amountOfCoins)
+    public void Complete(bool withCollectible)
     {
-        if (0 > amountOfCoins && amountOfCoins > 3)
-        {
-            throw new ArgumentException("Nique ta mère la pute on a que 3 coins max gros débile.");
-        }
 
-        _coins = amountOfCoins;
+        _collectibleAcquired = withCollectible;
         if (GameManager.Instance.LevelData.ContainsKey(_levelId+1))
         {
             GameManager.Instance.LevelData[_levelId + 1].IsUnlocked = true;
