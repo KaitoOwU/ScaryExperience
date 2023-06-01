@@ -51,7 +51,7 @@ public class TileMap : MonoBehaviour
     [Button("ClearMap")]
     private void DestroyMap()
     {
-        Debug.LogWarning("Destroying");
+        Debug.LogWarning("Clearing ...");
         for (int i = 0; i < transform.childCount; i++)
         {
             if (Application.isEditor)
@@ -64,6 +64,16 @@ public class TileMap : MonoBehaviour
                 Destroy(transform.GetChild(i).gameObject);
                 i--;
             }
+        }
+    }
+
+    [Button("RefreshMap")]
+    private void RefreshMap ()
+    {
+        Debug.LogWarning("Refreshing ...");
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            transform.GetChild(i).GetComponent<TileDown>().RefreshColorSprite();
         }
     }
 

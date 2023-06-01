@@ -12,26 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee9cbd2dba235394598a1bc8b1d11821, type: 3}
   m_Name: SpriteUp
   m_EditorClassIdentifier: 
-  spriteNone: {fileID: 0}
-  spriteWall: {fileID: 0}
-  spriteDoor: {fileID: 0}
-  spriteLever: {fileID: 0}
-  spriteKeyFragment: {fileID: 0}
-  spriteDoorKey: {fileID: 0}
-  spriteOneWayWall: {fileID: 0}
-  spriteBrasero: {fileID: 0}
-  spritePortalDoor: {fileID: 0}
-  spriteWinBlock: {fileID: 0}
-  spriteWinDoor: {fileID: 0}
-  spritePressurePlate: {fileID: 0}
+  spriteNone:
+  - {fileID: 0}
+  spriteWall:
+  - {fileID: 0}
+  spriteKeyFragment:
+  - {fileID: 0}
+  spriteOneWayWall:
+  - {fileID: 0}
+  spriteBrasero:
+  - {fileID: 0}
+  spriteWinTrappe: []
+  spriteTorch: []
   colorNone: {r: 1, g: 1, b: 1, a: 1}
-  colorWall: {r: 0.0035285184, g: 0, b: 0.4433962, a: 1}
-  colorDoor: {r: 0.35064483, g: 1, b: 0, a: 1}
-  colorLever: {r: 0.14285144, g: 0.38679248, b: 0.08173726, a: 1}
+  colorWall: {r: 0, g: 0.03729542, b: 0.509434, a: 1}
   colorKeyFragment: {r: 0.37905586, g: 0, b: 0.6792453, a: 1}
-  colorDoorKey: {r: 0.8947334, g: 0, b: 1, a: 1}
   colorOneWayWall: {r: 0.3912068, g: 0.4666535, b: 0.6981132, a: 1}
   colorBrasero: {r: 1, g: 0, b: 0, a: 1}
-  colorPortalDoor: {r: 1, g: 0.6890694, b: 0, a: 1}
-  colorWin: {r: 0.9797381, g: 1, b: 0, a: 1}
-  colorPressurePlate: {r: 0.31132078, g: 0.18534875, b: 0.1010324, a: 1}
+  colorWinTrappe: {r: 1, g: 0.9654912, b: 0, a: 1}
+  colorTorch: {r: 1, g: 0.52494174, b: 0, a: 1}

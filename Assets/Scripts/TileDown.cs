@@ -6,7 +6,8 @@ using NaughtyAttributes;
 public class TileDown : Tile
 {
     [Header("- Stats -")]
-    public MoveBubble.TileType type;
+    public TileType type;
+    private TileType oldType;
 
     [ShowIf("isWind")]
     public Direction direction;
@@ -17,29 +18,50 @@ public class TileDown : Tile
 
     [HideInInspector] public bool isActivated = false;
 
+    public enum TileType
+    {
+        Rock,
+        Ice,
+        Void,
+        Water,
+        Wind,
+        Breakable
+    }
+
     private void OnValidate()
     {
-        switch (type)
+        RefreshColorSprite();
+    }
+
+    public void RefreshColorSprite()
+    {
+        if (oldType != type)
         {
-            case MoveBubble.TileType.Rock:
-                GetComponent<SpriteRenderer>().color = sprites.colorRock;
-                break;
-            case MoveBubble.TileType.Ice:
-                GetComponent<SpriteRenderer>().color = sprites.colorIce;
-                break;
-            case MoveBubble.TileType.Void:
-                GetComponent<SpriteRenderer>().color = sprites.colorVoid;
-                break;
-            case MoveBubble.TileType.Water:
-                GetComponent<SpriteRenderer>().color = sprites.colorWater;
-                break;
-            case MoveBubble.TileType.Wind:
-                GetComponent<SpriteRenderer>().color = sprites.colorWind;
-                break;
-            case MoveBubble.TileType.Breakable:
-                GetComponent<SpriteRenderer>().color = sprites.colorBreakable;
-                break;
+            switch (type)
+            {
+                case TileType.Rock:
+                    GetComponent<SpriteRenderer>().color = sprites.colorRock;
+                    break;
+                case TileType.Ice:
+                    GetComponent<SpriteRenderer>().color = sprites.colorIce;
+                    break;
+                case TileType.Void:
+                    GetComponent<SpriteRenderer>().color = sprites.colorVoid;
+                    break;
+                case TileType.Water:
+                    GetComponent<SpriteRenderer>().color = sprites.colorWater;
+                    break;
+                case TileType.Wind:
+                    GetComponent<SpriteRenderer>().color = sprites.colorWind;
+                    break;
+
+                case TileType.Breakable:
+                    GetComponent<SpriteRenderer>().color = sprites.colorBreakable;
+                    break;
+            }
         }
+
+        oldType = type;
     }
 
     public enum Direction
@@ -51,5 +73,5 @@ public class TileDown : Tile
     }
 
 
-    private bool isWind() { return type == MoveBubble.TileType.Wind; }
+    private bool isWind() { return type == TileType.Wind; }
 }

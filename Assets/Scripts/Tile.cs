@@ -7,7 +7,7 @@ public class Tile : MonoBehaviour
 {
 
     [HideInInspector] public float size;
-    public Height height;
+    [HideInInspector] public Height height;
 
     public enum Height
     {

@@ -73,10 +73,6 @@ public class FlameManager : MonoBehaviour
             elapsedTime += Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
         }
-        
-        
-        
-        
 
         OnFlameValueChange?.Invoke(_value);
     }
