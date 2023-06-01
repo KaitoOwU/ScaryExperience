@@ -99,7 +99,6 @@ public class FlameManager : MonoBehaviour
                     DOTween.To(() => _lightLittle.intensity, x => _lightLittle.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
                     DOTween.To(() => _lightMedium.intensity, x => _lightMedium.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
                     DOTween.To(() => _lightBig.intensity, x => _lightBig.intensity = x, 1, _fadeDuration).SetEase(Ease.OutExpo);
-                    Debug.LogError("Miam");
                     break;
                 case <= 7 and > 4:
                     /*_light.intensity = .8f;

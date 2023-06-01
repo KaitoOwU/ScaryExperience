@@ -106,8 +106,10 @@ public class TileUp : Tile
                     GetComponent<SpriteRenderer>().color = sprites.colorNone;
                     break;
                 case MoveBubble.TileUpType.Wall:
-                    GetComponent<SpriteRenderer>().color = sprites.colorWall;
+                    GetComponent<SpriteRenderer>().color = Color.white;
+                    GetComponent<SpriteRenderer>().sprite = sprites.spriteWall[0];
                     gameObject.AddComponent<ShadowCaster2D>();
+
                     break;
                 case MoveBubble.TileUpType.Door:
                     GetComponent<SpriteRenderer>().color = sprites.colorDoor;

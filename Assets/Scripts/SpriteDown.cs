@@ -6,7 +6,11 @@ using UnityEngine;
 public class SpriteDown : ScriptableObject
 {
     [Header("- Sprite -")]
+    [Header("- Rock -")]
     public List<Sprite> spriteRock;
+    public List<Sprite> spriteSideRock;
+    public List<Sprite> spriteCornerRock;
+    [Header("- Ice -")]
     public List<Sprite> spriteIce;
     public List<Sprite> spriteVoid;
     public List<Sprite> spriteWater;
