@@ -7,10 +7,11 @@ using System;
 using DG.Tweening;
 using static System.TimeZoneInfo;
 using static Tile;
+using NaughtyAttributes;
 
 public class FlameManager : MonoBehaviour
 {
-    float _value;
+    [SerializeField, ReadOnly] float _value;
     [SerializeField] int _max;
     [SerializeField] Light2D _lightBig;
     [SerializeField] Light2D _lightMedium;
@@ -22,6 +23,7 @@ public class FlameManager : MonoBehaviour
 
     public Action<float> OnFlameValueChange;
     public float MaxValue { get => _max; }
+    public float Value { get => _value; }
 
     void Start()
     {
@@ -89,7 +91,6 @@ public class FlameManager : MonoBehaviour
         }
         else if(amount > 1)
         {
-
             switch (_value)
             {
                 case <= 10 and > 7:
