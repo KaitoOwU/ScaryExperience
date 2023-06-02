@@ -90,32 +90,45 @@ public class BlockToMove : MonoBehaviour
         return;
     }
 
-    private void ActivateWindStop (Vector3 startPos ,TileDown.Direction direction, bool isStopped, Sprite spriteReplace)
+    private void RecursiveCheckNextWind (Vector3 pos, TileDown.Direction direction, bool isStopped, Sprite spriteReplace)
     {
-        TileDown tempTileDown = _bubble.manager.tileMap.FindTileWithPos(startPos);
-        Vector3 nextTilePos = startPos;
+        TileDown tempTileDown = _bubble.manager.tileMap.FindTileWithPos(pos);
+        pos += _bubble.DirectionAddMovePos(direction);
 
-        Debug.LogWarning(tempTileDown.pushNumberTiles);
-
-        for (int i = 0; i < tempTileDown.pushNumberTiles; i++)
+        if (tempTileDown.type == TileDown.TileType.Wind && tempTileDown.direction == direction)
         {
-            TileDown tempTileNext = _bubble.manager.tileMap.FindTileWithPos(nextTilePos);
-
-            Debug.LogWarning(tempTileNext);
-
-            if (tempTileNext.type == TileDown.TileType.Wind)
-            {
-                tempTileNext.isActivated = isStopped;
-                tempTileNext.GetComponent<SpriteRenderer>().sprite = spriteReplace;
-            }
-            else
-            {
-                return;
-            }
-
-            nextTilePos += _bubble.DirectionAddMovePos(direction);
+            tempTileDown.isActivated = isStopped;
+            tempTileDown.GetComponent<SpriteRenderer>().sprite = spriteReplace;
+            RecursiveCheckNextWind(pos, direction, isStopped, spriteReplace);
+        }
+        else
+        {
+            return;
         }
     }
+
+    //private void ActivateWindStop (Vector3 startPos ,TileDown.Direction direction, bool isStopped, Sprite spriteReplace)
+    //{
+    //    TileDown tempTileDown = _bubble.manager.tileMap.FindTileWithPos(startPos);
+    //    Vector3 nextTilePos = startPos;
+
+    //    for (int i = 0; i < tempTileDown.pushNumberTiles +1; i++)
+    //    {
+    //        TileDown tempTileNext = _bubble.manager.tileMap.FindTileWithPos(nextTilePos);
+
+    //        if (tempTileNext.type == TileDown.TileType.Wind)
+    //        {
+    //            tempTileNext.isActivated = isStopped;
+    //            tempTileNext.GetComponent<SpriteRenderer>().sprite = spriteReplace;
+    //        }
+    //        else
+    //        {
+    //            return;
+    //        }
+
+    //        nextTilePos += _bubble.DirectionAddMovePos(direction);
+    //    }
+    //}
 
     private void CheckNextTileEffect(TileDown.Direction direction)
     {
@@ -131,7 +144,7 @@ public class BlockToMove : MonoBehaviour
 
         if (tempTileActual.type == TileDown.TileType.Wind)
         {
-            ActivateWindStop(tempTileActual.transform.position , tempTileActual.direction, false, tempTileActual.sprites.spriteWind[0]);
+            RecursiveCheckNextWind(tempTileActual.transform.position , tempTileActual.direction, false, tempTileActual.sprites.spriteWind[0]);
         }
 
         switch (tempTile.type)
@@ -153,7 +166,7 @@ public class BlockToMove : MonoBehaviour
                 break;
 
             case TileDown.TileType.Wind:
-                ActivateWindStop(toGoPosBlock ,tempTile.direction, true, tempTileActual.sprites.spriteRock[0]);
+                RecursiveCheckNextWind(toGoPosBlock ,tempTile.direction, true, tempTileActual.sprites.spriteRock[0]);
                 break;
 
             default:
