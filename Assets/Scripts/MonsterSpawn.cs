@@ -6,7 +6,7 @@ public class MonsterSpawn : MonoBehaviour
 {
     [SerializeField] Transform _player;
     [SerializeField] GameObject _prefabMonster;
-    [SerializeField] float _radius;
+    public float _radius;
     [SerializeField] float _size;
     [SerializeField] int _monsterCount;
     [SerializeField] List<AnimationClip> _animations;
@@ -17,7 +17,7 @@ public class MonsterSpawn : MonoBehaviour
         {
             
             GameObject temp = Instantiate(_prefabMonster);
-            
+            monsters.Add(temp);
             Spawn(temp);
             temp.SetActive(false);
         }
@@ -39,6 +39,11 @@ public class MonsterSpawn : MonoBehaviour
     {
         monster.GetComponent<Monster>().clip = _animations[Random.Range(0, _animations.Count)];
         monster.transform.position = new Vector3(Random.Range(_player.position.x - _size / 2, _player.position.x + _size / 2), Random.Range(_player.position.y - _size / 2, _player.position.y + _size / 2), 0);
+        CheckIfInCirecle(_player, monster.transform, _radius);
+        foreach (GameObject temp in monsters)
+        {
+            CheckIfInCirecle(monster.transform, temp.transform, monster.GetComponent<Monster>().monsterRadius);
+        }
         monster.SetActive(true);
         monster.GetComponent<Monster>().PlayClip();
         
@@ -50,5 +55,22 @@ public class MonsterSpawn : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(_player.position, _radius);
 
+    }
+
+    void CheckIfInCirecle(Transform center, Transform other, float radius)
+    {
+
+        Vector3 dir = (other.position - center.position).normalized;
+        float distValue = Vector3.Distance(center.position, other.position);
+        if(distValue < radius)
+        {
+            Vector3 pointOnSquare = dir * 500;
+            pointOnSquare.x = Mathf.Clamp(pointOnSquare.x, center.position.x - _size / 2, center.position.x + _size / 2);
+            pointOnSquare.y = Mathf.Clamp(pointOnSquare.y, center.position.y - _size / 2, center.position.y + _size / 2);
+
+            float distTemp = Vector3.Distance(other.position, pointOnSquare);
+            float deltaRadius = radius - distValue;
+            other.position += dir * Random.Range(deltaRadius, distTemp);
+        }
     }
 }
