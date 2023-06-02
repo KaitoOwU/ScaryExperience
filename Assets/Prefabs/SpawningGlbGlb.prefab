@@ -47,7 +47,8 @@ MonoBehaviour:
   _player: {fileID: 0}
   _prefabMonster: {fileID: 1811950133646962085, guid: c24f7835c1d23d140b2a3ca6e921376e, type: 3}
   _radius: 4
-  _size: 10
+  height: 10
+  width: 10
   _monsterCount: 10
   _animations:
   - {fileID: 7400000, guid: 5e371413d001c3744b3859e2d53d4978, type: 2}

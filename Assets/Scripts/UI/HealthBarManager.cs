@@ -24,9 +24,14 @@ public class HealthBarManager : MonoBehaviour
     private void UpdateUI(float value)
     {
         DOTween.Kill(this);
-        _backBar.value = _frontBar.value;
-
-        _frontBar.value--;
-        _backBar.DOValue(_backBar.value - 1, 1.5f).SetEase(Ease.OutExpo);
+        if (value > _frontBar.value)
+        {
+            _backBar.value = value;
+            _frontBar.DOValue(value, 1.5f).SetEase(Ease.OutExpo);
+        } else
+        {
+            _frontBar.value = value;
+            _backBar.DOValue(value, 1.5f).SetEase(Ease.OutExpo);
+        }
     }
 }
