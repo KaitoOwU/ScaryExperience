@@ -7,6 +7,7 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Monster : MonoBehaviour
 {
+    public float monsterRadius;
     public AnimationClip clip;
     PlayableGraph playableGraph;
     AnimationPlayableOutput playableOutput;
@@ -32,4 +33,5 @@ public class Monster : MonoBehaviour
 
         playableGraph.Play();
     }
+
 }
