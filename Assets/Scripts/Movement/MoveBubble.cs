@@ -34,8 +34,9 @@ public class MoveBubble : MonoBehaviour
     Vector2 _startPositionFinger;
     AnimationCurve _currentAnimCurve;
     bool _shouldStopCheckingTile;
-    private int _keyFragmentNumber;
+    int _keyFragmentNumber;
     bool _collectibleAcquired = false;
+    List<Vector3> _prePosList;
 
     //use for current standing
     TileDown.TileType _tileStanding;
@@ -66,6 +67,7 @@ public class MoveBubble : MonoBehaviour
     private void Start()
     {
         _movementAmount = manager.tileMap.tileSize;
+        _prePosList = new List<Vector3>();
         //Debug.LogWarning(_movementAmount);
     }
 
@@ -143,7 +145,11 @@ public class MoveBubble : MonoBehaviour
         // si l'on va en diagonal
         if ((_startPos.y != _goToPosition.y && _startPos.x != _goToPosition.x))
         {
-            yield return StartCoroutine(MoveToPos(CheckReturnDiagonal(), _delayLerpMove)); 
+            while (_prePosList.Count > 0)
+            {
+                yield return StartCoroutine(MoveToPos(_prePosList[0], _delayLerpMove));
+                _prePosList.RemoveAt(0);
+            }
         }
 
         _startPos = transform.position;
@@ -213,7 +219,7 @@ public class MoveBubble : MonoBehaviour
                 break;
 
             case TileUp.TileUpType.Block:
-                if (PushBlock(direction, tempTileUp))
+                if (_tileMoving != TileDown.TileType.Wind && PushBlock(direction, tempTileUp))
                 {
                     _shouldStopCheckingTile = true;
                     return;
@@ -282,26 +288,25 @@ public class MoveBubble : MonoBehaviour
             case TileDown.TileType.Wind:
                 //wind fiouuuuuu
 
-                if (_tileMoving != TileDown.TileType.Wind && !tempTile.isActivated)
+                if (!tempTile.isActivated)
                 {
-                    _tileMoving = TileDown.TileType.Wind;
-                
-                    Tile temp = null;
+                    Tile temp = manager.tileMap.FindTileWithPos(transform.position);
                     Tile tempNext = manager.tileMap.FindTileWithPos(_goToPosition);
 
-                    for (int i = 0; i < tempTile.pushNumberTiles; i++)
+                    if (_tileMoving != TileDown.TileType.Wind)
                     {
-                        if (temp != tempNext)
-                        {
-                            temp = tempNext;
-                            tempNext = MoveNextTile(tempTile.direction);
-                            currentDelayLerpMove += _delayLerpMove;
-                            if (i != 0 && i != 1)
-                            {
-                                GetComponent<FlameManager>().ModifyFlame(true, 1);
-                            }
-                        }
-                    };
+                        _prePosList.Add(tempNext.transform.position);
+                    }
+
+                    if (!(temp.GetComponent<TileDown>().direction != tempNext.GetComponent<TileDown>().direction))
+                    {
+                        _prePosList.Add(tempNext.transform.position);
+                    }
+
+                    _tileMoving = TileDown.TileType.Wind;
+
+                    MoveNextTile(tempTile.direction);
+                    //currentDelayLerpMove += _delayLerpMove;
                 }
                 break;
 
