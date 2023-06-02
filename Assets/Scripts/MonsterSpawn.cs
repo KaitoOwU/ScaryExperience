@@ -8,7 +8,8 @@ public class MonsterSpawn : MonoBehaviour
     [SerializeField] Transform _player;
     [SerializeField] GameObject _prefabMonster;
     public float _radius;
-    [SerializeField] float _size;
+    [SerializeField] float height;
+    [SerializeField] float width;
     [SerializeField] int _monsterCount;
     [SerializeField] List<AnimationClip> _animations;
     [SerializeField] List<GameObject> monsters = new List<GameObject>();
@@ -41,7 +42,7 @@ public class MonsterSpawn : MonoBehaviour
     public void Spawn(GameObject monster)
     {
         monster.GetComponent<Monster>().clip = _animations[Random.Range(0, _animations.Count)];
-        monster.transform.position = new Vector3(Random.Range(_player.position.x - _size / 2, _player.position.x + _size / 2), Random.Range(_player.position.y - _size / 2, _player.position.y + _size / 2), 0);
+        monster.transform.position = new Vector3(Random.Range(_player.position.x - width / 2, _player.position.x + width / 2), Random.Range(_player.position.y - height / 2, _player.position.y + height / 2), 0);
         
         /*foreach (GameObject temp in monsters)
         {
@@ -64,10 +65,10 @@ public class MonsterSpawn : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(_player.position, _radius);
-        Vector3 A = new Vector3(_player.position.x - _size, _player.position.y + _size);
-        Vector3 B = new Vector3(_player.position.x + _size, _player.position.y + _size);
-        Vector3 C = new Vector3(_player.position.x + _size, _player.position.y - _size);
-        Vector3 D = new Vector3(_player.position.x - _size, _player.position.y - _size);
+        Vector3 A = new Vector3(_player.position.x - width, _player.position.y + height);
+        Vector3 B = new Vector3(_player.position.x + width, _player.position.y + height);
+        Vector3 C = new Vector3(_player.position.x + width, _player.position.y - height);
+        Vector3 D = new Vector3(_player.position.x - width, _player.position.y - height);
         Gizmos.DrawLine(A, B);
         Gizmos.DrawLine(B, C);
         Gizmos.DrawLine(C, D);
@@ -82,8 +83,8 @@ public class MonsterSpawn : MonoBehaviour
         if(distValue < radius)
         {
             Vector3 pointOnSquare = dir * 500;
-            pointOnSquare.x = Mathf.Clamp(pointOnSquare.x, center.position.x - _size / 2, center.position.x + _size / 2);
-            pointOnSquare.y = Mathf.Clamp(pointOnSquare.y, center.position.y - _size / 2, center.position.y + _size / 2);
+            pointOnSquare.x = Mathf.Clamp(pointOnSquare.x, center.position.x - width / 2, center.position.x + width / 2);
+            pointOnSquare.y = Mathf.Clamp(pointOnSquare.y, center.position.y - height / 2, center.position.y + height / 2);
 
             float distTemp = Vector3.Distance(other.position, pointOnSquare);
             float deltaRadius = radius - distValue;
