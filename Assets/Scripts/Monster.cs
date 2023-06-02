@@ -7,6 +7,7 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Monster : MonoBehaviour
 {
+    public float monsterRadius;
     public AnimationClip clip;
     PlayableGraph playableGraph;
     AnimationPlayableOutput playableOutput;
@@ -31,5 +32,12 @@ public class Monster : MonoBehaviour
         // Plays the Graph.
 
         playableGraph.Play();
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(gameObject.transform.position, monsterRadius);
+
     }
 }

@@ -199,6 +199,8 @@ MonoBehaviour:
     instantiationMode: 1
   - dependency: {fileID: 2800000, guid: 8473b572445fe5a46bc74042c2841045, type: 3}
     instantiationMode: 1
+=======
+>>>>>>> Stashed changes
   - dependency: {fileID: 11400000, guid: 7ac51c4c3e540e542a391fd563d3e822, type: 2}
     instantiationMode: 0
   - dependency: {fileID: 2800000, guid: 7600eb0c5a2576f4bb7f4743df6daa71, type: 3}
