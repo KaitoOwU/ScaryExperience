@@ -13,11 +13,12 @@ public class FlameManager : MonoBehaviour
 {
     [SerializeField, ReadOnly] float _value;
     [SerializeField] int _max;
-    [SerializeField] Light2D _lightBig;
-    [SerializeField] Light2D _lightMedium;
-    [SerializeField] Light2D _lightLittle;
+
+    [SerializeField] Light2D _light;
     [SerializeField] Color _maxColor;
     [SerializeField] Color _minColor;
+    
+    float _maxSizeLight;
 
     [SerializeField] MonsterSpawn monsterSpawn;
 
@@ -30,6 +31,7 @@ public class FlameManager : MonoBehaviour
     void Start()
     {
         _value = _max;
+        _maxSizeLight = _light.pointLightOuterRadius;
     }
 
     public void ModifyFlame(bool substract, int amount)
@@ -43,118 +45,21 @@ public class FlameManager : MonoBehaviour
             _value += amount;
         }
         _value = Mathf.Clamp(_value, 0, _max);
-        if(amount == 1)
+        if(_value == 0)
         {
-            if (substract)
-            {
-                switch (_value)
-                {
-                    case 7:
-                        /*_light.intensity = .9f;
-                        DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, 2f, 1f).SetEase(Ease.OutExpo);*/
-                        DOTween.To(() => _lightBig.intensity, x => _lightBig.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
-                        DOTween.To(() => _lightMedium.intensity, x => _lightMedium.intensity = x, 1, _fadeDuration).SetEase(Ease.OutExpo);
-                        monsterSpawn._radius = 3;
-                        break;
-                    case 4:
-                        /*_light.intensity = .8f;
-                        DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, 1f, 1f).SetEase(Ease.OutExpo);*/
-                        DOTween.To(() => _lightMedium.intensity, x => _lightMedium.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
-                        DOTween.To(() => _lightLittle.intensity, x => _lightLittle.intensity = x, 1, _fadeDuration).SetEase(Ease.OutExpo);
-                        monsterSpawn._radius = 2;
-                        break;
-                    case 1:
-                        /*DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, 0f, 1f).SetEase(Ease.OutExpo);*/
-                        DOTween.To(() => _lightLittle.intensity, x => _lightLittle.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
-                        monsterSpawn._radius = 1;
-                        break;
-                }
-            }
-            else
-            {
-                switch (_value)
-                {
-                    case 8:
-                        /*_light.intensity = .9f;
-                        DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, 2f, 1f).SetEase(Ease.OutExpo);*/
-                        DOTween.To(() => _lightMedium.intensity, x => _lightMedium.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
-                        DOTween.To(() => _lightBig.intensity, x => _lightBig.intensity = x, 1, _fadeDuration).SetEase(Ease.OutExpo);
-                        break;
-                        monsterSpawn._radius = 4;
-                    case 5:
-                        /*_light.intensity = .8f;
-                        DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, 1f, 1f).SetEase(Ease.OutExpo);*/
-                        DOTween.To(() => _lightLittle.intensity, x => _lightLittle.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
-                        DOTween.To(() => _lightMedium.intensity, x => _lightMedium.intensity = x, 1, _fadeDuration).SetEase(Ease.OutExpo);
-                        monsterSpawn._radius = 3;
-                        break;
-                    case 2:
-                        /*DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, 0f, 1f).SetEase(Ease.OutExpo);*/
-                        DOTween.To(() => _lightLittle.intensity, x => _lightLittle.intensity = x, 1, _fadeDuration).SetEase(Ease.OutExpo);
-                        monsterSpawn._radius = 2;
-                        break;
-                }
-            }
-            
+            DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, 0, 0.5f).SetEase(Ease.OutExpo);
+            DOTween.To(() => _light.intensity, x => _light.intensity = x, 0, 0.5f).SetEase(Ease.OutExpo);
         }
-        else if(amount > 1)
+        else
         {
-            switch (_value)
-            {
-                case <= 10 and > 7:
-                    /*_light.intensity = .9f;
-                    DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, 2f, 1f).SetEase(Ease.OutExpo);*/
-                    DOTween.To(() => _lightLittle.intensity, x => _lightLittle.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
-                    DOTween.To(() => _lightMedium.intensity, x => _lightMedium.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
-                    DOTween.To(() => _lightBig.intensity, x => _lightBig.intensity = x, 1, _fadeDuration).SetEase(Ease.OutExpo);
-                    monsterSpawn._radius = 4;
-                    break;
-                case <= 7 and > 4:
-                    /*_light.intensity = .8f;
-                    DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, 1f, 1f).SetEase(Ease.OutExpo);*/
-                    DOTween.To(() => _lightBig.intensity, x => _lightBig.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
-                    DOTween.To(() => _lightLittle.intensity, x => _lightLittle.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
-                    DOTween.To(() => _lightMedium.intensity, x => _lightMedium.intensity = x, 1, _fadeDuration).SetEase(Ease.OutExpo);
-                    monsterSpawn._radius = 3;
-                    break;
-                case <= 4 and > 1:
-                    /*_light.intensity = .8f;
-                    DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, 1f, 1f).SetEase(Ease.OutExpo);*/
-                    DOTween.To(() => _lightBig.intensity, x => _lightBig.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
-                    DOTween.To(() => _lightMedium.intensity, x => _lightMedium.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
-                    DOTween.To(() => _lightLittle.intensity, x => _lightLittle.intensity = x, 1, _fadeDuration).SetEase(Ease.OutExpo);
-                    monsterSpawn._radius = 2;
-                    break;
-                case <= 1:
-                    /*DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, 0f, 1f).SetEase(Ease.OutExpo);*/
-                    DOTween.To(() => _lightLittle.intensity, x => _lightLittle.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
-                    DOTween.To(() => _lightBig.intensity, x => _lightBig.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
-                    DOTween.To(() => _lightMedium.intensity, x => _lightMedium.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
-                    monsterSpawn._radius = 1;
-                    break;
-            }
-
+            DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, _maxSizeLight - (_maxSizeLight / 14) * (10 - _value), 0.5f).SetEase(Ease.OutExpo);
+            DOTween.To(() => _light.intensity, x => _light.intensity = x, 1.5f + (0.15f * _value), 0.5f).SetEase(Ease.OutExpo);
         }
         
-        _lightBig.color = new Color(Mathf.Lerp(_minColor.r, _maxColor.r, _value / 10), Mathf.Lerp(_minColor.g, _maxColor.g, _value / 10), Mathf.Lerp(_minColor.b, _maxColor.b, _value / 10));
-        _lightMedium.color = new Color(Mathf.Lerp(_minColor.r, _maxColor.r, _value / 10), Mathf.Lerp(_minColor.g, _maxColor.g, _value / 10), Mathf.Lerp(_minColor.b, _maxColor.b, _value / 10));
-        _lightLittle.color = new Color(Mathf.Lerp(_minColor.r, _maxColor.r, _value / 10), Mathf.Lerp(_minColor.g, _maxColor.g, _value / 10), Mathf.Lerp(_minColor.b, _maxColor.b, _value / 10));
+        _light.color = new Color(Mathf.Lerp(_minColor.r, _maxColor.r, _value / 10), Mathf.Lerp(_minColor.g, _maxColor.g, _value / 10), Mathf.Lerp(_minColor.b, _maxColor.b, _value / 10));
 
         OnFlameValueChange?.Invoke(_value);
     }
 
-    IEnumerator Fade(bool substract, Light2D light, float startValue, float endValue)
-    {
-        float elapsedTime = 0f;
-        while (elapsedTime < _fadeDuration)
-        {
-            float t = elapsedTime / _fadeDuration;
-
-            light.pointLightOuterRadius = Mathf.Lerp(startValue, endValue, t);
-            elapsedTime += Time.fixedDeltaTime;
-            yield return new WaitForFixedUpdate();
-        }
-
-        OnFlameValueChange?.Invoke(_value);
-    }
+    
 }
