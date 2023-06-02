@@ -18,6 +18,8 @@ public class FlameManager : MonoBehaviour
     [SerializeField] Color _maxColor;
     [SerializeField] Color _minColor;
 
+    [SerializeField] MonsterSpawn monsterSpawn;
+
     [SerializeField] float _fadeDuration;
 
     public Action<float> OnFlameValueChange;
@@ -50,16 +52,19 @@ public class FlameManager : MonoBehaviour
                         DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, 2f, 1f).SetEase(Ease.OutExpo);*/
                         DOTween.To(() => _lightBig.intensity, x => _lightBig.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
                         DOTween.To(() => _lightMedium.intensity, x => _lightMedium.intensity = x, 1, _fadeDuration).SetEase(Ease.OutExpo);
+                        monsterSpawn._radius = 3;
                         break;
                     case 4:
                         /*_light.intensity = .8f;
                         DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, 1f, 1f).SetEase(Ease.OutExpo);*/
                         DOTween.To(() => _lightMedium.intensity, x => _lightMedium.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
                         DOTween.To(() => _lightLittle.intensity, x => _lightLittle.intensity = x, 1, _fadeDuration).SetEase(Ease.OutExpo);
+                        monsterSpawn._radius = 2;
                         break;
                     case 1:
                         /*DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, 0f, 1f).SetEase(Ease.OutExpo);*/
                         DOTween.To(() => _lightLittle.intensity, x => _lightLittle.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
+                        monsterSpawn._radius = 1;
                         break;
                 }
             }
@@ -73,15 +78,18 @@ public class FlameManager : MonoBehaviour
                         DOTween.To(() => _lightMedium.intensity, x => _lightMedium.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
                         DOTween.To(() => _lightBig.intensity, x => _lightBig.intensity = x, 1, _fadeDuration).SetEase(Ease.OutExpo);
                         break;
+                        monsterSpawn._radius = 4;
                     case 5:
                         /*_light.intensity = .8f;
                         DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, 1f, 1f).SetEase(Ease.OutExpo);*/
                         DOTween.To(() => _lightLittle.intensity, x => _lightLittle.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
                         DOTween.To(() => _lightMedium.intensity, x => _lightMedium.intensity = x, 1, _fadeDuration).SetEase(Ease.OutExpo);
+                        monsterSpawn._radius = 3;
                         break;
                     case 2:
                         /*DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, 0f, 1f).SetEase(Ease.OutExpo);*/
                         DOTween.To(() => _lightLittle.intensity, x => _lightLittle.intensity = x, 1, _fadeDuration).SetEase(Ease.OutExpo);
+                        monsterSpawn._radius = 2;
                         break;
                 }
             }
@@ -98,6 +106,7 @@ public class FlameManager : MonoBehaviour
                     DOTween.To(() => _lightLittle.intensity, x => _lightLittle.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
                     DOTween.To(() => _lightMedium.intensity, x => _lightMedium.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
                     DOTween.To(() => _lightBig.intensity, x => _lightBig.intensity = x, 1, _fadeDuration).SetEase(Ease.OutExpo);
+                    monsterSpawn._radius = 4;
                     break;
                 case <= 7 and > 4:
                     /*_light.intensity = .8f;
@@ -105,6 +114,7 @@ public class FlameManager : MonoBehaviour
                     DOTween.To(() => _lightBig.intensity, x => _lightBig.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
                     DOTween.To(() => _lightLittle.intensity, x => _lightLittle.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
                     DOTween.To(() => _lightMedium.intensity, x => _lightMedium.intensity = x, 1, _fadeDuration).SetEase(Ease.OutExpo);
+                    monsterSpawn._radius = 3;
                     break;
                 case <= 4 and > 1:
                     /*_light.intensity = .8f;
@@ -112,12 +122,14 @@ public class FlameManager : MonoBehaviour
                     DOTween.To(() => _lightBig.intensity, x => _lightBig.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
                     DOTween.To(() => _lightMedium.intensity, x => _lightMedium.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
                     DOTween.To(() => _lightLittle.intensity, x => _lightLittle.intensity = x, 1, _fadeDuration).SetEase(Ease.OutExpo);
+                    monsterSpawn._radius = 2;
                     break;
                 case <= 1:
                     /*DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, 0f, 1f).SetEase(Ease.OutExpo);*/
                     DOTween.To(() => _lightLittle.intensity, x => _lightLittle.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
                     DOTween.To(() => _lightBig.intensity, x => _lightBig.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
                     DOTween.To(() => _lightMedium.intensity, x => _lightMedium.intensity = x, 0, _fadeDuration).SetEase(Ease.OutExpo);
+                    monsterSpawn._radius = 1;
                     break;
             }
 

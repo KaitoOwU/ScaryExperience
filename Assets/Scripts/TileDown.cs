@@ -66,7 +66,7 @@ public class TileDown : Tile
                                 GetComponent<SpriteRenderer>().sprite = sprites.spriteSideRock[Random.Range(4, 6)];
                                 break;
                             case SideOrientation.Up:
-                                GetComponent<SpriteRenderer>().sprite = sprites.spriteSideRock[Random.Range(6, 8)];
+                                GetComponent<SpriteRenderer>().sprite = sprites.spriteSideRock[6];
                                 break;
                             case SideOrientation.Down:
                                 GetComponent<SpriteRenderer>().sprite = sprites.spriteSideRock[Random.Range(0, 2)];

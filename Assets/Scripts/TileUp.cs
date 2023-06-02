@@ -131,7 +131,9 @@ public class TileUp : Tile
                             case WallSideOrientation.EndVerticalTwoSidesD:
                                 GetComponent<SpriteRenderer>().sprite = sprites.spriteSideWall[13];
                                 break;
-
+                            case WallSideOrientation.SoloSide:
+                                GetComponent<SpriteRenderer>().sprite = sprites.spriteSideWall[14];
+                                break;
                         }
                         break;
                     case WallPosition.Corner:
@@ -232,6 +234,7 @@ public class TileUp : Tile
         EndHorizontalTwoSidesR,
         EndVerticalTwoSidesU,
         EndVerticalTwoSidesD,
+        SoloSide
     }
 
 
