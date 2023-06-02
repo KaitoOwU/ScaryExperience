@@ -34,10 +34,4 @@ public class Monster : MonoBehaviour
         playableGraph.Play();
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(gameObject.transform.position, monsterRadius);
-
-    }
 }
