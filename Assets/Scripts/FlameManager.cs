@@ -1,13 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Unity.Rendering.Universal;
-using UnityEngine.Rendering.Universal;
 using System;
 using DG.Tweening;
-using static System.TimeZoneInfo;
-using static Tile;
 using NaughtyAttributes;
+using UnityEngine.Rendering.Universal;
+using UnityEditor;
 
 public class FlameManager : MonoBehaviour
 {
