@@ -20,6 +20,8 @@ public class MonsterSpawn : MonoBehaviour
             
             GameObject temp = Instantiate(_prefabMonster);
             monsters.Add(temp);
+            temp.GetComponent<Monster>().playerRadius = _radius;
+            temp.GetComponent<Monster>().player = _player;
             Spawn(temp);
             temp.SetActive(false);
         }

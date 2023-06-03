@@ -7,7 +7,8 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Monster : MonoBehaviour
 {
-    public float monsterRadius;
+    public float playerRadius;
+    public Transform player;
     public AnimationClip clip;
     PlayableGraph playableGraph;
     AnimationPlayableOutput playableOutput;
@@ -34,4 +35,11 @@ public class Monster : MonoBehaviour
         playableGraph.Play();
     }
 
+    private void Update()
+    {
+        if(Vector3.Distance(player.position, transform.position) <= playerRadius)
+        {
+            gameObject.SetActive(false);
+        }
+    }
 }
