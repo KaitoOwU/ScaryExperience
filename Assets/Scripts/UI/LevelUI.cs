@@ -1,28 +1,39 @@
+using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LevelUI : MonoBehaviour
 {
-    int levelNumber;
 
-    public void SetupUI(int levelNumber, Transform toModify)
+    [SerializeField, ReadOnly] int levelNumber;
+    [SerializeField] TextMeshProUGUI _levelName, _unlockedText;
+    [SerializeField] Image _collectible;
+    [SerializeField] Button _play;
+
+    public void SetupUI(int levelNumber)
     {
+
         this.levelNumber = levelNumber;
-        GetComponentInChildren<TextMeshProUGUI>().text = "" + levelNumber;
-        if(levelNumber > 3)
+        _levelName.text = "Level " + (levelNumber + 1);
+
+        if (DataManager.Instance.LevelData[levelNumber].IsUnlocked)
         {
-            toModify.localPosition += new Vector3(0f, 350f, 0f);
+            _play.interactable = true;
+            _unlockedText.text = "Play";
         } else
         {
-            toModify.localPosition = Vector3.zero;
+            _play.interactable = false;
+            _unlockedText.text = "Locked";
         }
+        
     }
 
     public void LaunchLevel()
     {
-        SceneManager.LoadScene("Level" + levelNumber);
+        SceneManager.LoadScene(DataManager.Instance.LevelList[0].name);
     }
 }

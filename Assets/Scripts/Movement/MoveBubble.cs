@@ -226,21 +226,7 @@ public class MoveBubble : MonoBehaviour
                 {
 
                     FlameManager _fm = GetComponent<FlameManager>();
-                    switch (_fm.Value)
-                    {
-                        case 1:
-                            _fm.ModifyFlame(false, 4 - (int) _fm.Value);
-                            break;
-
-                        case < 4:
-                            _fm.ModifyFlame(false, 7 - (int)_fm.Value);
-                            break;
-
-                        default:
-                            _fm.ModifyFlame(false, 10000);
-                            break;
-
-                    }
+                    _fm.ModifyFlame(false, 5);
 
                     tempTileUp.isActivated = true;
                     tempTileUp.GoBackToWhite();

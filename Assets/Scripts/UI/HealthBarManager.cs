@@ -19,11 +19,6 @@ public class HealthBarManager : MonoBehaviour
     private void Awake()
     {
         _flameManager.OnFlameValueChange += UpdateUI;
-
-        _amountText.transform.DOLocalMoveY(-1, 1).OnComplete(() =>
-        {
-            _amountText.transform.DOLocalMoveY(-3, 1);
-        }).SetLoops(-1);
     }
 
     private void Update()
@@ -61,6 +56,8 @@ public class HealthBarManager : MonoBehaviour
 
     private void Alert()
     {
+        _amountText.DOScale(1.5f, 0);
+        _amountText.DOScale(1f, 1.5f).SetEase(Ease.OutExpo);
         _amountText.DOColor(new(1, 0.3f, 0.3f, 1), 0);
         _amountText.DOColor(new(1, 1, 1, 1), 1.5f);
     }
