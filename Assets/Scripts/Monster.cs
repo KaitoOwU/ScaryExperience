@@ -7,19 +7,28 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Monster : MonoBehaviour
 {
+    public bool isAroundCircle;
     public float playerRadius;
     public Transform player;
+    FlameManager flameManager;
     public AnimationClip clip;
     PlayableGraph playableGraph;
     AnimationPlayableOutput playableOutput;
     private void Awake()
     {
+        
+
         playableGraph = PlayableGraph.Create();
 
         playableGraph.SetTimeUpdateMode(DirectorUpdateMode.GameTime);
 
         playableOutput = AnimationPlayableOutput.Create(playableGraph, "Animation", GetComponent<Animator>());
 
+    }
+
+    private void Start()
+    {
+        flameManager = player.GetComponent<FlameManager>();
     }
     public void PlayClip()
     {
@@ -37,9 +46,20 @@ public class Monster : MonoBehaviour
 
     private void Update()
     {
-        if(Vector3.Distance(player.position, transform.position) <= playerRadius)
+        if (!isAroundCircle)
         {
-            gameObject.SetActive(false);
+            if (Vector3.Distance(player.position, transform.position) <= playerRadius)
+            {
+                gameObject.SetActive(false);
+            }
         }
+        else
+        {
+            if(flameManager.Value == 0)
+            {
+                gameObject.SetActive(false);
+            }
+        }
+        
     }
 }

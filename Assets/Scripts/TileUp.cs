@@ -64,6 +64,7 @@ public class TileUp : Tile
     }
 
     // change la door lorqu'on la met dans l'inspecteur
+#if (UNITY_EDITOR)
     private void OnValidate()
     {
         // si l'on ne d�signe plus la case comme �tant block, on delete le block (object)
@@ -107,7 +108,7 @@ public class TileUp : Tile
 
         oldType = type;
     }
-
+#endif
     public void RefreshColorSprite(bool checkBlock)
     {
         switch (type)
