@@ -56,3 +56,7 @@ MonoBehaviour:
   colorBrasero: {r: 1, g: 0, b: 0, a: 1}
   colorWinTrappe: {r: 1, g: 0.9654912, b: 0, a: 1}
   colorTorch: {r: 1, g: 0.52494174, b: 0, a: 1}
+  radiusLightBrasero: 1.5
+  colorLightBrasero: {r: 1, g: 0.4613236, b: 0, a: 1}
+  radiusLightTorch: 0.8
+  colorLightTorch: {r: 1, g: 0.4627451, b: 0, a: 1}
