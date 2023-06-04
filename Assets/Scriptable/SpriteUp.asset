@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee9cbd2dba235394598a1bc8b1d11821, type: 3}
+  m_Name: SpriteUp
+  m_EditorClassIdentifier: 
+  spriteNone:
+  - {fileID: 7482667652216324306, guid: 3e1447669fd29d9479c1e672b447d7d7, type: 3}
+  spriteSideWall:
+  - {fileID: 21300000, guid: 2cb717b00627e584f8a43721a1ab33fe, type: 3}
+  - {fileID: 21300000, guid: f261244726fe9fe40a8f2f44dc814a16, type: 3}
+  - {fileID: 21300000, guid: 7600eb0c5a2576f4bb7f4743df6daa71, type: 3}
+  - {fileID: 21300000, guid: 3b83dceb09cc3624f84e38859733f404, type: 3}
+  - {fileID: 21300000, guid: 8674f1d9a9bdf4b40aa06fb5aa972561, type: 3}
+  - {fileID: 21300000, guid: d6590fec98836fc41811d5e784f3c858, type: 3}
+  - {fileID: 21300000, guid: 4e2eab55c5e3e0b4d949386040bfa58b, type: 3}
+  - {fileID: 21300000, guid: e0c01814a3bc1df468c523aa14cc83fc, type: 3}
+  - {fileID: 21300000, guid: 3308033f1c4657346979aca72fc85f4e, type: 3}
+  - {fileID: 21300000, guid: 70490ee63db1a3e4589a264412fc1cff, type: 3}
+  - {fileID: 21300000, guid: 3d2b5a08ea21ded4ea7bdf4e7ff0305f, type: 3}
+  - {fileID: 21300000, guid: 559c1923a7e78af42b155d2873f2872e, type: 3}
+  - {fileID: 21300000, guid: fc5c729861f18a74694890bddda542f7, type: 3}
+  - {fileID: 21300000, guid: b89ec60a8aa47d04e880dc2c2abd521c, type: 3}
+  - {fileID: 21300000, guid: 18e4db4e5ea0f58428243dbc4300f16d, type: 3}
+  spriteCornerWall:
+  - {fileID: 21300000, guid: f67b19795d60ea144b4a157689a85355, type: 3}
+  - {fileID: 21300000, guid: b89d763f251a4734da30b39b3ac3955d, type: 3}
+  - {fileID: 21300000, guid: 4504461c951097541aad13cf5da25a49, type: 3}
+  - {fileID: 21300000, guid: 9a7cb4a960072eb42baa69bfcf7742b2, type: 3}
+  - {fileID: 21300000, guid: 5ca3a542601221346b6b91d6b8d25552, type: 3}
+  - {fileID: 21300000, guid: a1b3f6b6b15511847940e93d665efed5, type: 3}
+  - {fileID: 21300000, guid: 8a6eda21c4616384f8e1271f8b51f6ea, type: 3}
+  - {fileID: 21300000, guid: a85f2388e337fd24eb938fd01d6482c5, type: 3}
+  spriteKeyFragment:
+  - {fileID: 21300000, guid: 3cd93677c7b7b45479dbe885d5605fd8, type: 3}
+  spriteBrasero:
+  - {fileID: 7482667652216324306, guid: 2d15888ac195138439b91c5fdc944ee0, type: 3}
+  spriteWinTrappe:
+  - {fileID: 7482667652216324306, guid: 23cf5e265144ca5409c9081825ff940e, type: 3}
+  spriteTorch:
+  - {fileID: 7482667652216324306, guid: d2b9d9af98e3ad44f9fad850b80160c3, type: 3}
+  spriteVentilateur:
+  - {fileID: 7482667652216324306, guid: 60180494567d32d4db482294b96209e8, type: 3}
+  spriteWind:
+  - {fileID: 21300000, guid: e92ad583d1c2b0443888d144483b6fdd, type: 3}
+  colorNone: {r: 1, g: 1, b: 1, a: 1}
+  colorWall: {r: 0, g: 0.03729542, b: 0.509434, a: 1}
+  colorKeyFragment: {r: 0.37905586, g: 0, b: 0.6792453, a: 1}
+  colorBrasero: {r: 1, g: 0, b: 0, a: 1}
+  colorWinTrappe: {r: 1, g: 0.9654912, b: 0, a: 1}
+  colorTorch: {r: 1, g: 0.52494174, b: 0, a: 1}
+  colorVentilateur: {r: 0, g: 0, b: 0, a: 0}
+  colorWind: {r: 0, g: 0, b: 0, a: 0}
+  radiusLightBrasero: 1.5
+  colorLightBrasero: {r: 1, g: 0.4613236, b: 0, a: 1}
+  radiusLightTorch: 0.8
+  colorLightTorch: {r: 1, g: 0.4627451, b: 0, a: 1}

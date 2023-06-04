@@ -100,9 +100,20 @@ MonoBehaviour:
   size: 0
   height: 0
   type: 0
-  door: {fileID: 0}
-  colorNone: {r: 1, g: 1, b: 1, a: 1}
-  colorWall: {r: 0, g: 0.014428139, b: 1, a: 1}
-  colorDoor: {r: 0, g: 1, b: 0.011091232, a: 1}
-  colorLever: {r: 0.17785056, g: 0.38679248, b: 0.03794944, a: 1}
+  numberPartKeyRequired: 1
+  refillAmount: 1
+  dirWind: 0
+  lightBrasero: {fileID: 0}
+  lightTorch: {fileID: 0}
+  block: {fileID: 0}
+  wallPosition: 0
+  _wallSideOrientation: 0
+  _wallCornerOrientation: 0
+  blockPrefab: {fileID: 1736951253104726918, guid: 55e36779130d6db44b1693cd523b76bc, type: 3}
+  spritesUp: {fileID: 11400000, guid: 8283f955754fdc840b48fa33532ced97, type: 2}
+  spritesDown: {fileID: 11400000, guid: 7ac51c4c3e540e542a391fd563d3e822, type: 2}
+  lightPrefab: {fileID: 3812639126627071096, guid: 2983dbd564046aa40948be3a1fa1a601, type: 3}
+  sprites: {fileID: 11400000, guid: 8283f955754fdc840b48fa33532ced97, type: 2}
   isActivated: 0
+  tileMap: {fileID: 0}
+  tileUpMap: {fileID: 0}

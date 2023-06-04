@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &925931247821750064
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 925931247821750063}
+  - component: {fileID: 925931247821750062}
+  m_Layer: 0
+  m_Name: SpawningGlbGlb
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &925931247821750063
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 925931247821750064}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 12.823082, y: -21.315342, z: -0.13904609}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &925931247821750062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 925931247821750064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43c18b05332e4cd4fa91f7f75f2c42c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _player: {fileID: 0}
+  _prefabMonster: {fileID: 1811950133646962085, guid: c24f7835c1d23d140b2a3ca6e921376e, type: 3}
+  _radius: 4
+  height: 10
+  width: 10
+  litMaterial: {fileID: 2100000, guid: e6e35d6c38690f046ac81507002ae7b6, type: 2}
+  _monsterEyesCount: 10
+  _animationsEyes:
+  - {fileID: 7400000, guid: 7e47aff76d214024db5144b25560e8c3, type: 2}
+  - {fileID: 7400000, guid: 6a0aa05ddaf823240816aa9aa154d617, type: 2}
+  - {fileID: 7400000, guid: 3372ed8aa124c5a409f4195ed1c3efc8, type: 2}
+  - {fileID: 7400000, guid: b7c20346e8581854bbefa1fbd6f9197b, type: 2}
+  - {fileID: 7400000, guid: 40035a8095d3129429c9994a2730806e, type: 2}
+  _monsterCircleCount: 10
+  _animationsCircle:
+  - {fileID: 7400000, guid: 5e371413d001c3744b3859e2d53d4978, type: 2}
+  - {fileID: 7400000, guid: 58a8912ddcb6d4041a62e12078ca5ce6, type: 2}
+  - {fileID: 7400000, guid: 4d9148b69c06f624b87723ab619e568d, type: 2}
