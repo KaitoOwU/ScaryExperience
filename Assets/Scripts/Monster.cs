@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Monster : MonoBehaviour
 {

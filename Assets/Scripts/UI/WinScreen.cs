@@ -15,7 +15,7 @@ public class WinScreen : MonoBehaviour
         DOTween.Kill(transform);
         transform.DOScale(1, 1f).SetEase(Ease.OutExpo).OnComplete(() =>
         {
-            if (GameManager.Instance.LevelData[GameManager.Instance.CurrentLevel].CollectibleAcquired)
+            if (DataManager.Instance.LevelData[GameManager.Instance.CurrentLevel].CollectibleAcquired)
             {
                 _collectable.transform.DOScale(1.5f, 0);
                 _collectable.DOColor(new(1, 1, 1), .5f);

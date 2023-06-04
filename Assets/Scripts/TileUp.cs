@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using NaughtyAttributes;
 using UnityEngine.Rendering.Universal;
@@ -63,14 +62,14 @@ public class TileUp : Tile
         GetComponent<SpriteRenderer>().sprite = sprites.spriteNone[0];
     }
 
+    #if(UNITY_EDITOR)
     // change la door lorqu'on la met dans l'inspecteur
-#if (UNITY_EDITOR)
     private void OnValidate()
     {
         // si l'on ne d�signe plus la case comme �tant block, on delete le block (object)
         if (type != TileUpType.Block && block != null)
         {
-            UnityEditor.EditorApplication.delayCall += () =>
+            EditorApplication.delayCall += () =>
             {
                 DestroyImmediate(block);
             };
@@ -108,7 +107,8 @@ public class TileUp : Tile
 
         oldType = type;
     }
-#endif
+    #endif
+
     public void RefreshColorSprite(bool checkBlock)
     {
         switch (type)
