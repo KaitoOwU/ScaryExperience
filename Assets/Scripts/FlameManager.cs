@@ -1,13 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Unity.Rendering.Universal;
-using UnityEngine.Rendering.Universal;
 using System;
+using Cinemachine;
 using DG.Tweening;
-using static System.TimeZoneInfo;
-using static Tile;
 using NaughtyAttributes;
+using UnityEngine.Rendering.Universal;
+using UnityEditor;
 
 public class FlameManager : MonoBehaviour
 {
@@ -17,7 +14,10 @@ public class FlameManager : MonoBehaviour
     [SerializeField] Light2D _light;
     [SerializeField] Color _maxColor;
     [SerializeField] Color _minColor;
-    
+
+    [SerializeField] CinemachineVirtualCamera _vCam;
+    CinemachineBasicMultiChannelPerlin _noise;
+
     float _maxSizeLight;
 
     [SerializeField] MonsterSpawn monsterSpawn;
@@ -30,6 +30,7 @@ public class FlameManager : MonoBehaviour
 
     void Start()
     {
+        _noise = _vCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         _value = _max;
         _maxSizeLight = _light.pointLightOuterRadius;
     }
@@ -39,10 +40,12 @@ public class FlameManager : MonoBehaviour
         if (substract)
         {
             _value -= amount;
+            
         }
         else 
         {
             _value += amount;
+            
         }
         _value = Mathf.Clamp(_value, 0, _max);
         if(_value == 0)
@@ -57,8 +60,18 @@ public class FlameManager : MonoBehaviour
         }
         
         _light.color = new Color(Mathf.Lerp(_minColor.r, _maxColor.r, _value / 10), Mathf.Lerp(_minColor.g, _maxColor.g, _value / 10), Mathf.Lerp(_minColor.b, _maxColor.b, _value / 10));
-
+        monsterSpawn._radius = _light.pointLightOuterRadius;
         OnFlameValueChange?.Invoke(_value);
+        if(_value <= 5)
+        {
+            _noise.m_AmplitudeGain = 0.2f * (5 - _value);
+            _noise.m_FrequencyGain = 0.2f * (5 - _value);
+        }
+        else
+        {
+            _noise.m_AmplitudeGain = 0;
+            _noise.m_FrequencyGain = 0;
+        }
     }
 
     
