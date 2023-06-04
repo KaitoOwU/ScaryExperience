@@ -48,6 +48,26 @@ public class GameManager : MonoBehaviour
         //_flameManager.OnFlameValueChange -= CheckForLoseCondition;
     }
 
+    public Vector3 DirectionAddMovePos(TileDown.Direction direction)
+    {
+        switch (direction)
+        {
+            case TileDown.Direction.Left:
+                return new Vector3(-1, 0, 0);
+
+            case TileDown.Direction.Right:
+                return new Vector3(1, 0, 0);
+
+            case TileDown.Direction.Up:
+                return new Vector3(0, 1, 0);
+
+            case TileDown.Direction.Down:
+                return new Vector3(0, -1, 0);
+        }
+
+        return Vector3.zero;
+    }
+
     private void CheckForLoseCondition(float flameValue)
     {
         //Debug.LogWarning(flameValue);

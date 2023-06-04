@@ -14,10 +14,19 @@ public class TileUp : Tile
     public int numberPartKeyRequired = 1;
 
     [ShowIf("isBrasero")]
-    public int refillAmount = 10;
+    public int refillAmountBrasero = 10;
 
-    [ShowIf("isOneWayWall")]
-    public TileDown.Direction directionToGoThrough;
+    [ShowIf("isTorch")]
+    public int refillAmountTorch = 5;
+
+    [ShowIf("isVentilateur")]
+    public TileDown.Direction dirWind;
+    private TileDown.Direction oldDirWind;
+
+    [ShowIf("isWind")]
+    public TileDown.Direction direction;
+    [ShowIf("isWind")]
+    public int pushNumberTiles;
 
     [ShowIf("isBlock")]
     public GameObject block;
@@ -33,28 +42,37 @@ public class TileUp : Tile
 
     [Header("- ToHook -")]
     [SerializeField] GameObject blockPrefab;
-    [SerializeField] SpriteUp sprites;
 
     //public hide
     [HideInInspector] public bool isActivated = false;
+    [HideInInspector] public TileMap tileMap;
+    [HideInInspector] public TileUpMap tileUpMap;
+    [HideInInspector] public bool wasWind; 
 
     public enum TileUpType
     {
         None,
         Wall,
         KeyFragment,
-        OneWayWall,
         Brasero,
         Torch,
         Block,
         WinTrappe,
-        Collectible
+        Collectible,
+        Ventilateur,
+        Wind
     }
 
     public void GoBackToWhite ()
     {
         GetComponent<SpriteRenderer>().color = Color.white;
-        GetComponent<SpriteRenderer>().sprite = sprites.spriteNone[0];
+        GetComponent<SpriteRenderer>().sprite = spritesUp.spriteNone[0];
+    }
+
+    [Button("RefreshTile")]
+    private void RefreshTile()
+    {
+        RefreshColorSprite(false);
     }
 
     // change la door lorqu'on la met dans l'inspecteur
@@ -68,6 +86,7 @@ public class TileUp : Tile
                 DestroyImmediate(block);
             };
         }
+        
 
         if (oldType != type)
         {
@@ -78,9 +97,26 @@ public class TileUp : Tile
                 case TileUpType.Wall:
                     DestroyImmediate(GetComponent<ShadowCaster2D>());
                     break;
+
+                case TileUpType.Ventilateur:
+                    Vector3 nextPos = transform.position + DirectionAddMovePos(dirWind);
+                    RecursiveCheckNextWind(nextPos, dirWind, true, spritesUp.spriteNone[0]);
+                    break;
+
                 default:
                     break;
             }
+        }
+
+        if (oldDirWind != dirWind)
+        {
+            Vector3 nextPosSuppr = transform.position + DirectionAddMovePos(oldDirWind);
+            RecursiveCheckNextWind(nextPosSuppr, oldDirWind, true, spritesUp.spriteNone[0]);
+
+            Vector3 nextPosAdd = transform.position + DirectionAddMovePos(dirWind);
+            RecursiveCheckNextWind(nextPosAdd, dirWind, false, spritesUp.spriteWind[0]);
+
+            oldDirWind = dirWind;
         }
 
         oldType = type;
@@ -91,7 +127,7 @@ public class TileUp : Tile
         switch (type)
         {
             case TileUpType.None:
-                GetComponent<SpriteRenderer>().sprite = sprites.spriteNone[0];
+                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteNone[0];
                 
                 break;
             case TileUpType.Wall:
@@ -102,37 +138,37 @@ public class TileUp : Tile
                         switch (_wallSideOrientation)
                         {
                             case WallSideOrientation.UpOneSide:
-                                GetComponent<SpriteRenderer>().sprite = sprites.spriteSideWall[Random.Range(0, 2)];
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteSideWall[Random.Range(0, 2)];
                                 break;
                             case WallSideOrientation.DownOneSide:
-                                GetComponent<SpriteRenderer>().sprite = sprites.spriteSideWall[2];
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteSideWall[2];
                                 break;
                             case WallSideOrientation.LeftOneSide:
-                                GetComponent<SpriteRenderer>().sprite = sprites.spriteSideWall[Random.Range(3, 5)];
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteSideWall[Random.Range(3, 5)];
                                 break;
                             case WallSideOrientation.RightOneSide:
-                                GetComponent<SpriteRenderer>().sprite = sprites.spriteSideWall[Random.Range(5, 7)];
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteSideWall[Random.Range(5, 7)];
                                 break;
                             case WallSideOrientation.VerticalTwoSides:
-                                GetComponent<SpriteRenderer>().sprite = sprites.spriteSideWall[Random.Range(7, 9)];
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteSideWall[Random.Range(7, 9)];
                                 break;
                             case WallSideOrientation.HorizontalTwoSides:
-                                GetComponent<SpriteRenderer>().sprite = sprites.spriteSideWall[9];
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteSideWall[9];
                                 break;
                             case WallSideOrientation.EndHorizontalTwoSidesR:
-                                GetComponent<SpriteRenderer>().sprite = sprites.spriteSideWall[10];
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteSideWall[10];
                                 break;
                             case WallSideOrientation.EndHorizontalTwoSidesL:
-                                GetComponent<SpriteRenderer>().sprite = sprites.spriteSideWall[11];
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteSideWall[11];
                                 break;
                             case WallSideOrientation.EndVerticalTwoSidesU:
-                                GetComponent<SpriteRenderer>().sprite = sprites.spriteSideWall[12];
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteSideWall[12];
                                 break;
                             case WallSideOrientation.EndVerticalTwoSidesD:
-                                GetComponent<SpriteRenderer>().sprite = sprites.spriteSideWall[13];
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteSideWall[13];
                                 break;
                             case WallSideOrientation.SoloSide:
-                                GetComponent<SpriteRenderer>().sprite = sprites.spriteSideWall[14];
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteSideWall[14];
                                 break;
                         }
                         break;
@@ -140,28 +176,28 @@ public class TileUp : Tile
                         switch (_wallCornerOrientation)
                         {
                             case WallCornerOrientation.LeftDownExterior:
-                                GetComponent<SpriteRenderer>().sprite = sprites.spriteCornerWall[0];
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[0];
                                 break;
                             case WallCornerOrientation.LeftUpExterior:
-                                GetComponent<SpriteRenderer>().sprite = sprites.spriteCornerWall[1];
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[1];
                                 break;
                             case WallCornerOrientation.RightDownExterior:
-                                GetComponent<SpriteRenderer>().sprite = sprites.spriteCornerWall[2];
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[2];
                                 break;
                             case WallCornerOrientation.RightUpExterior:
-                                GetComponent<SpriteRenderer>().sprite = sprites.spriteCornerWall[3];
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[3];
                                 break;
                             case WallCornerOrientation.LeftDownInterior:
-                                GetComponent<SpriteRenderer>().sprite = sprites.spriteCornerWall[4];
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[4];
                                 break;
                             case WallCornerOrientation.LeftUpInterior:
-                                GetComponent<SpriteRenderer>().sprite = sprites.spriteCornerWall[5];
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[5];
                                 break;
                             case WallCornerOrientation.RightDownInterior:
-                                GetComponent<SpriteRenderer>().sprite = sprites.spriteCornerWall[6];
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[6];
                                 break;
                             case WallCornerOrientation.RightUpInterior:
-                                GetComponent<SpriteRenderer>().sprite = sprites.spriteCornerWall[7];
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[7];
                                 break;
                         }
                         break;
@@ -170,19 +206,25 @@ public class TileUp : Tile
                 break;
 
             case TileUpType.KeyFragment:
-                GetComponent<SpriteRenderer>().sprite = sprites.spriteKeyFragment[0];
-                break;
-            case TileUpType.OneWayWall:
-                GetComponent<SpriteRenderer>().sprite = sprites.spriteOneWayWall[0];
+                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteKeyFragment[0];
                 break;
             case TileUpType.Torch:
-                GetComponent<SpriteRenderer>().sprite = sprites.spriteTorch[0];
+                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteTorch[0];
                 break;
             case TileUpType.Brasero:
-                GetComponent<SpriteRenderer>().sprite = sprites.spriteBrasero[0];
+                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteBrasero[0];
                 break;
             case TileUpType.WinTrappe:
-                GetComponent<SpriteRenderer>().sprite = sprites.spriteWinTrappe[0];
+                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteWinTrappe[0];
+                break;
+            case TileUpType.Ventilateur:
+                Vector3 nextPos = transform.position + DirectionAddMovePos(dirWind);
+                RecursiveCheckNextWind(nextPos, dirWind, false, spritesUp.spriteWind[0]);
+                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteVentilateur[0];
+                break;
+
+            case TileUpType.Wind:
+                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteWind[Random.Range(0, spritesUp.spriteWind.Count)];
                 break;
 
             case TileUpType.Block:
@@ -192,6 +234,34 @@ public class TileUp : Tile
                     block = temp;
                 }
                 break;
+
+        }
+    }
+
+    private void RecursiveCheckNextWind(Vector3 pos, TileDown.Direction direction, bool isPutting, Sprite spriteReplace)
+    {
+        //TileDown tempTileDown = tileMap.FindTileWithPosEditor(pos);
+        TileUp tempTileUp = tileUpMap.FindTileWithPosEditor(pos);
+
+        pos += DirectionAddMovePos(direction);
+
+        if (tempTileUp == null || tempTileUp.type == TileUpType.WinTrappe || tempTileUp.type == TileUpType.Wall)
+        {
+            return;
+        }
+        else if (!isPutting)
+        {
+            tempTileUp.type = TileUpType.Wind;
+            tempTileUp.direction = direction;
+            tempTileUp.pushNumberTiles = 1;
+            tempTileUp.GetComponent<SpriteRenderer>().sprite = spriteReplace;
+            RecursiveCheckNextWind(pos, direction, isPutting, spriteReplace);
+        }
+        else
+        {
+            tempTileUp.type = TileUpType.None;
+            tempTileUp.GetComponent<SpriteRenderer>().sprite = spriteReplace;
+            RecursiveCheckNextWind(pos, direction, isPutting, spriteReplace);
         }
     }
 
@@ -203,12 +273,14 @@ public class TileUp : Tile
     }
 
     private bool isWall() { return type == TileUpType.Wall; }
-    private bool isOneWayWall() { return type == TileUpType.OneWayWall; }
     private bool isBrasero() { return type == TileUpType.Brasero; }
     private bool isBlock() { return type == TileUpType.Block; }
     private bool isWinTrappe() { return type == TileUpType.WinTrappe; }
     private bool isWallSide() { return wallPosition == WallPosition.Side; }
     private bool isWallCorner() { return wallPosition == WallPosition.Corner; }
+    private bool isVentilateur() { return type == TileUpType.Ventilateur; }
+    private bool isWind() { return type == TileUpType.Wind; }
+    private bool isTorch() { return type == TileUpType.Torch; }
 
     public enum WallCornerOrientation
     {

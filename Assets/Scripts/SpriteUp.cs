@@ -10,17 +10,19 @@ public class SpriteUp : ScriptableObject
     public List<Sprite> spriteSideWall;
     public List<Sprite> spriteCornerWall;
     public List<Sprite> spriteKeyFragment;
-    public List<Sprite> spriteOneWayWall;
     public List<Sprite> spriteBrasero;
     public List<Sprite> spriteWinTrappe;
     public List<Sprite> spriteTorch;
+    public List<Sprite> spriteVentilateur;
+    public List<Sprite> spriteWind;
 
     [Header("- Color -")]
     public Color colorNone;
     public Color colorWall;
     public Color colorKeyFragment;
-    public Color colorOneWayWall;
     public Color colorBrasero;
     public Color colorWinTrappe;
     public Color colorTorch;
+    public Color colorVentilateur;
+    public Color colorWind;
 }

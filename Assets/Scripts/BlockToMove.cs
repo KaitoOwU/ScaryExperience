@@ -62,23 +62,27 @@ public class BlockToMove : MonoBehaviour
         //trouve le vector d'ajout de position selon la direction du slide
         toGoPosBlock += bubble.DirectionAddMovePos(direction);
         TileUp tileUpToMove = bubble.manager.tileUpMap.FindTileWithPos(toGoPosBlock);
+        TileDown tileDownToMove = _bubble.manager.tileMap.FindTileWithPos(toGoPosBlock);
 
         // si la case n'est pas libre on ne push pas le block
-        if (tileUpToMove.type != TileUp.TileUpType.None)
+        if (tileUpToMove.type != TileUp.TileUpType.None && tileUpToMove.type != TileUp.TileUpType.Wind)
         {
             GoBack(direction);
-            _bubble.GoBack(direction);
             return;
         }
+        else if (lastTileUp != null && lastTileUp.wasWind) 
+        {
+            lastTileUp.block = null;
+            lastTileUp.type = TileUp.TileUpType.Wind;
+            lastTileUp.isActivated = false;
+            RecursiveCheckNextWind(lastTileUp.transform.position, lastTileUp.direction, false, lastTileUp.spritesUp.spriteWind[0]);
+        }
 
-        if (lastTileUp != null)
+        else if (lastTileUp != null)
         {
             lastTileUp.block = null;
             lastTileUp.type = TileUp.TileUpType.None;
         }
-
-        tileUpToMove.block = gameObject;
-        tileUpToMove.type = TileUp.TileUpType.Block;
 
         //trouve le millieu de la tile ou l'on atterie
         toGoPosBlock = tileUpToMove.transform.position;
@@ -87,18 +91,25 @@ public class BlockToMove : MonoBehaviour
         //verifie si la tile ou l'on va bouger contiens un effet, si oui applique l'effet
         CheckNextTileEffect(direction);
 
+        // si tomber dans l'eau ou le void on ne met pas le block sur la prochaine case
+        if (tileDownToMove.type != TileDown.TileType.WaterRock && tileDownToMove.type != TileDown.TileType.Void)
+        {
+            tileUpToMove.block = gameObject;
+            tileUpToMove.type = TileUp.TileUpType.Block;
+        }
+
         return;
     }
 
     private void RecursiveCheckNextWind (Vector3 pos, TileDown.Direction direction, bool isStopped, Sprite spriteReplace)
     {
-        TileDown tempTileDown = _bubble.manager.tileMap.FindTileWithPos(pos);
+        TileUp tempTileUp = _bubble.manager.tileUpMap.FindTileWithPos(pos);
         pos += _bubble.DirectionAddMovePos(direction);
 
-        if (tempTileDown.type == TileDown.TileType.Wind && tempTileDown.direction == direction)
+        if (tempTileUp.type == TileUp.TileUpType.Wind && tempTileUp.direction == direction)
         {
-            tempTileDown.isActivated = isStopped;
-            tempTileDown.GetComponent<SpriteRenderer>().sprite = spriteReplace;
+            tempTileUp.isActivated = isStopped;
+            tempTileUp.GetComponent<SpriteRenderer>().sprite = spriteReplace;
             RecursiveCheckNextWind(pos, direction, isStopped, spriteReplace);
         }
         else
@@ -107,45 +118,15 @@ public class BlockToMove : MonoBehaviour
         }
     }
 
-    //private void ActivateWindStop (Vector3 startPos ,TileDown.Direction direction, bool isStopped, Sprite spriteReplace)
-    //{
-    //    TileDown tempTileDown = _bubble.manager.tileMap.FindTileWithPos(startPos);
-    //    Vector3 nextTilePos = startPos;
-
-    //    for (int i = 0; i < tempTileDown.pushNumberTiles +1; i++)
-    //    {
-    //        TileDown tempTileNext = _bubble.manager.tileMap.FindTileWithPos(nextTilePos);
-
-    //        if (tempTileNext.type == TileDown.TileType.Wind)
-    //        {
-    //            tempTileNext.isActivated = isStopped;
-    //            tempTileNext.GetComponent<SpriteRenderer>().sprite = spriteReplace;
-    //        }
-    //        else
-    //        {
-    //            return;
-    //        }
-
-    //        nextTilePos += _bubble.DirectionAddMovePos(direction);
-    //    }
-    //}
-
     private void CheckNextTileEffect(TileDown.Direction direction)
     {
-        SwitchOnTileDown(direction);
+        SwitchOnTiles(direction);
     }
 
-    private void SwitchOnTileDown(TileDown.Direction direction)
+    private void SwitchOnTiles(TileDown.Direction direction)
     {
-        TileDown tempTileActual = _bubble.manager.tileMap.FindTileWithPos(transform.position);
-
         TileDown tempTile = _bubble.manager.tileMap.FindTileWithPos(toGoPosBlock);
         TileUp tempTileUp = _bubble.manager.tileUpMap.FindTileWithPos(toGoPosBlock);
-
-        if (tempTileActual.type == TileDown.TileType.Wind)
-        {
-            RecursiveCheckNextWind(tempTileActual.transform.position , tempTileActual.direction, false, tempTileActual.sprites.spriteWind[0]);
-        }
 
         switch (tempTile.type)
         {
@@ -155,7 +136,8 @@ public class BlockToMove : MonoBehaviour
                 break;
 
             case TileDown.TileType.Void:
-                GoBack(direction);
+                Destroy(gameObject, 0.4f);
+                tempTileUp.type = TileUp.TileUpType.None;
                 break;
 
             case TileDown.TileType.Water:
@@ -165,11 +147,19 @@ public class BlockToMove : MonoBehaviour
                 tempTileUp.type = TileUp.TileUpType.None;
                 break;
 
-            case TileDown.TileType.Wind:
-                RecursiveCheckNextWind(toGoPosBlock ,tempTile.direction, true, tempTileActual.sprites.spriteRock[0]);
+            default:
+                break;
+        }
+
+        switch (tempTileUp.type)
+        {
+            case TileUp.TileUpType.Wind:
+                RecursiveCheckNextWind(toGoPosBlock, tempTileUp.direction, true, tempTileUp.spritesUp.spriteNone[0]);
+                tempTileUp.wasWind = true;
                 break;
 
             default:
+                tempTileUp.wasWind = false;
                 break;
         }
     }
