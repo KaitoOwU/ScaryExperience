@@ -324,7 +324,6 @@ public class TileUp : Tile
     private bool isWallCorner() { return wallPosition == WallPosition.Corner; }
     private bool isVentilateur() { return type == TileUpType.Ventilateur; }
     private bool isWind() { return type == TileUpType.Wind; }
-    private bool isTorch() { return type == TileUpType.Torch; }
 
     public enum WallCornerOrientation
     {
