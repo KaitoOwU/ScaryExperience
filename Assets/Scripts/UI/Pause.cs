@@ -27,6 +27,7 @@ public class Pause : MonoBehaviour
 
     public void RestartLevel()
     {
+        DataManager.Instance.IsLevelLaunchedFromMainMenu = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 

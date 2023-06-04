@@ -7,10 +7,12 @@ public class DataManager : MonoBehaviour
 {
     public static DataManager Instance;
 
-    [SerializeField] List<SceneAsset> _levels;
+    [SerializeField] List<Level> _levels;
     Dictionary<int, LevelData> _levelData = new();
     public Dictionary<int, LevelData> LevelData { get => _levelData; }
-    public IReadOnlyList<SceneAsset> LevelList { get => _levels; }
+    public IReadOnlyList<Level> LevelList { get => _levels; }
+
+    public bool IsLevelLaunchedFromMainMenu { get; set; } = true;
 
     private void Awake()
     {

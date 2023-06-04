@@ -6,10 +6,12 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LevelSelect : MonoBehaviour
 {
     [SerializeField] Transform _parent, _nextLevelSpawnPos, _prevLevelSpawnPos;
+    [SerializeField] Image _transition;
     [SerializeField] GameObject _levelPrefab;
     [SerializeField] GameObject _currentLevelUI;
 
@@ -46,5 +48,16 @@ public class LevelSelect : MonoBehaviour
         Destroy(_currentLevelUI, 0.75f);
         _currentLevelUI = _lvl.gameObject;
         currentDisplayedLevel = currentDisplayedLevel - 1 < 0 ? DataManager.Instance.LevelList.Count - 1 : currentDisplayedLevel - 1;
+    }
+
+    public void LaunchLevel()
+    {
+        DataManager.Instance.IsLevelLaunchedFromMainMenu = true;
+
+        _transition.gameObject.SetActive(true);
+        _transition.DOColor(new(0, 0, 0, 1), 1f).SetEase(Ease.OutExpo).OnComplete(() =>
+        {
+            SceneManager.LoadScene(DataManager.Instance.LevelList[currentDisplayedLevel].levelScene.name);
+        });
     }
 }
