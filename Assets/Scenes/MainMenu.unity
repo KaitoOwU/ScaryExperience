@@ -769,14 +769,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 955256ac222ddf248886e9fdd38841e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _parent: {fileID: 0}
+  _parent: {fileID: 1598945136}
   _nextLevelSpawnPos: {fileID: 1237339408}
   _prevLevelSpawnPos: {fileID: 1757597788}
   _levelPrefab: {fileID: 5646818041699168075, guid: 5adbb5c5c2d35a74380c89c6df0238c1, type: 3}
-  _levels:
-  - {fileID: 102900000, guid: d79fead486e41e640b27cd7da3e94a92, type: 3}
-  - {fileID: 102900000, guid: 6edb07a5473ee2449a9c237366ee2ba2, type: 3}
-  - {fileID: 102900000, guid: 0f2974f6900e7384fb2cd15f9f9068e3, type: 3}
+  _currentLevelUI: {fileID: 1498774603}
 --- !u!1 &738767475
 GameObject:
   m_ObjectHideFlags: 0
@@ -1183,6 +1180,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1598945136}
     m_Modifications:
+    - target: {fileID: 5646818041066076477, guid: 5adbb5c5c2d35a74380c89c6df0238c1, type: 3}
+      propertyPath: m_Interactable
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5646818041699168074, guid: 5adbb5c5c2d35a74380c89c6df0238c1, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1271,11 +1272,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: LevelUI
       objectReference: {fileID: 0}
+    - target: {fileID: 5646818042772637896, guid: 5adbb5c5c2d35a74380c89c6df0238c1, type: 3}
+      propertyPath: m_text
+      value: Play
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5adbb5c5c2d35a74380c89c6df0238c1, type: 3}
 --- !u!224 &1498774602 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5646818041699168074, guid: 5adbb5c5c2d35a74380c89c6df0238c1, type: 3}
+  m_PrefabInstance: {fileID: 1498774601}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1498774603 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5646818041699168075, guid: 5adbb5c5c2d35a74380c89c6df0238c1, type: 3}
   m_PrefabInstance: {fileID: 1498774601}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1556509131
@@ -1322,6 +1332,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e551179fd8060ed419bd823b1a7cdf4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _levels:
+  - {fileID: 102900000, guid: d79fead486e41e640b27cd7da3e94a92, type: 3}
+  - {fileID: 102900000, guid: 6edb07a5473ee2449a9c237366ee2ba2, type: 3}
+  - {fileID: 102900000, guid: 0f2974f6900e7384fb2cd15f9f9068e3, type: 3}
 --- !u!1 &1598945135
 GameObject:
   m_ObjectHideFlags: 0
