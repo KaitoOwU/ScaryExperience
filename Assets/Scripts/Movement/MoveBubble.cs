@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using Etouch = UnityEngine.InputSystem.EnhancedTouch;
 using System;
+using static TileUp;
+using UnityEngine.Rendering.Universal;
+using DG.Tweening;
 
 public class MoveBubble : MonoBehaviour
 {
     [Header("- References -")]
     [SerializeField] public GameManager manager;
+    [SerializeField] Light2D _generalLight;
 
     [Header("- Stats -")]
     [SerializeField] float _slideSensitivity;
@@ -24,6 +28,7 @@ public class MoveBubble : MonoBehaviour
     [HideInInspector] public float currentDelayLerpMove;
 
     //runtime private
+    bool _firstMove = true;
     float _movementAmount;
     bool _isMoving = false;
     bool _canMove = true;
@@ -53,6 +58,7 @@ public class MoveBubble : MonoBehaviour
 
     public Action OnDie;
     public Action OnWin;
+    public Action OnFirstMove;
     
     private void Awake()
     {
@@ -463,6 +469,12 @@ public class MoveBubble : MonoBehaviour
 
         //change anim curve based on tile type current moving
         ChangeAnimCurve();
+
+        if (_firstMove)
+        {
+            _firstMove = false;
+            DOTween.To(() => _generalLight.intensity, x => _generalLight.intensity = x, 0.05f, 1f).SetEase(Ease.OutExpo);
+        }
 
         // si l'on bouge pas encore, lance l'animation
         if (!_isMoving)

@@ -25,4 +25,10 @@ public class SpriteUp : ScriptableObject
     public Color colorTorch;
     public Color colorVentilateur;
     public Color colorWind;
+
+    [Header("- Lights -")]
+    public float radiusLightBrasero;
+    public Color colorLightBrasero;
+    public float radiusLightTorch;
+    public Color colorLightTorch;
 }

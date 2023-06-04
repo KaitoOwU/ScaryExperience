@@ -59,3 +59,7 @@ MonoBehaviour:
   colorTorch: {r: 1, g: 0.52494174, b: 0, a: 1}
   colorVentilateur: {r: 0, g: 0, b: 0, a: 0}
   colorWind: {r: 0, g: 0, b: 0, a: 0}
+  radiusLightBrasero: 1.5
+  colorLightBrasero: {r: 1, g: 0.4613236, b: 0, a: 1}
+  radiusLightTorch: 0.8
+  colorLightTorch: {r: 1, g: 0.4627451, b: 0, a: 1}

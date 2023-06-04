@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using NaughtyAttributes;
 using UnityEngine.Rendering.Universal;
@@ -15,6 +14,12 @@ public class TileUp : Tile
 
     [ShowIf("isBrasero")]
     public int refillAmountBrasero = 10;
+
+    [ShowIf("isBrasero")]
+    public GameObject lightBrasero;
+
+    [ShowIf("isTorch")]
+    public GameObject lightTorch;
 
     [ShowIf("isTorch")]
     public int refillAmountTorch = 5;
@@ -42,6 +47,8 @@ public class TileUp : Tile
 
     [Header("- ToHook -")]
     [SerializeField] GameObject blockPrefab;
+    [SerializeField] GameObject lightPrefab;
+    [SerializeField] SpriteUp sprites;
 
     //public hide
     [HideInInspector] public bool isActivated = false;
@@ -75,18 +82,35 @@ public class TileUp : Tile
         RefreshColorSprite(false);
     }
 
+    #if(UNITY_EDITOR)
     // change la door lorqu'on la met dans l'inspecteur
     private void OnValidate()
     {
         // si l'on ne d�signe plus la case comme �tant block, on delete le block (object)
         if (type != TileUpType.Block && block != null)
         {
-            UnityEditor.EditorApplication.delayCall += () =>
+            EditorApplication.delayCall += () =>
             {
                 DestroyImmediate(block);
             };
         }
         
+
+        if (type != TileUpType.Torch && lightTorch != null)
+        {
+            UnityEditor.EditorApplication.delayCall += () =>
+            {
+                DestroyImmediate(lightTorch);
+            };
+        }
+
+        if (type != TileUpType.Brasero && lightBrasero != null)
+        {
+            UnityEditor.EditorApplication.delayCall += () =>
+            {
+                DestroyImmediate(lightBrasero);
+            };
+        }
 
         if (oldType != type)
         {
@@ -121,6 +145,7 @@ public class TileUp : Tile
 
         oldType = type;
     }
+    #endif
 
     public void RefreshColorSprite(bool checkBlock)
     {
@@ -173,6 +198,7 @@ public class TileUp : Tile
                         }
                         break;
                     case WallPosition.Corner:
+
                         switch (_wallCornerOrientation)
                         {
                             case WallCornerOrientation.LeftDownExterior:
@@ -210,10 +236,27 @@ public class TileUp : Tile
                 break;
             case TileUpType.Torch:
                 GetComponent<SpriteRenderer>().sprite = spritesUp.spriteTorch[0];
+                if (lightTorch == null)
+                {
+                    GameObject tempLightT = Instantiate(lightPrefab, transform);
+                    lightTorch = tempLightT;
+                }
+                lightTorch.GetComponent<Light2D>().pointLightOuterRadius = sprites.radiusLightTorch;
+                lightTorch.GetComponent<Light2D>().color = sprites.colorLightTorch;
                 break;
+
             case TileUpType.Brasero:
                 GetComponent<SpriteRenderer>().sprite = spritesUp.spriteBrasero[0];
+                if (lightBrasero == null)
+                {
+                    GameObject tempLightB = Instantiate(lightPrefab, transform);
+                    lightBrasero = tempLightB;
+                }
+                lightBrasero.GetComponent<Light2D>().pointLightOuterRadius = sprites.radiusLightBrasero;
+                lightBrasero.GetComponent<Light2D>().color = sprites.colorLightBrasero;
                 break;
+
+
             case TileUpType.WinTrappe:
                 GetComponent<SpriteRenderer>().sprite = spritesUp.spriteWinTrappe[0];
                 break;
@@ -274,6 +317,7 @@ public class TileUp : Tile
 
     private bool isWall() { return type == TileUpType.Wall; }
     private bool isBrasero() { return type == TileUpType.Brasero; }
+    private bool isTorch() { return type == TileUpType.Torch; }
     private bool isBlock() { return type == TileUpType.Block; }
     private bool isWinTrappe() { return type == TileUpType.WinTrappe; }
     private bool isWallSide() { return wallPosition == WallPosition.Side; }
