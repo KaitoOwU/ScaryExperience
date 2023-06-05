@@ -64,12 +64,26 @@ public class BlockToMove : MonoBehaviour
         TileUp tileUpToMove = bubble.manager.tileUpMap.FindTileWithPos(toGoPosBlock);
         TileDown tileDownToMove = _bubble.manager.tileMap.FindTileWithPos(toGoPosBlock);
 
+        Vector3 currentGoPos = toGoPosBlock - bubble.DirectionAddMovePos(direction);
+        TileDown currentTileDown = _bubble.manager.tileMap.FindTileWithPos(currentGoPos);
+
         // si la case n'est pas libre on ne push pas le block
         if (tileUpToMove.type != TileUp.TileUpType.None && tileUpToMove.type != TileUp.TileUpType.Wind)
         {
             GoBack(direction);
+            TileUp tileUpEnd = _bubble.manager.tileUpMap.FindTileWithPos(toGoPosBlock);
+
+            //si la case d'arriver c'est du vent alors on applique l'effet
+            if (tileUpEnd.type == TileUp.TileUpType.Wind)
+            {
+                RecursiveCheckNextWind(tileUpEnd.transform.position, tileUpEnd.direction, true, tileUpEnd.spritesUp.spriteNone[0]);
+            }
+
+            tileUpEnd.block = gameObject;
+            tileUpEnd.type = TileUp.TileUpType.Block;
             return;
         }
+
         else if (lastTileUp != null && lastTileUp.wasWind) 
         {
             lastTileUp.block = null;
@@ -78,7 +92,7 @@ public class BlockToMove : MonoBehaviour
             RecursiveCheckNextWind(lastTileUp.transform.position, lastTileUp.direction, false, lastTileUp.spritesUp.spriteWind[0]);
         }
 
-        else if (lastTileUp != null)
+        else if (lastTileUp != null && currentTileDown.type != TileDown.TileType.Ice)
         {
             lastTileUp.block = null;
             lastTileUp.type = TileUp.TileUpType.None;
@@ -92,7 +106,7 @@ public class BlockToMove : MonoBehaviour
         CheckNextTileEffect(direction);
 
         // si tomber dans l'eau ou le void on ne met pas le block sur la prochaine case
-        if (tileDownToMove.type != TileDown.TileType.WaterRock && tileDownToMove.type != TileDown.TileType.Void)
+        if (tileDownToMove.type != TileDown.TileType.WaterRock && tileDownToMove.type != TileDown.TileType.Void && tileDownToMove.type != TileDown.TileType.Ice)
         {
             tileUpToMove.block = gameObject;
             tileUpToMove.type = TileUp.TileUpType.Block;
