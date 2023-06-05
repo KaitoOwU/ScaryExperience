@@ -13,6 +13,15 @@ public class TileUpMap : MonoBehaviour
 
     List<TileUp> _tileMap = new List<TileUp>();
 
+    [SerializeField] TileMap downTileMap;
+    [SerializeField] SpriteUp spritesUpTiles;
+    [SerializeField] SpriteDown spritesDownTiles;
+
+    [SerializeField] GameObject lightPrefab;
+
+    [SerializeField] GameObject torchPrefab;
+    [SerializeField] GameObject braseroPrefab;
+
     private void Awake()
     {
         AddAllTiles();
@@ -41,6 +50,8 @@ public class TileUpMap : MonoBehaviour
                 Tile tileTemp = Instantiate(tile, new Vector3(xOffset, yOffset, 0), Quaternion.identity, transform).GetComponent<Tile>();
                 tileTemp.name = "X : " + j.ToString() + " / Y : " + i.ToString();
                 xOffset += tile.GetComponent<SpriteRenderer>().bounds.size.x;
+                tileTemp.GetComponent<TileUp>().tileUpMap = this;
+                tileTemp.GetComponent<TileUp>().tileMap = downTileMap;
             }
 
             xOffset = 0;
@@ -73,7 +84,13 @@ public class TileUpMap : MonoBehaviour
         Debug.LogWarning("Refreshing ...");
         for (int i = 0; i < transform.childCount; i++)
         {
-            transform.GetChild(i).GetComponent<TileUp>().RefreshColorSprite(false);
+            TileUp tile = transform.GetChild(i).GetComponent<TileUp>();
+            tile.spritesDown = spritesDownTiles;
+            tile.spritesUp = spritesUpTiles;
+            tile.RefreshColorSprite(false);
+            tile.lightPrefab = lightPrefab;
+            tile.flameBraseroPrefab = braseroPrefab;
+            tile.flameTorchPrefab = torchPrefab;
         }
     }
 
@@ -86,6 +103,25 @@ public class TileUpMap : MonoBehaviour
             {
                 //check y pos
                 if (tile.transform.position.y - tile.size / 2 < pos.y && tile.transform.position.y + tile.size / 2 > pos.y)
+                {
+                    return tile;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public TileUp FindTileWithPosEditor (Vector3 pos)
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            TileUp tile = transform.GetChild(i).GetComponent<TileUp>();
+            //check x pos
+            if (tile.transform.position.x - 1 / 2 <= pos.x && tile.transform.position.x + 1 / 2 >= pos.x)
+            {
+                //check y pos
+                if (tile.transform.position.y - 1 / 2 <= pos.y && tile.transform.position.y + 1 / 2 >= pos.y)
                 {
                     return tile;
                 }

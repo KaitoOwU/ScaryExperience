@@ -10,30 +10,52 @@ public class MonsterSpawn : MonoBehaviour
     public float _radius;
     [SerializeField] float height;
     [SerializeField] float width;
-    [SerializeField] int _monsterCount;
-    [SerializeField] List<AnimationClip> _animations;
-    [SerializeField] List<GameObject> monsters = new List<GameObject>();
+    [SerializeField] Material litMaterial;
+
+    [Header("Monster Eyes")]
+    [SerializeField] int _monsterEyesCount;
+    [SerializeField] List<AnimationClip> _animationsEyes;
+    List<GameObject> monstersEyes = new List<GameObject>();
+
+    [Header("Monster Cricle")]
+    [SerializeField] int _monsterCircleCount;
+    [SerializeField] List<AnimationClip> _animationsCircle;
+    List<GameObject> monstersCircle = new List<GameObject>();
     void Start()
     {
-        for (int i = 0; i < _monsterCount; i++)
+        for (int i = 0; i < _monsterEyesCount; i++)
         {
             
             GameObject temp = Instantiate(_prefabMonster);
-            monsters.Add(temp);
+            monstersEyes.Add(temp);
+            temp.GetComponent<Monster>().playerRadius = _radius;
+            temp.GetComponent<Monster>().player = _player;
+            temp.GetComponent<Monster>().isAroundCircle = false;
             Spawn(temp);
             temp.SetActive(false);
         }
-        
+
+        for (int i = 0; i < _monsterCircleCount; i++)
+        {
+
+            GameObject temp = Instantiate(_prefabMonster, _player);
+            monstersCircle.Add(temp);
+            temp.GetComponent<Monster>().playerRadius = _radius;
+            temp.GetComponent<Monster>().player = _player;
+            temp.GetComponent<Monster>().isAroundCircle = true;
+            temp.GetComponent<SpriteRenderer>().material = litMaterial;
+            Spawn(temp);
+            temp.SetActive(false);
+        }
+
     }
 
     IEnumerator SpawningCooldown(float time, GameObject monster)
     {
 
         yield return new WaitForSeconds(time);
-        float alpha = monster.GetComponent<SpriteRenderer>().color.a;
-        DOTween.To(() => alpha, x => alpha = x, 0, 0.1f).SetEase(Ease.OutExpo);
         monster.SetActive(false);
-        
+        yield return new WaitForSeconds(0.5f);
         Spawn(monster);
     }
 
@@ -41,24 +63,22 @@ public class MonsterSpawn : MonoBehaviour
 
     public void Spawn(GameObject monster)
     {
-        monster.GetComponent<Monster>().clip = _animations[Random.Range(0, _animations.Count)];
-        monster.transform.position = new Vector3(Random.Range(_player.position.x - width / 2, _player.position.x + width / 2), Random.Range(_player.position.y - height / 2, _player.position.y + height / 2), 0);
-        
-        /*foreach (GameObject temp in monsters)
+        if (!monster.GetComponent<Monster>().isAroundCircle)
         {
-            if (temp != monster)
-            {
-                CheckIfInCirecle(monster.transform, temp.transform, 2);
-            }
+            monster.GetComponent<Monster>().clip = _animationsEyes[Random.Range(0, _animationsEyes.Count)];
+            monster.transform.position = new Vector3(Random.Range(_player.position.x - width / 2, _player.position.x + width / 2), Random.Range(_player.position.y - height / 2, _player.position.y + height / 2), 0);
 
-        }*/
-        CheckIfInCirecle(_player, monster.transform, _radius);
+            CheckIfInCirecle(_player, monster.transform, _radius);
+        }
+        else
+        {
+            monster.GetComponent<Monster>().clip = _animationsCircle[Random.Range(0, _animationsCircle.Count)];
+            SpawnAroundCircle(monster);
+        }
         monster.SetActive(true);
-        float alpha = monster.GetComponent<SpriteRenderer>().color.a;
-        DOTween.To(() => alpha, x => alpha = x, 255, 0.1f).SetEase(Ease.OutExpo);
         monster.GetComponent<Monster>().PlayClip();
-        
         StartCoroutine(SpawningCooldown(monster.GetComponent<Monster>().clip.length, monster));
+
     }
 
     private void OnDrawGizmos()
@@ -91,4 +111,21 @@ public class MonsterSpawn : MonoBehaviour
             other.position += dir * Random.Range(deltaRadius, distTemp);
         }
     }
+
+    void SpawnAroundCircle(GameObject monster)
+    {
+        monster.transform.localPosition = Vector3.zero;
+        float angleDeg = Random.Range(-180, 180);
+        float angleRad = Mathf.Deg2Rad * angleDeg;
+        Vector3 pointOnCircle = new Vector3(Mathf.Cos(angleRad), Mathf.Sin(angleRad)) * (_radius - 0.5f);
+        monster.transform.position += pointOnCircle;
+
+        //Rotation
+        Vector3 objToPlayer = monster.transform.position - _player.position;
+        float rotationAngle = Mathf.Atan2(objToPlayer.y, objToPlayer.x);
+        rotationAngle *= Mathf.Rad2Deg;
+        monster.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90 + rotationAngle));
+
+    }
+
 }

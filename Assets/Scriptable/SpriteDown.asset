@@ -38,15 +38,12 @@ MonoBehaviour:
   spriteVoid:
   - {fileID: 21300000, guid: 4e7c85a1bf99bf643b925648bad8f37d, type: 3}
   spriteWater:
-  - {fileID: 21300000, guid: 84537ef695284a54fa74d166669f7332, type: 3}
-  spriteWind:
-  - {fileID: 21300000, guid: e92ad583d1c2b0443888d144483b6fdd, type: 3}
+  - {fileID: 21300000, guid: 7031d772bfe517f47973b5233924fc31, type: 3}
   spriteBreakable:
-  - {fileID: 21300000, guid: 23e6b3bba155865458ff62ef936833a4, type: 3}
-  - {fileID: 21300000, guid: ed9b05183e0296b4383fe1fe69416a3e, type: 3}
+  - {fileID: 21300000, guid: 546c695f2e184be45b34745a46effb05, type: 3}
+  - {fileID: 21300000, guid: a82ecaab855e31a4199e7221b4ebcfdd, type: 3}
   colorRock: {r: 1, g: 1, b: 1, a: 1}
   colorIce: {r: 0, g: 0.6054748, b: 0.8207547, a: 1}
   colorVoid: {r: 0, g: 0, b: 0, a: 1}
-  colorWater: {r: 0.20188677, g: 0.3048692, b: 1, a: 1}
-  colorWind: {r: 0.42207193, g: 0.7169812, b: 0.4668349, a: 1}
+  colorWater: {r: 1, g: 1, b: 1, a: 1}
   colorBreakable: {r: 0.3018868, g: 0.22125366, b: 0.13214666, a: 1}

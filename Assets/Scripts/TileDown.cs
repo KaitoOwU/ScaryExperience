@@ -9,11 +9,6 @@ public class TileDown : Tile
     public TileType type;
     private TileType oldType;
 
-    [ShowIf("isWind")]
-    public Direction direction;
-    [ShowIf("isWind")]
-    public int pushNumberTiles;
-
     [ShowIf("isRock")]
     public Position position;
     [ShowIf("isSide")]
@@ -21,18 +16,16 @@ public class TileDown : Tile
     [ShowIf("isCorner")]
     public CornerOrientation orientationCorner;
 
-    public SpriteDown sprites;
     public bool isActivated = false;
 
     public enum TileType
     {
         Rock,
+        Water,
+        Breakable,
+        WaterRock,
         Ice,
         Void,
-        Water,
-        Wind,
-        Breakable,
-        WaterRock
     }
 
     private void OnValidate()
@@ -53,23 +46,23 @@ public class TileDown : Tile
                 switch (position)
                 {
                     case Position.Normal:
-                        GetComponent<SpriteRenderer>().sprite = sprites.spriteRock[Random.Range(0, sprites.spriteRock.Count)];
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteRock[Random.Range(0, spritesDown.spriteRock.Count)];
                         break;
 
                     case Position.Side:
                         switch (orientationSide)
                         {
                             case SideOrientation.Left:
-                                GetComponent<SpriteRenderer>().sprite = sprites.spriteSideRock[Random.Range(2, 4)];
+                                GetComponent<SpriteRenderer>().sprite = spritesDown.spriteSideRock[Random.Range(2, 4)];
                                 break;
                             case SideOrientation.Right:
-                                GetComponent<SpriteRenderer>().sprite = sprites.spriteSideRock[Random.Range(4, 6)];
+                                GetComponent<SpriteRenderer>().sprite = spritesDown.spriteSideRock[Random.Range(4, 6)];
                                 break;
                             case SideOrientation.Up:
-                                GetComponent<SpriteRenderer>().sprite = sprites.spriteSideRock[6];
+                                GetComponent<SpriteRenderer>().sprite = spritesDown.spriteSideRock[6];
                                 break;
                             case SideOrientation.Down:
-                                GetComponent<SpriteRenderer>().sprite = sprites.spriteSideRock[Random.Range(0, 2)];
+                                GetComponent<SpriteRenderer>().sprite = spritesDown.spriteSideRock[Random.Range(0, 2)];
                                 break;
                         }
                         break;
@@ -77,16 +70,16 @@ public class TileDown : Tile
                         switch (orientationCorner)
                         {
                             case CornerOrientation.LeftUp:
-                                GetComponent<SpriteRenderer>().sprite = sprites.spriteCornerRock[2];
+                                GetComponent<SpriteRenderer>().sprite = spritesDown.spriteCornerRock[2];
                                 break;
                             case CornerOrientation.LeftDown:
-                                GetComponent<SpriteRenderer>().sprite = sprites.spriteCornerRock[0];
+                                GetComponent<SpriteRenderer>().sprite = spritesDown.spriteCornerRock[0];
                                 break;
                             case CornerOrientation.RightUp:
-                                GetComponent<SpriteRenderer>().sprite = sprites.spriteCornerRock[3];
+                                GetComponent<SpriteRenderer>().sprite = spritesDown.spriteCornerRock[3];
                                 break;
                             case CornerOrientation.RightDown:
-                                GetComponent<SpriteRenderer>().sprite = sprites.spriteCornerRock[1];
+                                GetComponent<SpriteRenderer>().sprite = spritesDown.spriteCornerRock[1];
                                 break;
                         }
                         break;
@@ -94,24 +87,38 @@ public class TileDown : Tile
                 break;
 
             case TileType.Ice:
-                GetComponent<SpriteRenderer>().sprite = sprites.spriteIce[Random.Range(0, sprites.spriteIce.Count)];
-                GetComponent<SpriteRenderer>().color = sprites.colorIce;
+                GetComponent<SpriteRenderer>().sprite = spritesDown.spriteIce[Random.Range(0, spritesDown.spriteIce.Count)];
+                GetComponent<SpriteRenderer>().color = spritesDown.colorIce;
                 break;
 
             case TileType.Void:
-                GetComponent<SpriteRenderer>().sprite = sprites.spriteVoid[Random.Range(0, sprites.spriteVoid.Count)];
-                GetComponent<SpriteRenderer>().color = sprites.colorVoid;
+                GetComponent<SpriteRenderer>().sprite = spritesDown.spriteVoid[Random.Range(0, spritesDown.spriteVoid.Count)];
+                GetComponent<SpriteRenderer>().color = spritesDown.colorVoid;
                 break;
             case TileType.Water:
-                GetComponent<SpriteRenderer>().sprite = sprites.spriteWater[Random.Range(0, sprites.spriteWater.Count)];
-                break;
-            case TileType.Wind:
-                GetComponent<SpriteRenderer>().sprite = sprites.spriteWind[Random.Range(0, sprites.spriteWind.Count)];
+                GetComponent<SpriteRenderer>().sprite = spritesDown.spriteWater[Random.Range(0, spritesDown.spriteWater.Count)];
+
                 break;
             case TileType.Breakable:
-                GetComponent<SpriteRenderer>().sprite = sprites.spriteBreakable[0];
+                GetComponent<SpriteRenderer>().sprite = spritesDown.spriteBreakable[0];
                 break;
         }
+
+        switch (oldType)
+        {
+            case TileType.Ice:
+                GetComponent<SpriteRenderer>().color = Color.white;
+                break;
+            case TileType.Void:
+                GetComponent<SpriteRenderer>().color = Color.white;
+                break;
+        }
+    }
+
+    [Button("RefreshTile")]
+    private void RefreshTile()
+    {
+        RefreshColorSprite();
     }
 
     public enum Direction
@@ -145,8 +152,6 @@ public class TileDown : Tile
         RightDown
     }
 
-
-    private bool isWind() { return type == TileType.Wind; }
     private bool isRock() { return type == TileType.Rock; }
     private bool isSide() { return position == Position.Side; }
     private bool isCorner() { return position == Position.Corner; }
