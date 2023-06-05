@@ -2,6 +2,7 @@ using UnityEditor;
 using UnityEngine;
 using NaughtyAttributes;
 using UnityEngine.Rendering.Universal;
+using DG.Tweening;
 
 public class TileUp : Tile
 {
@@ -17,9 +18,13 @@ public class TileUp : Tile
 
     [ShowIf("isBrasero")]
     public GameObject lightBrasero;
+    [ShowIf("isBrasero")]
+    public GameObject flameBrasero;
 
     [ShowIf("isTorch")]
     public GameObject lightTorch;
+    [ShowIf("isTorch")]
+    public GameObject flameTorch;
 
     [ShowIf("isTorch")]
     public int refillAmountTorch = 5;
@@ -48,6 +53,8 @@ public class TileUp : Tile
     [Header("- ToHook -")]
     [SerializeField] GameObject blockPrefab;
     [SerializeField] GameObject lightPrefab;
+    [SerializeField] GameObject flameTorchPrefab;
+    [SerializeField] GameObject flameBraseroPrefab;
     [SerializeField] SpriteUp sprites;
 
     //public hide
@@ -101,6 +108,7 @@ public class TileUp : Tile
             UnityEditor.EditorApplication.delayCall += () =>
             {
                 DestroyImmediate(lightTorch);
+                DestroyImmediate(flameTorch);
             };
         }
 
@@ -109,6 +117,7 @@ public class TileUp : Tile
             UnityEditor.EditorApplication.delayCall += () =>
             {
                 DestroyImmediate(lightBrasero);
+                DestroyImmediate(flameBrasero);
             };
         }
 
@@ -240,6 +249,9 @@ public class TileUp : Tile
                 {
                     GameObject tempLightT = Instantiate(lightPrefab, transform);
                     lightTorch = tempLightT;
+                    GameObject tempFlameT = Instantiate(flameTorchPrefab, transform.position + new Vector3(0, 0.58f, 0), Quaternion.identity, transform);
+                    flameTorch = tempFlameT;
+
                 }
                 lightTorch.GetComponent<Light2D>().pointLightOuterRadius = sprites.radiusLightTorch;
                 lightTorch.GetComponent<Light2D>().color = sprites.colorLightTorch;
@@ -251,6 +263,8 @@ public class TileUp : Tile
                 {
                     GameObject tempLightB = Instantiate(lightPrefab, transform);
                     lightBrasero = tempLightB;
+                    GameObject tempFlameB = Instantiate(flameBraseroPrefab, transform.position + new Vector3(-0.093f, 0.527f, 0), Quaternion.identity, transform);
+                    flameBrasero = tempFlameB;
                 }
                 lightBrasero.GetComponent<Light2D>().pointLightOuterRadius = sprites.radiusLightBrasero;
                 lightBrasero.GetComponent<Light2D>().color = sprites.colorLightBrasero;
@@ -308,6 +322,11 @@ public class TileUp : Tile
         }
     }
 
+    public void SwitchOffTorch()
+    {
+        DOTween.To(() => lightTorch.GetComponent<Light2D>().pointLightOuterRadius, x => lightTorch.GetComponent<Light2D>().pointLightOuterRadius = x, 0, 0.5f).SetEase(Ease.OutExpo);
+        Destroy(flameTorch);
+    }
     public enum WallPosition
     {
         None,

@@ -128,8 +128,4 @@ public class MonsterSpawn : MonoBehaviour
 
     }
 
-    private void ChangeAnimationCricleSpeed(float amount)
-    {
-        
-    }
 }

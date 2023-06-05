@@ -196,7 +196,7 @@ public class MoveBubble : MonoBehaviour
                 {
                     GetComponent<FlameManager>().ModifyFlame(false, tempTileUp.refillAmountTorch);
                     tempTileUp.isActivated = true;
-                    tempTileUp.GoBackToWhite();
+                    tempTileUp.SwitchOffTorch();
                     _shouldStopCheckingTile = true;
                 }
                 break;

@@ -46,7 +46,7 @@ MonoBehaviour:
   spriteWinTrappe:
   - {fileID: 21300000, guid: cb4f6ab65c12b4d4aac0dd77f584d7f1, type: 3}
   spriteTorch:
-  - {fileID: 7482667652216324306, guid: d2b9d9af98e3ad44f9fad850b80160c3, type: 3}
+  - {fileID: 21300000, guid: 757d7fc60d9992643901f543aaecab2c, type: 3}
   spriteVentilateur:
   - {fileID: 7482667652216324306, guid: 60180494567d32d4db482294b96209e8, type: 3}
   spriteWind:
@@ -60,6 +60,6 @@ MonoBehaviour:
   colorVentilateur: {r: 0, g: 0, b: 0, a: 0}
   colorWind: {r: 0, g: 0, b: 0, a: 0}
   radiusLightBrasero: 1.5
-  colorLightBrasero: {r: 1, g: 0.4613236, b: 0, a: 1}
+  colorLightBrasero: {r: 0, g: 0.70356584, b: 1, a: 1}
   radiusLightTorch: 0.8
   colorLightTorch: {r: 1, g: 0.4627451, b: 0, a: 1}
