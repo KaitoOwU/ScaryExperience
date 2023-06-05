@@ -177,7 +177,7 @@ public class MoveBubble : MonoBehaviour
                 _shouldStopCheckingTile = true;
                 return;
 
-            case TileUp.TileUpType.KeyFragment:
+            case TileUp.TileUpType.Key:
                 if (!tempTileUp.isActivated)
                 {
                     tempTileUp.isActivated = true;

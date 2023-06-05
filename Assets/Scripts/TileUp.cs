@@ -60,7 +60,7 @@ public class TileUp : Tile
     {
         None,
         Wall,
-        KeyFragment,
+        Key,
         Brasero,
         Torch,
         Block,
@@ -231,8 +231,8 @@ public class TileUp : Tile
                 gameObject.AddComponent<ShadowCaster2D>();
                 break;
 
-            case TileUpType.KeyFragment:
-                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteKeyFragment[0];
+            case TileUpType.Key:
+                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteKey[0];
                 break;
             case TileUpType.Torch:
                 GetComponent<SpriteRenderer>().sprite = spritesUp.spriteTorch[0];
