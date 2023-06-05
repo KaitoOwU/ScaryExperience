@@ -1,3 +1,4 @@
+using DG.Tweening;
 using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ public class LevelUI : MonoBehaviour
     [SerializeField] TextMeshProUGUI _levelName, _unlockedText;
     [SerializeField] Image _collectible;
     [SerializeField] Button _play;
+    LevelSelect levelSelect;
 
     public void SetupUI(int levelNumber)
     {
@@ -32,8 +34,13 @@ public class LevelUI : MonoBehaviour
         
     }
 
+    private void Start()
+    {
+        levelSelect = FindObjectOfType<LevelSelect>();
+    }
+
     public void LaunchLevel()
     {
-        SceneManager.LoadScene(DataManager.Instance.LevelList[0].name);
+        levelSelect.LaunchLevel();
     }
 }
