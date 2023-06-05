@@ -17,14 +17,14 @@ public class TileUp : Tile
     public int refillAmountBrasero = 10;
 
     [ShowIf("isBrasero")]
-    public GameObject lightBrasero;
+    [HideInInspector] public GameObject lightBrasero;
     [ShowIf("isBrasero")]
-    public GameObject flameBrasero;
+    [HideInInspector] public GameObject flameBrasero;
 
     [ShowIf("isTorch")]
-    public GameObject lightTorch;
+    [HideInInspector] public GameObject lightTorch;
     [ShowIf("isTorch")]
-    public GameObject flameTorch;
+    [HideInInspector] public GameObject flameTorch;
 
     [ShowIf("isTorch")]
     public int refillAmountTorch = 5;
@@ -52,9 +52,9 @@ public class TileUp : Tile
 
     [Header("- ToHook -")]
     [SerializeField] GameObject blockPrefab;
-    [SerializeField] GameObject lightPrefab;
-    [SerializeField] GameObject flameTorchPrefab;
-    [SerializeField] GameObject flameBraseroPrefab;
+    public GameObject lightPrefab;
+    public GameObject flameTorchPrefab;
+    public GameObject flameBraseroPrefab;
     [SerializeField] SpriteUp sprites;
 
     //public hide
@@ -101,25 +101,6 @@ public class TileUp : Tile
                 DestroyImmediate(block);
             };
         }
-        
-
-        if (type != TileUpType.Torch && lightTorch != null)
-        {
-            UnityEditor.EditorApplication.delayCall += () =>
-            {
-                DestroyImmediate(lightTorch);
-                DestroyImmediate(flameTorch);
-            };
-        }
-
-        if (type != TileUpType.Brasero && lightBrasero != null)
-        {
-            UnityEditor.EditorApplication.delayCall += () =>
-            {
-                DestroyImmediate(lightBrasero);
-                DestroyImmediate(flameBrasero);
-            };
-        }
 
         if (oldType != type)
         {
@@ -134,6 +115,40 @@ public class TileUp : Tile
                 case TileUpType.Ventilateur:
                     Vector3 nextPos = transform.position + DirectionAddMovePos(dirWind);
                     RecursiveCheckNextWind(nextPos, dirWind, true, spritesUp.spriteNone[0]);
+                    break;
+
+                case TileUpType.Torch:
+                    if (lightTorch != null)
+                    {
+                        UnityEditor.EditorApplication.delayCall += () =>
+                        {
+                            DestroyImmediate(lightTorch);
+                        };
+                    }
+                    if (flameTorch != null)
+                    {
+                        UnityEditor.EditorApplication.delayCall += () =>
+                        {
+                            DestroyImmediate(flameTorch);
+                        };
+                    }
+                    break;
+
+                case TileUpType.Brasero:
+                    if (lightBrasero != null)
+                    {
+                        UnityEditor.EditorApplication.delayCall += () =>
+                        {
+                            DestroyImmediate(lightBrasero);
+                        };
+                    }
+                    if (flameBrasero != null)
+                    {
+                        UnityEditor.EditorApplication.delayCall += () =>
+                        {
+                            DestroyImmediate(flameBrasero);
+                        };
+                    }
                     break;
 
                 default:
@@ -252,9 +267,9 @@ public class TileUp : Tile
                     GameObject tempFlameT = Instantiate(flameTorchPrefab, transform.position + new Vector3(0, 0.58f, 0), Quaternion.identity, transform);
                     flameTorch = tempFlameT;
 
+                    lightTorch.GetComponent<Light2D>().pointLightOuterRadius = sprites.radiusLightTorch;
+                    lightTorch.GetComponent<Light2D>().color = sprites.colorLightTorch;
                 }
-                lightTorch.GetComponent<Light2D>().pointLightOuterRadius = sprites.radiusLightTorch;
-                lightTorch.GetComponent<Light2D>().color = sprites.colorLightTorch;
                 break;
 
             case TileUpType.Brasero:
@@ -264,10 +279,11 @@ public class TileUp : Tile
                     GameObject tempLightB = Instantiate(lightPrefab, transform);
                     lightBrasero = tempLightB;
                     GameObject tempFlameB = Instantiate(flameBraseroPrefab, transform.position + new Vector3(-0.093f, 0.527f, 0), Quaternion.identity, transform);
-                    flameBrasero = tempFlameB;
+                    flameBrasero = tempFlameB;                
+                    lightBrasero.GetComponent<Light2D>().pointLightOuterRadius = sprites.radiusLightBrasero;
+                    lightBrasero.GetComponent<Light2D>().color = sprites.colorLightBrasero;
                 }
-                lightBrasero.GetComponent<Light2D>().pointLightOuterRadius = sprites.radiusLightBrasero;
-                lightBrasero.GetComponent<Light2D>().color = sprites.colorLightBrasero;
+
                 break;
 
 

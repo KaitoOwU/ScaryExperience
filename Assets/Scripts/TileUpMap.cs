@@ -17,6 +17,11 @@ public class TileUpMap : MonoBehaviour
     [SerializeField] SpriteUp spritesUpTiles;
     [SerializeField] SpriteDown spritesDownTiles;
 
+    [SerializeField] GameObject lightPrefab;
+
+    [SerializeField] GameObject torchPrefab;
+    [SerializeField] GameObject braseroPrefab;
+
     private void Awake()
     {
         AddAllTiles();
@@ -83,6 +88,9 @@ public class TileUpMap : MonoBehaviour
             tile.spritesDown = spritesDownTiles;
             tile.spritesUp = spritesUpTiles;
             tile.RefreshColorSprite(false);
+            tile.lightPrefab = lightPrefab;
+            tile.flameBraseroPrefab = braseroPrefab;
+            tile.flameTorchPrefab = torchPrefab;
         }
     }
 
