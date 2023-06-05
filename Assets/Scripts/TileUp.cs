@@ -16,15 +16,7 @@ public class TileUp : Tile
     [ShowIf("isBrasero")]
     public int refillAmountBrasero = 10;
 
-    [ShowIf("isBrasero")]
-    [HideInInspector] public GameObject lightBrasero;
-    [ShowIf("isBrasero")]
-    [HideInInspector] public GameObject flameBrasero;
 
-    [ShowIf("isTorch")]
-    [HideInInspector] public GameObject lightTorch;
-    [ShowIf("isTorch")]
-    [HideInInspector] public GameObject flameTorch;
 
     [ShowIf("isTorch")]
     public int refillAmountTorch = 5;
@@ -32,9 +24,6 @@ public class TileUp : Tile
     [ShowIf("isVentilateur")]
     public TileDown.Direction dirWind;
     private TileDown.Direction oldDirWind;
-
-    [ShowIf("isKey")]
-    public GameObject lightKey;
 
     [ShowIf("isWind")]
     public TileDown.Direction direction;
@@ -65,6 +54,11 @@ public class TileUp : Tile
     [HideInInspector] public TileMap tileMap;
     [HideInInspector] public TileUpMap tileUpMap;
     [HideInInspector] public bool wasWind; 
+    [HideInInspector] public GameObject lightBrasero;
+    [HideInInspector] public GameObject flameBrasero;
+    [HideInInspector] public GameObject lightTorch;
+    [HideInInspector] public GameObject flameTorch;
+    [HideInInspector] public GameObject lightKey;
 
     public enum TileUpType
     {
@@ -104,8 +98,6 @@ public class TileUp : Tile
                 DestroyImmediate(block);
             };
         }
-
-        
 
         if (oldType != type)
         {
@@ -154,8 +146,8 @@ public class TileUp : Tile
                             DestroyImmediate(flameBrasero);
                         };
                     }
-
                     break;
+
                 case TileUpType.Key:
                     if (lightKey != null)
                     {
@@ -281,13 +273,15 @@ public class TileUp : Tile
                 lightKey.GetComponent<Light2D>().pointLightOuterRadius = sprites.radiusLightKey;
                 lightKey.GetComponent<Light2D>().color = sprites.colorLightKey;
                 break;
+
+
             case TileUpType.Torch:
                 GetComponent<SpriteRenderer>().sprite = spritesUp.spriteTorch[0];
                 if (lightTorch == null)
                 {
                     GameObject tempLightT = Instantiate(lightPrefab, transform);
                     lightTorch = tempLightT;
-                    GameObject tempFlameT = Instantiate(flameTorchPrefab, transform.position + new Vector3(0, 0.297f, 0), Quaternion.identity, transform);
+                    GameObject tempFlameT = Instantiate(flameTorchPrefab, transform.position + new Vector3(0, 0.58f, 0), Quaternion.identity, transform);
                     flameTorch = tempFlameT;
 
                     lightTorch.GetComponent<Light2D>().pointLightOuterRadius = sprites.radiusLightTorch;
@@ -344,7 +338,7 @@ public class TileUp : Tile
 
         pos += DirectionAddMovePos(direction);
 
-        if (tempTileUp == null || tempTileUp.type == TileUpType.WinTrappe || tempTileUp.type == TileUpType.Wall)
+        if (tempTileUp == null || tempTileUp.type == TileUpType.WinTrappe || tempTileUp.type == TileUpType.Wall || tempTileUp.type == TileUpType.Ventilateur)
         {
             return;
         }
@@ -354,12 +348,14 @@ public class TileUp : Tile
             tempTileUp.direction = direction;
             tempTileUp.pushNumberTiles = 1;
             tempTileUp.GetComponent<SpriteRenderer>().sprite = spriteReplace;
+            tempTileUp.GetComponent<SpriteRenderer>().material = spritesUp.windMat;
             RecursiveCheckNextWind(pos, direction, isPutting, spriteReplace);
         }
         else
         {
             tempTileUp.type = TileUpType.None;
             tempTileUp.GetComponent<SpriteRenderer>().sprite = spriteReplace;
+            tempTileUp.GetComponent<SpriteRenderer>().material = spritesUp.normalMat;
             RecursiveCheckNextWind(pos, direction, isPutting, spriteReplace);
         }
     }
@@ -385,8 +381,6 @@ public class TileUp : Tile
     private bool isWallCorner() { return wallPosition == WallPosition.Corner; }
     private bool isVentilateur() { return type == TileUpType.Ventilateur; }
     private bool isWind() { return type == TileUpType.Wind; }
-
-    private bool isKey() { return type == TileUpType.Key; }
 
     public enum WallCornerOrientation
     {
