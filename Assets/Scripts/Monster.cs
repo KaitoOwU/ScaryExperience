@@ -56,6 +56,10 @@ public class Monster : MonoBehaviour
             {
                 gameObject.SetActive(false);
             }
+            /*if (Vector3.Distance(player.position, transform.position) < playerRadius)
+            {
+                gameObject.SetActive(false);
+            }*/
         }
         
     }

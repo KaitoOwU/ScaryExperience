@@ -60,7 +60,7 @@ public class FlameManager : MonoBehaviour
         }
         
         _light.color = new Color(Mathf.Lerp(_minColor.r, _maxColor.r, _value / 10), Mathf.Lerp(_minColor.g, _maxColor.g, _value / 10), Mathf.Lerp(_minColor.b, _maxColor.b, _value / 10));
-        monsterSpawn._radius = _light.pointLightOuterRadius;
+        
         OnFlameValueChange?.Invoke(_value);
         if(_value <= 5)
         {
@@ -73,6 +73,7 @@ public class FlameManager : MonoBehaviour
             _noise.m_FrequencyGain = 0;
         }
     }
+
 
     
 }

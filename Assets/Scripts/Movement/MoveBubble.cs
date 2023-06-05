@@ -59,6 +59,8 @@ public class MoveBubble : MonoBehaviour
     public Action OnDie;
     public Action OnWin;
     public Action OnFirstMove;
+    public Action OnKeyTaken;
+    public Action OnCollectableTaken;
     
     private void Awake()
     {
@@ -177,12 +179,13 @@ public class MoveBubble : MonoBehaviour
                 _shouldStopCheckingTile = true;
                 return;
 
-            case TileUp.TileUpType.KeyFragment:
+            case TileUp.TileUpType.Key:
                 if (!tempTileUp.isActivated)
                 {
                     tempTileUp.isActivated = true;
                     AddKeyFragment(1);
                     tempTileUp.GoBackToWhite();
+                    OnKeyTaken?.Invoke();
                 }
                 break;
 
@@ -196,7 +199,7 @@ public class MoveBubble : MonoBehaviour
                 {
                     GetComponent<FlameManager>().ModifyFlame(false, tempTileUp.refillAmountTorch);
                     tempTileUp.isActivated = true;
-                    tempTileUp.GoBackToWhite();
+                    tempTileUp.SwitchOffTorch();
                     _shouldStopCheckingTile = true;
                 }
                 break;
@@ -240,6 +243,7 @@ public class MoveBubble : MonoBehaviour
                     tempTileUp.isActivated = true;
                     _collectibleAcquired = true;
                     tempTileUp.GoBackToWhite();
+                    OnCollectableTaken?.Invoke();
                 }
                 break;
 
@@ -321,6 +325,11 @@ public class MoveBubble : MonoBehaviour
                 break;
 
             case TileDown.TileType.Breakable:
+                if (_tileMovingUp != TileUp.TileUpType.Wind)
+                {
+                    _flameManager.ModifyFlame(true, 1);
+                }
+
                 if (!tempTile.isActivated)
                 {
                     tempTile.isActivated = true;

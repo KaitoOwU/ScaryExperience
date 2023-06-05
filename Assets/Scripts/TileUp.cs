@@ -2,6 +2,7 @@ using UnityEditor;
 using UnityEngine;
 using NaughtyAttributes;
 using UnityEngine.Rendering.Universal;
+using DG.Tweening;
 
 public class TileUp : Tile
 {
@@ -15,11 +16,7 @@ public class TileUp : Tile
     [ShowIf("isBrasero")]
     public int refillAmountBrasero = 10;
 
-    [ShowIf("isBrasero")]
-    public GameObject lightBrasero;
 
-    [ShowIf("isTorch")]
-    public GameObject lightTorch;
 
     [ShowIf("isTorch")]
     public int refillAmountTorch = 5;
@@ -47,7 +44,9 @@ public class TileUp : Tile
 
     [Header("- ToHook -")]
     [SerializeField] GameObject blockPrefab;
-    [SerializeField] GameObject lightPrefab;
+    public GameObject lightPrefab;
+    public GameObject flameTorchPrefab;
+    public GameObject flameBraseroPrefab;
     [SerializeField] SpriteUp sprites;
 
     //public hide
@@ -55,12 +54,17 @@ public class TileUp : Tile
     [HideInInspector] public TileMap tileMap;
     [HideInInspector] public TileUpMap tileUpMap;
     [HideInInspector] public bool wasWind; 
+    [HideInInspector] public GameObject lightBrasero;
+    [HideInInspector] public GameObject flameBrasero;
+    [HideInInspector] public GameObject lightTorch;
+    [HideInInspector] public GameObject flameTorch;
+    [HideInInspector] public GameObject lightKey;
 
     public enum TileUpType
     {
         None,
         Wall,
-        KeyFragment,
+        Key,
         Brasero,
         Torch,
         Block,
@@ -94,23 +98,6 @@ public class TileUp : Tile
                 DestroyImmediate(block);
             };
         }
-        
-
-        if (type != TileUpType.Torch && lightTorch != null)
-        {
-            UnityEditor.EditorApplication.delayCall += () =>
-            {
-                DestroyImmediate(lightTorch);
-            };
-        }
-
-        if (type != TileUpType.Brasero && lightBrasero != null)
-        {
-            UnityEditor.EditorApplication.delayCall += () =>
-            {
-                DestroyImmediate(lightBrasero);
-            };
-        }
 
         if (oldType != type)
         {
@@ -125,6 +112,50 @@ public class TileUp : Tile
                 case TileUpType.Ventilateur:
                     Vector3 nextPos = transform.position + DirectionAddMovePos(dirWind);
                     RecursiveCheckNextWind(nextPos, dirWind, true, spritesUp.spriteNone[0]);
+                    break;
+
+                case TileUpType.Torch:
+                    if (lightTorch != null)
+                    {
+                        UnityEditor.EditorApplication.delayCall += () =>
+                        {
+                            DestroyImmediate(lightTorch);
+                        };
+                    }
+                    if (flameTorch != null)
+                    {
+                        UnityEditor.EditorApplication.delayCall += () =>
+                        {
+                            DestroyImmediate(flameTorch);
+                        };
+                    }
+                    break;
+
+                case TileUpType.Brasero:
+                    if (lightBrasero != null)
+                    {
+                        UnityEditor.EditorApplication.delayCall += () =>
+                        {
+                            DestroyImmediate(lightBrasero);
+                        };
+                    }
+                    if (flameBrasero != null)
+                    {
+                        UnityEditor.EditorApplication.delayCall += () =>
+                        {
+                            DestroyImmediate(flameBrasero);
+                        };
+                    }
+                    break;
+
+                case TileUpType.Key:
+                    if (lightKey != null)
+                    {
+                        UnityEditor.EditorApplication.delayCall += () =>
+                        {
+                            DestroyImmediate(lightKey);
+                        };
+                    }
                     break;
 
                 default:
@@ -231,18 +262,31 @@ public class TileUp : Tile
                 gameObject.AddComponent<ShadowCaster2D>();
                 break;
 
-            case TileUpType.KeyFragment:
-                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteKeyFragment[0];
+            case TileUpType.Key:
+                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteKey[0];
+                if (lightKey == null)
+                {
+                    GameObject tempLightK = Instantiate(lightPrefab, transform);
+                    lightKey = tempLightK;
+
+                }
+                lightKey.GetComponent<Light2D>().pointLightOuterRadius = sprites.radiusLightKey;
+                lightKey.GetComponent<Light2D>().color = sprites.colorLightKey;
                 break;
+
+
             case TileUpType.Torch:
                 GetComponent<SpriteRenderer>().sprite = spritesUp.spriteTorch[0];
                 if (lightTorch == null)
                 {
                     GameObject tempLightT = Instantiate(lightPrefab, transform);
                     lightTorch = tempLightT;
+                    GameObject tempFlameT = Instantiate(flameTorchPrefab, transform.position + new Vector3(0, 0.58f, 0), Quaternion.identity, transform);
+                    flameTorch = tempFlameT;
+
+                    lightTorch.GetComponent<Light2D>().pointLightOuterRadius = sprites.radiusLightTorch;
+                    lightTorch.GetComponent<Light2D>().color = sprites.colorLightTorch;
                 }
-                lightTorch.GetComponent<Light2D>().pointLightOuterRadius = sprites.radiusLightTorch;
-                lightTorch.GetComponent<Light2D>().color = sprites.colorLightTorch;
                 break;
 
             case TileUpType.Brasero:
@@ -251,9 +295,12 @@ public class TileUp : Tile
                 {
                     GameObject tempLightB = Instantiate(lightPrefab, transform);
                     lightBrasero = tempLightB;
+                    GameObject tempFlameB = Instantiate(flameBraseroPrefab, transform.position + new Vector3(-0.093f, 0.527f, 0), Quaternion.identity, transform);
+                    flameBrasero = tempFlameB;                
+                    lightBrasero.GetComponent<Light2D>().pointLightOuterRadius = sprites.radiusLightBrasero;
+                    lightBrasero.GetComponent<Light2D>().color = sprites.colorLightBrasero;
                 }
-                lightBrasero.GetComponent<Light2D>().pointLightOuterRadius = sprites.radiusLightBrasero;
-                lightBrasero.GetComponent<Light2D>().color = sprites.colorLightBrasero;
+
                 break;
 
 
@@ -277,6 +324,9 @@ public class TileUp : Tile
                     block = temp;
                 }
                 break;
+            case TileUpType.Collectible:
+                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCollectible[0];
+                break;
 
         }
     }
@@ -288,7 +338,7 @@ public class TileUp : Tile
 
         pos += DirectionAddMovePos(direction);
 
-        if (tempTileUp == null || tempTileUp.type == TileUpType.WinTrappe || tempTileUp.type == TileUpType.Wall)
+        if (tempTileUp == null || tempTileUp.type == TileUpType.WinTrappe || tempTileUp.type == TileUpType.Wall || tempTileUp.type == TileUpType.Ventilateur)
         {
             return;
         }
@@ -298,16 +348,23 @@ public class TileUp : Tile
             tempTileUp.direction = direction;
             tempTileUp.pushNumberTiles = 1;
             tempTileUp.GetComponent<SpriteRenderer>().sprite = spriteReplace;
+            tempTileUp.GetComponent<SpriteRenderer>().material = spritesUp.windMat;
             RecursiveCheckNextWind(pos, direction, isPutting, spriteReplace);
         }
         else
         {
             tempTileUp.type = TileUpType.None;
             tempTileUp.GetComponent<SpriteRenderer>().sprite = spriteReplace;
+            tempTileUp.GetComponent<SpriteRenderer>().material = spritesUp.normalMat;
             RecursiveCheckNextWind(pos, direction, isPutting, spriteReplace);
         }
     }
 
+    public void SwitchOffTorch()
+    {
+        DOTween.To(() => lightTorch.GetComponent<Light2D>().pointLightOuterRadius, x => lightTorch.GetComponent<Light2D>().pointLightOuterRadius = x, 0, 0.5f).SetEase(Ease.OutExpo);
+        Destroy(flameTorch);
+    }
     public enum WallPosition
     {
         None,

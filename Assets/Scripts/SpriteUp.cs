@@ -9,17 +9,18 @@ public class SpriteUp : ScriptableObject
     public List<Sprite> spriteNone;
     public List<Sprite> spriteSideWall;
     public List<Sprite> spriteCornerWall;
-    public List<Sprite> spriteKeyFragment;
+    public List<Sprite> spriteKey;
     public List<Sprite> spriteBrasero;
     public List<Sprite> spriteWinTrappe;
     public List<Sprite> spriteTorch;
     public List<Sprite> spriteVentilateur;
     public List<Sprite> spriteWind;
+    public List<Sprite> spriteCollectible;
 
     [Header("- Color -")]
     public Color colorNone;
     public Color colorWall;
-    public Color colorKeyFragment;
+    public Color colorKey;
     public Color colorBrasero;
     public Color colorWinTrappe;
     public Color colorTorch;
@@ -31,4 +32,10 @@ public class SpriteUp : ScriptableObject
     public Color colorLightBrasero;
     public float radiusLightTorch;
     public Color colorLightTorch;
+
+    [Header("- Material -")]
+    public Material windMat;
+    public Material normalMat;
+    public float radiusLightKey;
+    public Color colorLightKey;
 }
