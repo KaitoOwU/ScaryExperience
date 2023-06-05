@@ -15,6 +15,7 @@ public class SpriteUp : ScriptableObject
     public List<Sprite> spriteTorch;
     public List<Sprite> spriteVentilateur;
     public List<Sprite> spriteWind;
+    public List<Sprite> spriteCollectible;
 
     [Header("- Color -")]
     public Color colorNone;
