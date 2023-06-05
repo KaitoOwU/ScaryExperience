@@ -105,13 +105,7 @@ public class TileUp : Tile
             };
         }
 
-        if (type != TileUpType.Key && lightKey != null)
-        {
-            UnityEditor.EditorApplication.delayCall += () =>
-            {
-                DestroyImmediate(lightKey);
-            };
-        }
+        
 
         if (oldType != type)
         {
@@ -158,6 +152,16 @@ public class TileUp : Tile
                         UnityEditor.EditorApplication.delayCall += () =>
                         {
                             DestroyImmediate(flameBrasero);
+                        };
+                    }
+
+                    break;
+                case TileUpType.Key:
+                    if (lightKey != null)
+                    {
+                        UnityEditor.EditorApplication.delayCall += () =>
+                        {
+                            DestroyImmediate(lightKey);
                         };
                     }
                     break;
