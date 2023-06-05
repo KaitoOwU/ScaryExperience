@@ -59,6 +59,8 @@ public class MoveBubble : MonoBehaviour
     public Action OnDie;
     public Action OnWin;
     public Action OnFirstMove;
+    public Action OnKeyTaken;
+    public Action OnCollectableTaken;
     
     private void Awake()
     {
@@ -183,6 +185,7 @@ public class MoveBubble : MonoBehaviour
                     tempTileUp.isActivated = true;
                     AddKeyFragment(1);
                     tempTileUp.GoBackToWhite();
+                    OnKeyTaken?.Invoke();
                 }
                 break;
 
@@ -240,6 +243,7 @@ public class MoveBubble : MonoBehaviour
                     tempTileUp.isActivated = true;
                     _collectibleAcquired = true;
                     tempTileUp.GoBackToWhite();
+                    OnCollectableTaken?.Invoke();
                 }
                 break;
 

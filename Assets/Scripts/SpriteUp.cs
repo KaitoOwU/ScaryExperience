@@ -35,4 +35,6 @@ public class SpriteUp : ScriptableObject
     [Header("- Material -")]
     public Material windMat;
     public Material normalMat;
+    public float radiusLightKey;
+    public Color colorLightKey;
 }

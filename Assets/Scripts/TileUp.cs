@@ -151,6 +151,16 @@ public class TileUp : Tile
                     }
                     break;
 
+                case TileUpType.Key:
+                    if (lightKey != null)
+                    {
+                        UnityEditor.EditorApplication.delayCall += () =>
+                        {
+                            DestroyImmediate(lightKey);
+                        };
+                    }
+                    break;
+
                 default:
                     break;
             }
