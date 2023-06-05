@@ -190,6 +190,8 @@ public class MoveBubble : MonoBehaviour
                 {
                     tempTileUp.isActivated = true;
                     _audioManager.PlaySFX(_audioManager.keyPickUp);
+                    tempTileUp.type = TileUpType.None;
+                    Destroy(tempTileUp.lightKey);
                     AddKeyFragment(1);
                     tempTileUp.GoBackToWhite();
                     OnKeyTaken?.Invoke();
