@@ -318,7 +318,7 @@ public class TileUp : Tile
 
         pos += DirectionAddMovePos(direction);
 
-        if (tempTileUp == null || tempTileUp.type == TileUpType.WinTrappe || tempTileUp.type == TileUpType.Wall)
+        if (tempTileUp == null || tempTileUp.type == TileUpType.WinTrappe || tempTileUp.type == TileUpType.Wall || tempTileUp.type == TileUpType.Ventilateur)
         {
             return;
         }
@@ -328,12 +328,14 @@ public class TileUp : Tile
             tempTileUp.direction = direction;
             tempTileUp.pushNumberTiles = 1;
             tempTileUp.GetComponent<SpriteRenderer>().sprite = spriteReplace;
+            tempTileUp.GetComponent<SpriteRenderer>().material = spritesUp.windMat;
             RecursiveCheckNextWind(pos, direction, isPutting, spriteReplace);
         }
         else
         {
             tempTileUp.type = TileUpType.None;
             tempTileUp.GetComponent<SpriteRenderer>().sprite = spriteReplace;
+            tempTileUp.GetComponent<SpriteRenderer>().material = spritesUp.normalMat;
             RecursiveCheckNextWind(pos, direction, isPutting, spriteReplace);
         }
     }

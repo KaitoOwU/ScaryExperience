@@ -321,6 +321,11 @@ public class MoveBubble : MonoBehaviour
                 break;
 
             case TileDown.TileType.Breakable:
+                if (_tileMovingUp != TileUp.TileUpType.Wind)
+                {
+                    _flameManager.ModifyFlame(true, 1);
+                }
+
                 if (!tempTile.isActivated)
                 {
                     tempTile.isActivated = true;
