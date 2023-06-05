@@ -17,8 +17,15 @@ public class LevelSelect : MonoBehaviour
 
     int currentDisplayedLevel = 0;
 
+    AudioManager _audioManager;
+
+    private void Awake()
+    {
+        _audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+    }
     public void DisplayNextLevel()
     {
+        _audioManager.PlaySFX(_audioManager.button);
         if (FindObjectsOfType<LevelUI>().Length > 1)
             return;
 
@@ -36,6 +43,7 @@ public class LevelSelect : MonoBehaviour
 
     public void DisplayPrevLevel()
     {
+        _audioManager.PlaySFX(_audioManager.button);
         if (FindObjectsOfType<LevelUI>().Length > 1)
             return;
 
@@ -52,6 +60,7 @@ public class LevelSelect : MonoBehaviour
 
     public void LaunchLevel()
     {
+        _audioManager.PlaySFX(_audioManager.button);
         DataManager.Instance.IsLevelLaunchedFromMainMenu = true;
 
         _transition.gameObject.SetActive(true);

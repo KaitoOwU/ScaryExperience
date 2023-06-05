@@ -12,6 +12,7 @@ public class MoveBubble : MonoBehaviour
     [Header("- References -")]
     [SerializeField] public GameManager manager;
     [SerializeField] Light2D _generalLight;
+    [SerializeField] MonsterSpawn _monsterSpawn;
 
     [Header("- Stats -")]
     [SerializeField] float _slideSensitivity;
@@ -38,6 +39,7 @@ public class MoveBubble : MonoBehaviour
     Vector3 _startPos;
     Vector2 _startPositionFinger;
     AnimationCurve _currentAnimCurve;
+    AudioManager _audioManager;
 
     bool _shouldStopCheckingTile;
 
@@ -75,6 +77,8 @@ public class MoveBubble : MonoBehaviour
         _distFromPlayer = _buddy.transform.position - transform.position;
         currentDelayLerpMove = _delayLerpMove;
         _goToPosition = transform.position;
+
+        
     }
 
     private void Start()
@@ -82,6 +86,7 @@ public class MoveBubble : MonoBehaviour
         _movementAmount = manager.tileMap.tileSize;
         _prePosList = new List<Vector3>();
         _flameManager = GetComponent<FlameManager>();
+        _audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
         //Debug.LogWarning(_movementAmount);
     }
 
@@ -115,10 +120,11 @@ public class MoveBubble : MonoBehaviour
     }
     private void Die ()
     {
+        _flameManager.isDeadFromMonsters = false;
         GetComponent<FlameManager>().ModifyFlame(true, 10000);
         Etouch.Touch.onFingerDown -= Touch_onFingerDown;
         Etouch.Touch.onFingerUp -= Touch_onFingerUp;
-
+        _monsterSpawn.playerIsDead = true;
         GameManager.Instance.LoseScreen.SetActive(true);
     }
 
@@ -183,6 +189,7 @@ public class MoveBubble : MonoBehaviour
                 if (!tempTileUp.isActivated)
                 {
                     tempTileUp.isActivated = true;
+                    _audioManager.PlaySFX(_audioManager.keyPickUp);
                     AddKeyFragment(1);
                     tempTileUp.GoBackToWhite();
                     OnKeyTaken?.Invoke();
@@ -296,6 +303,7 @@ public class MoveBubble : MonoBehaviour
                 if (_tileMovingUp != TileUp.TileUpType.Wind)
                 { 
                     _flameManager.ModifyFlame(true, 1);
+                    
                 }
                 //rock solid !
                 break;
@@ -311,10 +319,12 @@ public class MoveBubble : MonoBehaviour
                 break;
 
             case TileDown.TileType.Void:
-                // die
+                _audioManager.PlaySFX(_audioManager.fallSound);
+                OnDie?.Invoke();
+                break;
             case TileDown.TileType.Water:
                 //glou glou water
-                Debug.LogWarning("plouf");
+                _audioManager.PlaySFX(_audioManager.waterSound);
                 OnDie?.Invoke();
 
                 if (_tileMovingUp == TileUp.TileUpType.Wind)
@@ -338,7 +348,7 @@ public class MoveBubble : MonoBehaviour
                 }
                 else
                 {
-                    //Tu meurs bozooo
+                    _audioManager.PlaySFX(_audioManager.fallSound);
                     OnDie?.Invoke();
                     break;
                 }
@@ -482,6 +492,7 @@ public class MoveBubble : MonoBehaviour
         if (_firstMove)
         {
             _firstMove = false;
+            _monsterSpawn.StartSpawn();
             DOTween.To(() => _generalLight.intensity, x => _generalLight.intensity = x, 0.05f, 1f).SetEase(Ease.OutExpo);
         }
 
@@ -497,6 +508,8 @@ public class MoveBubble : MonoBehaviour
             _startPos = transform.position;
             _moveTimer = 0;
         }
+
+        _audioManager.PlaySFX(_audioManager.movementSounds[UnityEngine.Random.Range(0, _audioManager.movementSounds.Count)]);
     }
 
     private void ChangeAnimCurve ()

@@ -21,8 +21,18 @@ public class MonsterSpawn : MonoBehaviour
     [SerializeField] int _monsterCircleCount;
     [SerializeField] List<AnimationClip> _animationsCircle;
     List<GameObject> monstersCircle = new List<GameObject>();
-    void Start()
+
+    AudioManager _audioManager;
+
+    [HideInInspector] public bool playerIsDead = false;
+
+    private void Awake()
     {
+        _audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+    }
+    public void StartSpawn()
+    {
+        
         for (int i = 0; i < _monsterEyesCount; i++)
         {
             
@@ -47,7 +57,7 @@ public class MonsterSpawn : MonoBehaviour
             Spawn(temp);
             temp.SetActive(false);
         }
-
+        _audioManager.PlayGlbGlbSound();
     }
 
     IEnumerator SpawningCooldown(float time, GameObject monster)
@@ -63,23 +73,37 @@ public class MonsterSpawn : MonoBehaviour
 
     public void Spawn(GameObject monster)
     {
-        if (!monster.GetComponent<Monster>().isAroundCircle)
+        if (!playerIsDead)
         {
-            monster.GetComponent<Monster>().clip = _animationsEyes[Random.Range(0, _animationsEyes.Count)];
-            monster.transform.position = new Vector3(Random.Range(_player.position.x - width / 2, _player.position.x + width / 2), Random.Range(_player.position.y - height / 2, _player.position.y + height / 2), 0);
+            if (!monster.GetComponent<Monster>().isAroundCircle)
+            {
+                monster.GetComponent<Monster>().clip = _animationsEyes[Random.Range(0, _animationsEyes.Count)];
+                monster.transform.position = new Vector3(Random.Range(_player.position.x - width / 2, _player.position.x + width / 2), Random.Range(_player.position.y - height / 2, _player.position.y + height / 2), 0);
 
-            CheckIfInCirecle(_player, monster.transform, _radius);
+                CheckIfInCirecle(_player, monster.transform, _radius);
+            }
+            else
+            {
+                monster.GetComponent<Monster>().clip = _animationsCircle[Random.Range(0, _animationsCircle.Count)];
+                SpawnAroundCircle(monster);
+            }
+            monster.SetActive(true);
+            monster.GetComponent<Monster>().PlayClip();
+            StartCoroutine(SpawningCooldown(monster.GetComponent<Monster>().clip.length, monster));
         }
-        else
-        {
-            monster.GetComponent<Monster>().clip = _animationsCircle[Random.Range(0, _animationsCircle.Count)];
-            SpawnAroundCircle(monster);
-        }
-        monster.SetActive(true);
-        monster.GetComponent<Monster>().PlayClip();
-        StartCoroutine(SpawningCooldown(monster.GetComponent<Monster>().clip.length, monster));
+        
 
     }
+
+    public void RefreshCircle()
+    {
+        foreach (GameObject monster in monstersCircle)
+        {
+            monster.SetActive(false);
+            SpawningCooldown(0.5f, monster);
+        }
+    }
+
 
     private void OnDrawGizmos()
     {

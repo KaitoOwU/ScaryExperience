@@ -28,6 +28,15 @@ public class FlameManager : MonoBehaviour
     public float MaxValue { get => _max; }
     public float Value { get => _value; }
 
+    AudioManager _audioManager;
+
+    public bool isDeadFromMonsters = true;
+
+    private void Awake()
+    {
+        _audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+    }
+
     void Start()
     {
         _noise = _vCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
@@ -45,6 +54,8 @@ public class FlameManager : MonoBehaviour
         else 
         {
             _value += amount;
+            monsterSpawn.RefreshCircle();
+            
             
         }
         _value = Mathf.Clamp(_value, 0, _max);
@@ -52,6 +63,11 @@ public class FlameManager : MonoBehaviour
         {
             DOTween.To(() => _light.pointLightOuterRadius, x => _light.pointLightOuterRadius = x, 0, 0.5f).SetEase(Ease.OutExpo);
             DOTween.To(() => _light.intensity, x => _light.intensity = x, 0, 0.5f).SetEase(Ease.OutExpo);
+            if (isDeadFromMonsters)
+            {
+                _audioManager.PlaySFX(_audioManager.deathByMonsterSound);
+                monsterSpawn.playerIsDead = true;
+            }
         }
         else
         {
@@ -61,6 +77,7 @@ public class FlameManager : MonoBehaviour
         
         _light.color = new Color(Mathf.Lerp(_minColor.r, _maxColor.r, _value / 10), Mathf.Lerp(_minColor.g, _maxColor.g, _value / 10), Mathf.Lerp(_minColor.b, _maxColor.b, _value / 10));
         
+        _audioManager.glbGlb.volume = (10 - _value) / 10;
         OnFlameValueChange?.Invoke(_value);
         if(_value <= 5)
         {
@@ -72,8 +89,15 @@ public class FlameManager : MonoBehaviour
             _noise.m_AmplitudeGain = 0;
             _noise.m_FrequencyGain = 0;
         }
+
+        
+    }
+
+    private void Update()
+    {
+        monsterSpawn._radius = _light.pointLightOuterRadius;
     }
 
 
-    
+
 }
