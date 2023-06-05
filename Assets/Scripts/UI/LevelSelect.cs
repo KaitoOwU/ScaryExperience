@@ -57,7 +57,7 @@ public class LevelSelect : MonoBehaviour
         _transition.gameObject.SetActive(true);
         _transition.DOColor(new(0, 0, 0, 1), 1f).SetEase(Ease.OutExpo).OnComplete(() =>
         {
-            SceneManager.LoadScene(DataManager.Instance.LevelList[currentDisplayedLevel].levelScene.name);
+            SceneManager.LoadScene(DataManager.Instance.LevelList[currentDisplayedLevel].levelSceneName);
         });
     }
 }
