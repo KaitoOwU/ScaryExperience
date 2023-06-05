@@ -31,4 +31,6 @@ public class SpriteUp : ScriptableObject
     public Color colorLightBrasero;
     public float radiusLightTorch;
     public Color colorLightTorch;
+    public float radiusLightKey;
+    public Color colorLightKey;
 }

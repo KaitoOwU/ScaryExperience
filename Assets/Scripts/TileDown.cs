@@ -97,6 +97,7 @@ public class TileDown : Tile
                 break;
             case TileType.Water:
                 GetComponent<SpriteRenderer>().sprite = spritesDown.spriteWater[Random.Range(0, spritesDown.spriteWater.Count)];
+
                 break;
             case TileType.Breakable:
                 GetComponent<SpriteRenderer>().sprite = spritesDown.spriteBreakable[0];

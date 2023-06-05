@@ -33,6 +33,9 @@ public class TileUp : Tile
     public TileDown.Direction dirWind;
     private TileDown.Direction oldDirWind;
 
+    [ShowIf("isKey")]
+    public GameObject lightKey;
+
     [ShowIf("isWind")]
     public TileDown.Direction direction;
     [ShowIf("isWind")]
@@ -118,6 +121,14 @@ public class TileUp : Tile
             {
                 DestroyImmediate(lightBrasero);
                 DestroyImmediate(flameBrasero);
+            };
+        }
+
+        if (type != TileUpType.Key && lightKey != null)
+        {
+            UnityEditor.EditorApplication.delayCall += () =>
+            {
+                DestroyImmediate(lightKey);
             };
         }
 
@@ -242,6 +253,14 @@ public class TileUp : Tile
 
             case TileUpType.Key:
                 GetComponent<SpriteRenderer>().sprite = spritesUp.spriteKey[0];
+                if (lightKey == null)
+                {
+                    GameObject tempLightK = Instantiate(lightPrefab, transform);
+                    lightKey = tempLightK;
+
+                }
+                lightKey.GetComponent<Light2D>().pointLightOuterRadius = sprites.radiusLightKey;
+                lightKey.GetComponent<Light2D>().color = sprites.colorLightKey;
                 break;
             case TileUpType.Torch:
                 GetComponent<SpriteRenderer>().sprite = spritesUp.spriteTorch[0];
@@ -343,6 +362,8 @@ public class TileUp : Tile
     private bool isWallCorner() { return wallPosition == WallPosition.Corner; }
     private bool isVentilateur() { return type == TileUpType.Ventilateur; }
     private bool isWind() { return type == TileUpType.Wind; }
+
+    private bool isKey() { return type == TileUpType.Key; }
 
     public enum WallCornerOrientation
     {

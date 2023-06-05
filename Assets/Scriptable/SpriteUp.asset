@@ -39,7 +39,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: b33f096671858bc44ad547a1404a9511, type: 3}
   - {fileID: 21300000, guid: 807aeb9614ee9334cb6f016b586c2a72, type: 3}
   - {fileID: 21300000, guid: f71bedfe42a05e4419eec643ae9744bc, type: 3}
-  spriteKeyFragment:
+  spriteKey:
   - {fileID: 21300000, guid: 8de3fb304a933d3408c9a67ff8e375b1, type: 3}
   spriteBrasero:
   - {fileID: 21300000, guid: b4d19fa527e04ed4ba61ddd2d01bfc24, type: 3}
@@ -53,7 +53,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: e92ad583d1c2b0443888d144483b6fdd, type: 3}
   colorNone: {r: 1, g: 1, b: 1, a: 1}
   colorWall: {r: 0, g: 0.03729542, b: 0.509434, a: 1}
-  colorKeyFragment: {r: 0.37905586, g: 0, b: 0.6792453, a: 1}
+  colorKey: {r: 0, g: 0, b: 0, a: 0}
   colorBrasero: {r: 1, g: 0, b: 0, a: 1}
   colorWinTrappe: {r: 1, g: 0.9654912, b: 0, a: 1}
   colorTorch: {r: 1, g: 0.52494174, b: 0, a: 1}
@@ -63,3 +63,5 @@ MonoBehaviour:
   colorLightBrasero: {r: 0, g: 0.70356584, b: 1, a: 1}
   radiusLightTorch: 1
   colorLightTorch: {r: 1, g: 0.4627451, b: 0, a: 1}
+  radiusLightKey: 0.5
+  colorLightKey: {r: 1, g: 0.85272884, b: 0, a: 1}
