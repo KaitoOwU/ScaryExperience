@@ -16,15 +16,7 @@ public class TileUp : Tile
     [ShowIf("isBrasero")]
     public int refillAmountBrasero = 10;
 
-    [ShowIf("isBrasero")]
-    [HideInInspector] public GameObject lightBrasero;
-    [ShowIf("isBrasero")]
-    [HideInInspector] public GameObject flameBrasero;
 
-    [ShowIf("isTorch")]
-    [HideInInspector] public GameObject lightTorch;
-    [ShowIf("isTorch")]
-    [HideInInspector] public GameObject flameTorch;
 
     [ShowIf("isTorch")]
     public int refillAmountTorch = 5;
@@ -62,6 +54,11 @@ public class TileUp : Tile
     [HideInInspector] public TileMap tileMap;
     [HideInInspector] public TileUpMap tileUpMap;
     [HideInInspector] public bool wasWind; 
+    [HideInInspector] public GameObject lightBrasero;
+    [HideInInspector] public GameObject flameBrasero;
+    [HideInInspector] public GameObject lightTorch;
+    [HideInInspector] public GameObject flameTorch;
+    [HideInInspector] public GameObject lightKey;
 
     public enum TileUpType
     {
@@ -267,7 +264,17 @@ public class TileUp : Tile
 
             case TileUpType.Key:
                 GetComponent<SpriteRenderer>().sprite = spritesUp.spriteKey[0];
+                if (lightKey == null)
+                {
+                    GameObject tempLightK = Instantiate(lightPrefab, transform);
+                    lightKey = tempLightK;
+
+                }
+                lightKey.GetComponent<Light2D>().pointLightOuterRadius = sprites.radiusLightKey;
+                lightKey.GetComponent<Light2D>().color = sprites.colorLightKey;
                 break;
+
+
             case TileUpType.Torch:
                 GetComponent<SpriteRenderer>().sprite = spritesUp.spriteTorch[0];
                 if (lightTorch == null)
