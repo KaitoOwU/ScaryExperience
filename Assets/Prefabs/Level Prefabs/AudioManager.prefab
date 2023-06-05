@@ -313,7 +313,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: c54562c751ae1204285ab4c01e6e2d8b, type: 3}
   - {fileID: 8300000, guid: 086a50a73cdd25b4497aefed48757b2d, type: 3}
   waterSound: {fileID: 8300000, guid: 8701b75bf6f67f148b71db020ef6f9df, type: 3}
-  cranePickUpSound: {fileID: 8300000, guid: 75c999828d662214fba25fc4bb3b28ad, type: 3}
+  cranePickUpSound: {fileID: 8300000, guid: 6a016709b5c44104c8fd7dacc1c7416d, type: 3}
   deathByMonsterSound: {fileID: 8300000, guid: 0f9b7b43583e05d488ffd8be376e9347, type: 3}
   glbglbSound: {fileID: 8300000, guid: 071dfe724a968e44ab7888aee56c0475, type: 3}
   keyPickUp: {fileID: 8300000, guid: 6915cb01fd86e654ab25f9248a9a2ae1, type: 3}

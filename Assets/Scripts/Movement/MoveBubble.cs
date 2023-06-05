@@ -247,6 +247,7 @@ public class MoveBubble : MonoBehaviour
             case TileUp.TileUpType.Collectible:
                 if (!tempTileUp.isActivated)
                 {
+                    _audioManager.PlaySFX(_audioManager.cranePickUpSound);
                     tempTileUp.isActivated = true;
                     _collectibleAcquired = true;
                     tempTileUp.GoBackToWhite();
