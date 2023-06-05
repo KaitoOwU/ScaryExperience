@@ -7,11 +7,12 @@ using UnityEngine.UI;
 
 public class KeyUI : MonoBehaviour
 {
-    [SerializeField] MoveBubble _move;
+    MoveBubble _move;
     [SerializeField] Image _colDotted, _colActivated, _colWhite;
 
     private void Awake()
     {
+        _move = FindObjectOfType<MoveBubble>();
         _move.OnKeyTaken += CollectableTaken;
     }
 
@@ -20,8 +21,8 @@ public class KeyUI : MonoBehaviour
         _colWhite.DOColor(new(1, 1, 1, 1), 0);
         _colActivated.DOColor(new(1, 1, 1, 1), 0);
 
-        _colActivated.transform.DOScale(1, 1f).SetEase(Ease.OutExpo);
-        _colWhite.DOColor(new(1, 1, 1, 0), 1f).SetEase(Ease.OutExpo);
-        _colDotted.DOColor(new(1, 1, 1, 0), 1f).SetEase(Ease.OutExpo);
+        _colActivated.transform.DOScale(1, 2f).SetEase(Ease.OutExpo);
+        _colWhite.DOColor(new(1, 1, 1, 0), 2f).SetEase(Ease.OutExpo);
+        _colDotted.DOColor(new(1, 1, 1, 0), 2f).SetEase(Ease.OutExpo);
     }
 }
