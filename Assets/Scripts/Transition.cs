@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class Transition : MonoBehaviour
 {
+    [SerializeField] Transform _texts;
     [SerializeField] TextMeshProUGUI _levelNumber, _levelName;
     [SerializeField] Transform _leftLine, _rightLine;
     [SerializeField] Image _bg;
@@ -35,15 +36,16 @@ public class Transition : MonoBehaviour
         _leftLine.DOScaleX(22500, 1f).SetEase(Ease.OutExpo);
         _rightLine.DOScaleX(22500, 1f).SetEase(Ease.OutExpo);
         yield return new WaitForSecondsRealtime(0.7f);
-        _levelName.DOColor(Color.white, 5f).SetEase(Ease.InOutExpo);
-        yield return new WaitForSecondsRealtime(2.5f);
+        _levelName.DOScale(1.3f, 12f);
+        _levelName.DOColor(Color.white, 2f).SetEase(Ease.InOutExpo);
+        yield return new WaitForSecondsRealtime(2f);
         _bg.DOColor(new(0, 0, 0, 0), 4f).SetEase(Ease.InOutExpo);
 
-        yield return new WaitForSecondsRealtime(3f);
-        _levelName.DOColor(new(1, 1, 1, 0), 8f).SetEase(Ease.InOutExpo);
-        _levelNumber.DOColor(new(1, 1, 1, 0), 8f).SetEase(Ease.InOutExpo);
-        _rightLine.GetComponent<Image>().DOColor(new(1, 1, 1, 0), 8f).SetEase(Ease.InOutExpo);
-        _leftLine.GetComponent<Image>().DOColor(new(1, 1, 1, 0), 8f).SetEase(Ease.InOutExpo);
+        yield return new WaitForSecondsRealtime(4f);
+        _levelName.DOColor(new(1, 1, 1, 0), 6f).SetEase(Ease.InOutExpo);
+        _levelNumber.DOColor(new(1, 1, 1, 0), 6f).SetEase(Ease.InOutExpo);
+        _rightLine.GetComponent<Image>().DOColor(new(1, 1, 1, 0), 6f).SetEase(Ease.InOutExpo);
+        _leftLine.GetComponent<Image>().DOColor(new(1, 1, 1, 0), 6f).SetEase(Ease.InOutExpo);
 
         yield return new WaitForSecondsRealtime(3f);
         _bg.raycastTarget = false;

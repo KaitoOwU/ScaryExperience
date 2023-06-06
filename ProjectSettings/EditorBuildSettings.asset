@@ -9,10 +9,10 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 35204034bfee719418c3a0638552fce5
   - enabled: 1
-    path: Assets/Scenes/Kevin.unity
+    path: Assets/Scenes/DebugProg/Kevin.unity
     guid: d79fead486e41e640b27cd7da3e94a92
   - enabled: 1
-    path: Assets/Scenes/Justin.unity
+    path: Assets/Scenes/DebugProg/Justin.unity
     guid: 6edb07a5473ee2449a9c237366ee2ba2
   - enabled: 1
     path: Assets/Scenes/Alexis.unity

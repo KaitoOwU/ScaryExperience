@@ -10,10 +10,14 @@ public class KeyUI : MonoBehaviour
     MoveBubble _move;
     [SerializeField] Image _colDotted, _colActivated, _colWhite;
 
+    AudioManager _audioManager;
+
+
     private void Awake()
     {
         _move = FindObjectOfType<MoveBubble>();
         _move.OnKeyTaken += CollectableTaken;
+        _audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
     }
 
     private void CollectableTaken()
