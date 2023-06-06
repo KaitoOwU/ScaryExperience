@@ -322,7 +322,7 @@ public class TileUp : Tile
                 {
                     GameObject tempLightT = Instantiate(lightPrefab, transform);
                     lightTorch = tempLightT;
-                    GameObject tempFlameT = Instantiate(flameTorchPrefab, transform.position + new Vector3(0, 0.58f, 0), Quaternion.identity, transform);
+                    GameObject tempFlameT = Instantiate(flameTorchPrefab, transform.position + new Vector3(0, 0.3f, 0), Quaternion.identity, transform);
                     flameTorch = tempFlameT;
 
                     lightTorch.GetComponent<Light2D>().pointLightOuterRadius = sprites.radiusLightTorch;
