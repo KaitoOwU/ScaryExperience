@@ -14,7 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/DebugProg/Justin.unity
     guid: 6edb07a5473ee2449a9c237366ee2ba2
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Alexis.unity
     guid: 0f2974f6900e7384fb2cd15f9f9068e3
   m_configObjects:
