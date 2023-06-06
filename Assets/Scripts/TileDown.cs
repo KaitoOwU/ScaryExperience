@@ -46,6 +46,7 @@ public class TileDown : Tile
         switch (type)
         {
             case TileType.Rock:
+                GetComponent<SpriteRenderer>().color = spritesDown.colorRock;
                 switch (position)
                 {
                     case Position.Normal:
