@@ -22,7 +22,7 @@ public class TileDown : Tile
 
     [HideInInspector] public int idWater;
 
-    public bool isActivated = false;
+    [HideInInspector] public bool isActivated = false;
 
     public enum TileType
     {
@@ -46,6 +46,16 @@ public class TileDown : Tile
 
     public void RefreshColorSprite()
     {
+        switch (oldType)
+        {
+            case TileType.Ice:
+                GetComponent<SpriteRenderer>().color = Color.white;
+                break;
+            case TileType.Void:
+                GetComponent<SpriteRenderer>().color = Color.white;
+                GetComponent<SpriteRenderer>().material = spritesDown.normalMat;
+                break;
+        }
         switch (type)
         {
             case TileType.Rock:
@@ -131,16 +141,7 @@ public class TileDown : Tile
                 break;
         }
 
-        switch (oldType)
-        {
-            case TileType.Ice:
-                GetComponent<SpriteRenderer>().color = Color.white;
-                break;
-            case TileType.Void:
-                GetComponent<SpriteRenderer>().color = Color.white;
-                GetComponent<SpriteRenderer>().material = spritesDown.normalMat;
-                break;
-        }
+        
     }
 
     [Button("RefreshTile")]
