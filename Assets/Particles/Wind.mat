@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Wind
-  m_Shader: {fileID: -6465566751694194690, guid: a036072093cffc942b8a9809d3823912, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 9281b5554500ec144a9e81816ee753b3, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 2
@@ -89,6 +89,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _TexelSize_1715c2269d08452fae0ccd622358b5f4_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 3ace2014668884c459e083a8e66d156d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -135,12 +139,13 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Colorwind: {r: 1, g: 1, b: 1, a: 1}
+    - _Colorwind: {r: 0.78679246, g: 1, b: 0.9790844, a: 1}
+    - _Direction: {r: 0, g: -1, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
-    - _NoiseSpeed: {r: 0, g: 1, b: 0, a: 0}
-    - _NoiseTiling: {r: 3, g: 0.2, b: 0, a: 0}
+    - _NoiseSpeed: {r: 1, g: 1, b: 0, a: 0}
+    - _NoiseTiling: {r: 3, g: 0.3, b: 0, a: 0}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
-    - _ResultMultiply: {r: 3, g: 3, b: 3, a: 1}
+    - _ResultMultiply: {r: 10, g: 10, b: 10, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_BuildTextureStacks: []

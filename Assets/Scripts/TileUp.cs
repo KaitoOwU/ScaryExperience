@@ -112,6 +112,7 @@ public class TileUp : Tile
                 case TileUpType.Ventilateur:
                     Vector3 nextPos = transform.position + DirectionAddMovePos(dirWind);
                     RecursiveCheckNextWind(nextPos, dirWind, true, spritesUp.spriteNone[0]);
+                    oldType = TileUpType.None;
                     break;
 
                 case TileUpType.Torch:
@@ -163,7 +164,7 @@ public class TileUp : Tile
             }
         }
 
-        if (oldDirWind != dirWind)
+        if (oldDirWind != dirWind && type == TileUpType.Ventilateur)   
         {
             Vector3 nextPosSuppr = transform.position + DirectionAddMovePos(oldDirWind);
             RecursiveCheckNextWind(nextPosSuppr, oldDirWind, true, spritesUp.spriteNone[0]);
@@ -256,6 +257,18 @@ public class TileUp : Tile
                             case WallCornerOrientation.RightUpInterior:
                                 GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[7];
                                 break;
+                            case WallCornerOrientation.LeftDownDouble:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[8];
+                                break;
+                            case WallCornerOrientation.RightDownDouble:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[9];
+                                break;
+                            case WallCornerOrientation.LeftUpDouble:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[10];
+                                break;
+                            case WallCornerOrientation.RightUpDouble:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[11];
+                                break;
                         }
                         break;
                 }
@@ -295,7 +308,7 @@ public class TileUp : Tile
                 {
                     GameObject tempLightB = Instantiate(lightPrefab, transform);
                     lightBrasero = tempLightB;
-                    GameObject tempFlameB = Instantiate(flameBraseroPrefab, transform.position + new Vector3(-0.093f, 0.527f, 0), Quaternion.identity, transform);
+                    GameObject tempFlameB = Instantiate(flameBraseroPrefab, transform.position + new Vector3(0, 0.527f, 0), Quaternion.identity, transform);
                     flameBrasero = tempFlameB;                
                     lightBrasero.GetComponent<Light2D>().pointLightOuterRadius = sprites.radiusLightBrasero;
                     lightBrasero.GetComponent<Light2D>().color = sprites.colorLightBrasero;
@@ -349,6 +362,23 @@ public class TileUp : Tile
             tempTileUp.pushNumberTiles = 1;
             tempTileUp.GetComponent<SpriteRenderer>().sprite = spriteReplace;
             tempTileUp.GetComponent<SpriteRenderer>().material = spritesUp.windMat;
+
+            switch (direction)
+            {
+                case TileDown.Direction.Left:
+                    tempTileUp.transform.rotation = Quaternion.Euler(0, 0, 90);
+                    break;
+                case TileDown.Direction.Right:
+                    tempTileUp.transform.rotation = Quaternion.Euler(0, 0, -90);
+                    break;
+                case TileDown.Direction.Up:
+                    tempTileUp.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    break;
+                case TileDown.Direction.Down:
+                    tempTileUp.transform.rotation = Quaternion.Euler(0, 0, -180);
+                    break;
+            }
+
             RecursiveCheckNextWind(pos, direction, isPutting, spriteReplace);
         }
         else
@@ -356,6 +386,8 @@ public class TileUp : Tile
             tempTileUp.type = TileUpType.None;
             tempTileUp.GetComponent<SpriteRenderer>().sprite = spriteReplace;
             tempTileUp.GetComponent<SpriteRenderer>().material = spritesUp.normalMat;
+            tempTileUp.transform.rotation = Quaternion.Euler(0, 0, 0);
+
             RecursiveCheckNextWind(pos, direction, isPutting, spriteReplace);
         }
     }
@@ -391,7 +423,12 @@ public class TileUp : Tile
         LeftUpInterior,
         RightUpInterior,
         LeftDownInterior,
-        RightDownInterior
+        RightDownInterior,
+        LeftDownDouble,
+        RightDownDouble,
+        LeftUpDouble,
+        RightUpDouble
+
     }
 
     public enum WallSideOrientation

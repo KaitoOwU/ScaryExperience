@@ -22,5 +22,9 @@ public class SpriteDown : ScriptableObject
     public Color colorVoid;
     public Color colorWater;
     public Color colorBreakable;
+
+    [Header("- Material -")]
+    public Material voidMat;
+    public Material normalMat;
 }
 
