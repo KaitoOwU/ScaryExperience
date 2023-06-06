@@ -1902,10 +1902,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _levels:
-  - _levelSceneName: "01_LD D\xE9placements"
-    _levelName: "D\xE9placements"
-  - _levelSceneName: "02_LD D\xE9placements"
-    _levelName: "D\xE9placements 2"
+  - _levelSceneName: Tuto Dalles Friables
+    _levelName: 
+  - _levelSceneName: Tuto Deplacements
+    _levelName: 
+  - _levelSceneName: Tuto Glace
+    _levelName: 
+  - _levelSceneName: Tuto Vent
+    _levelName: 
+  - _levelSceneName: Tuto Vent
+    _levelName: 
+  - _levelSceneName: "04_LD D\xE9placements"
+    _levelName: 
 --- !u!1 &1598945135
 GameObject:
   m_ObjectHideFlags: 0
