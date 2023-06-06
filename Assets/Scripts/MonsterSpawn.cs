@@ -22,6 +22,7 @@ public class MonsterSpawn : MonoBehaviour
     [SerializeField] List<AnimationClip> _animationsCircle;
     List<GameObject> monstersCircle = new List<GameObject>();
 
+
     AudioManager _audioManager;
 
     [HideInInspector] public bool playerIsDead = false;
@@ -41,6 +42,7 @@ public class MonsterSpawn : MonoBehaviour
             temp.GetComponent<Monster>().playerRadius = _radius;
             temp.GetComponent<Monster>().player = _player;
             temp.GetComponent<Monster>().isAroundCircle = false;
+            temp.GetComponent<Monster>().monsterSpawn = this;
             Spawn(temp);
             temp.SetActive(false);
         }
@@ -54,6 +56,7 @@ public class MonsterSpawn : MonoBehaviour
             temp.GetComponent<Monster>().player = _player;
             temp.GetComponent<Monster>().isAroundCircle = true;
             temp.GetComponent<SpriteRenderer>().material = litMaterial;
+            temp.GetComponent<Monster>().monsterSpawn = this;
             Spawn(temp);
             temp.SetActive(false);
         }
@@ -64,6 +67,7 @@ public class MonsterSpawn : MonoBehaviour
     {
 
         yield return new WaitForSeconds(time);
+        
         monster.SetActive(false);
         yield return new WaitForSeconds(0.5f);
         Spawn(monster);
@@ -88,6 +92,7 @@ public class MonsterSpawn : MonoBehaviour
                 SpawnAroundCircle(monster);
             }
             monster.SetActive(true);
+
             monster.GetComponent<Monster>().PlayClip();
             StartCoroutine(SpawningCooldown(monster.GetComponent<Monster>().clip.length, monster));
         }
@@ -138,6 +143,7 @@ public class MonsterSpawn : MonoBehaviour
 
     void SpawnAroundCircle(GameObject monster)
     {
+
         monster.transform.localPosition = Vector3.zero;
         float angleDeg = Random.Range(-180, 180);
         float angleRad = Mathf.Deg2Rad * angleDeg;
@@ -151,5 +157,7 @@ public class MonsterSpawn : MonoBehaviour
         monster.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90 + rotationAngle));
 
     }
+
+    
 
 }
