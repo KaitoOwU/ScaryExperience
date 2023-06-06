@@ -19,6 +19,9 @@ public class TileDown : Tile
     [ShowIf("isWater")]
     public WaterType waterType;
 
+
+    [HideInInspector] public int idWater;
+
     public bool isActivated = false;
 
     public enum TileType
@@ -103,15 +106,19 @@ public class TileDown : Tile
                 {
                     case WaterType.Normal:
                         GetComponent<SpriteRenderer>().sprite = spritesDown.spriteWater[0];
+                        idWater = 0;
                         break;
                     case WaterType.SideR:
                         GetComponent<SpriteRenderer>().sprite = spritesDown.spriteWater[1];
+                        idWater = 1;
                         break;
                     case WaterType.Middle:
                         GetComponent<SpriteRenderer>().sprite = spritesDown.spriteWater[2];
+                        idWater = 2;
                         break;
                     case WaterType.SideL:
                         GetComponent<SpriteRenderer>().sprite = spritesDown.spriteWater[3];
+                        idWater = 3;
                         break;
 
                 }

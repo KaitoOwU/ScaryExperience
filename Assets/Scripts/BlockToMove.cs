@@ -10,7 +10,7 @@ public class BlockToMove : MonoBehaviour
     [HideInInspector] public Vector3 toGoPosBlock;
     [HideInInspector] public TileUp lastTileUp;
     private MoveBubble _bubble;
-    [SerializeField] Sprite waterRock;
+    [SerializeField] List<Sprite> waterRock;
 
     AudioManager _audioManager;
 
@@ -165,7 +165,8 @@ public class BlockToMove : MonoBehaviour
             case TileDown.TileType.Water:
                 _audioManager.PlaySFX(_audioManager.waterSound);
                 tempTile.type = TileDown.TileType.WaterRock;
-                tempTile.GetComponent<SpriteRenderer>().sprite = waterRock;
+                int idTemp = tempTile.GetComponent<TileDown>().idWater;
+                tempTile.GetComponent<SpriteRenderer>().sprite = waterRock[idTemp];
                 Destroy(gameObject, 0.4f);
                 tempTileUp.type = TileUp.TileUpType.None;
                 break;
