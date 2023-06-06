@@ -39,6 +39,10 @@ MonoBehaviour:
   - {fileID: 21300000, guid: b33f096671858bc44ad547a1404a9511, type: 3}
   - {fileID: 21300000, guid: 807aeb9614ee9334cb6f016b586c2a72, type: 3}
   - {fileID: 21300000, guid: f71bedfe42a05e4419eec643ae9744bc, type: 3}
+  - {fileID: 21300000, guid: 6f9dff0ecb0310341bdffc832421cd68, type: 3}
+  - {fileID: 21300000, guid: d3b914ec0a8afa24098d4ac1fca311cb, type: 3}
+  - {fileID: 21300000, guid: 3840bba3de8e4b848a12633c11b58428, type: 3}
+  - {fileID: 21300000, guid: b41a97b802424b943b6a047a4ed6636f, type: 3}
   spriteKey:
   - {fileID: 21300000, guid: 8de3fb304a933d3408c9a67ff8e375b1, type: 3}
   spriteBrasero:
@@ -64,8 +68,10 @@ MonoBehaviour:
   radiusLightBrasero: 2
   colorLightBrasero: {r: 0, g: 0.70356584, b: 1, a: 1}
   radiusLightTorch: 1
-  colorLightTorch: {r: 1, g: 0.4627451, b: 0, a: 1}
-  windMat: {fileID: 2100000, guid: 00c7187c1da760248891b696881cb47f, type: 2}
-  normalMat: {fileID: 2100000, guid: e6e35d6c38690f046ac81507002ae7b6, type: 2}
+  colorLightTorch: {r: 1, g: 0.5000122, b: 0, a: 1}
   radiusLightKey: 0.5
   colorLightKey: {r: 1, g: 0.85272884, b: 0, a: 1}
+  radiusLightTrappe: 0.5
+  colorLightTrappe: {r: 1, g: 1, b: 1, a: 1}
+  windMat: {fileID: 2100000, guid: 00c7187c1da760248891b696881cb47f, type: 2}
+  normalMat: {fileID: 2100000, guid: e6e35d6c38690f046ac81507002ae7b6, type: 2}

@@ -47,6 +47,7 @@ public class TileUp : Tile
     public GameObject lightPrefab;
     public GameObject flameTorchPrefab;
     public GameObject flameBraseroPrefab;
+    public GameObject grillePrefab;
     [SerializeField] SpriteUp sprites;
 
     //public hide
@@ -59,6 +60,8 @@ public class TileUp : Tile
     [HideInInspector] public GameObject lightTorch;
     [HideInInspector] public GameObject flameTorch;
     [HideInInspector] public GameObject lightKey;
+    [HideInInspector] public GameObject lightTrappe;
+    [HideInInspector] public GameObject grilleTrappe;
 
     public enum TileUpType
     {
@@ -106,7 +109,14 @@ public class TileUp : Tile
             switch (oldType)
             {
                 case TileUpType.Wall:
-                    DestroyImmediate(GetComponent<ShadowCaster2D>());
+                    if(GetComponent<ShadowCaster2D>() != null)
+                    {
+                        UnityEditor.EditorApplication.delayCall += () =>
+                        {
+                            DestroyImmediate(GetComponent<ShadowCaster2D>());
+                        };
+                    }
+                    
                     break;
 
                 case TileUpType.Ventilateur:
@@ -155,6 +165,22 @@ public class TileUp : Tile
                         UnityEditor.EditorApplication.delayCall += () =>
                         {
                             DestroyImmediate(lightKey);
+                        };
+                    }
+                    break;
+                case TileUpType.WinTrappe:
+                    if (lightTrappe != null)
+                    {
+                        UnityEditor.EditorApplication.delayCall += () =>
+                        {
+                            DestroyImmediate(lightTrappe);
+                        };
+                    }
+                    if(grilleTrappe != null)
+                    {
+                        UnityEditor.EditorApplication.delayCall += () =>
+                        {
+                            DestroyImmediate(grilleTrappe);
                         };
                     }
                     break;
@@ -257,10 +283,24 @@ public class TileUp : Tile
                             case WallCornerOrientation.RightUpInterior:
                                 GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[7];
                                 break;
+                            case WallCornerOrientation.LeftDownDouble:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[8];
+                                break;
+                            case WallCornerOrientation.RightDownDouble:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[9];
+                                break;
+                            case WallCornerOrientation.LeftUpDouble:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[10];
+                                break;
+                            case WallCornerOrientation.RightUpDouble:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[11];
+                                break;
                         }
                         break;
                 }
                 gameObject.AddComponent<ShadowCaster2D>();
+                ShadowCaster2D shadowCastTemp = GetComponent<ShadowCaster2D>();
+                shadowCastTemp.selfShadows = true;
                 break;
 
             case TileUpType.Key:
@@ -282,12 +322,14 @@ public class TileUp : Tile
                 {
                     GameObject tempLightT = Instantiate(lightPrefab, transform);
                     lightTorch = tempLightT;
-                    GameObject tempFlameT = Instantiate(flameTorchPrefab, transform.position + new Vector3(0, 0.58f, 0), Quaternion.identity, transform);
+                    GameObject tempFlameT = Instantiate(flameTorchPrefab, transform.position + new Vector3(0, 0.3f, 0), Quaternion.identity, transform);
                     flameTorch = tempFlameT;
 
-                    lightTorch.GetComponent<Light2D>().pointLightOuterRadius = sprites.radiusLightTorch;
-                    lightTorch.GetComponent<Light2D>().color = sprites.colorLightTorch;
+                    
                 }
+                flameTorch.transform.localPosition = new Vector3(0, 0.3f, 0);
+                lightTorch.GetComponent<Light2D>().pointLightOuterRadius = sprites.radiusLightTorch;
+                lightTorch.GetComponent<Light2D>().color = sprites.colorLightTorch;
                 break;
 
             case TileUpType.Brasero:
@@ -298,15 +340,30 @@ public class TileUp : Tile
                     lightBrasero = tempLightB;
                     GameObject tempFlameB = Instantiate(flameBraseroPrefab, transform.position + new Vector3(0, 0.527f, 0), Quaternion.identity, transform);
                     flameBrasero = tempFlameB;                
-                    lightBrasero.GetComponent<Light2D>().pointLightOuterRadius = sprites.radiusLightBrasero;
-                    lightBrasero.GetComponent<Light2D>().color = sprites.colorLightBrasero;
+                    
                 }
+                flameBrasero.transform.localPosition = new Vector3(0, 0.527f, 0);
+                lightBrasero.GetComponent<Light2D>().pointLightOuterRadius = sprites.radiusLightBrasero;
+                lightBrasero.GetComponent<Light2D>().color = sprites.colorLightBrasero;
 
                 break;
 
 
             case TileUpType.WinTrappe:
                 GetComponent<SpriteRenderer>().sprite = spritesUp.spriteWinTrappe[0];
+                if (lightTrappe == null)
+                {
+                    GameObject tempLightW = Instantiate(lightPrefab, transform);
+                    lightTrappe = tempLightW;
+
+                }
+                lightTrappe.GetComponent<Light2D>().pointLightOuterRadius = sprites.radiusLightTrappe;
+                lightTrappe.GetComponent<Light2D>().color = sprites.colorLightTrappe;
+                if(grilleTrappe == null)
+                {
+                    GameObject tempGrille= Instantiate(grillePrefab, transform);
+                    grilleTrappe = tempGrille;
+                }
                 break;
             case TileUpType.Ventilateur:
                 Vector3 nextPos = transform.position + DirectionAddMovePos(dirWind);
@@ -411,7 +468,12 @@ public class TileUp : Tile
         LeftUpInterior,
         RightUpInterior,
         LeftDownInterior,
-        RightDownInterior
+        RightDownInterior,
+        LeftDownDouble,
+        RightDownDouble,
+        LeftUpDouble,
+        RightUpDouble
+
     }
 
     public enum WallSideOrientation

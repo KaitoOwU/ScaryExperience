@@ -123,4 +123,8 @@ MonoBehaviour:
     m_RotationOrder: 4
   toGoPosBlock: {x: 0, y: 0, z: 0}
   lastTileUp: {fileID: 0}
-  waterRock: {fileID: 21300000, guid: a1b27a4d990a5dc40a1d4227126c2211, type: 3}
+  waterRock:
+  - {fileID: 21300000, guid: a1b27a4d990a5dc40a1d4227126c2211, type: 3}
+  - {fileID: 21300000, guid: 935db56beb536064997c6e37b1f24e0e, type: 3}
+  - {fileID: 21300000, guid: edda6f6df39f90c4485705f49c94c553, type: 3}
+  - {fileID: 21300000, guid: 2f0724fbd685a044eaf3a2ac6bd3b4c4, type: 3}
