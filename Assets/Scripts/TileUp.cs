@@ -112,6 +112,7 @@ public class TileUp : Tile
                 case TileUpType.Ventilateur:
                     Vector3 nextPos = transform.position + DirectionAddMovePos(dirWind);
                     RecursiveCheckNextWind(nextPos, dirWind, true, spritesUp.spriteNone[0]);
+                    oldType = TileUpType.None;
                     break;
 
                 case TileUpType.Torch:
@@ -163,7 +164,7 @@ public class TileUp : Tile
             }
         }
 
-        if (oldDirWind != dirWind)
+        if (oldDirWind != dirWind && type == TileUpType.Wind)
         {
             Vector3 nextPosSuppr = transform.position + DirectionAddMovePos(oldDirWind);
             RecursiveCheckNextWind(nextPosSuppr, oldDirWind, true, spritesUp.spriteNone[0]);
