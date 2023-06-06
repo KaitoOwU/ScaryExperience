@@ -42,7 +42,8 @@ public class Pause : MonoBehaviour
     public void RestartLevel()
     {
         _audioManager.PlaySFX(_audioManager.pause);
-        DataManager.Instance.IsLevelLaunchedFromMainMenu = false;
+        if(DataManager.Instance != null)
+            DataManager.Instance.IsLevelLaunchedFromMainMenu = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
