@@ -1,28 +1,35 @@
+using DG.Tweening;
+using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LevelUI : MonoBehaviour
 {
-    int levelNumber;
 
-    public void SetupUI(int levelNumber, Transform toModify)
+    [SerializeField, ReadOnly] int levelNumber;
+    [SerializeField] TextMeshProUGUI _levelName;
+    [SerializeField] Button _play;
+    LevelSelect levelSelect;
+
+    public void SetupUI(int levelNumber)
     {
         this.levelNumber = levelNumber;
-        GetComponentInChildren<TextMeshProUGUI>().text = "" + levelNumber;
-        if(levelNumber > 3)
-        {
-            toModify.localPosition += new Vector3(0f, 350f, 0f);
-        } else
-        {
-            toModify.localPosition = Vector3.zero;
-        }
+        _levelName.text = "" + (levelNumber + 1);
+    }
+
+    private void Start()
+    {
+        levelSelect = FindObjectOfType<LevelSelect>();
+        _play.interactable = DataManager.Instance.LevelData[levelNumber].IsUnlocked;
     }
 
     public void LaunchLevel()
     {
-        SceneManager.LoadScene("Level" + levelNumber);
+        levelSelect.LaunchLevel();
     }
 }

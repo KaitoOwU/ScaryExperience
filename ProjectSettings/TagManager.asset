@@ -12,6 +12,7 @@ TagManager:
   - Row2
   - Void
   - Water
+  - Audio
   layers:
   - Default
   - TransparentFX

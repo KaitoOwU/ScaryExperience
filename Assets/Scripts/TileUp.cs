@@ -1,197 +1,433 @@
-using System.Collections;
-using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using NaughtyAttributes;
 using UnityEngine.Rendering.Universal;
+using DG.Tweening;
 
 public class TileUp : Tile
 {
     [Header("- Stats -")]
-    public MoveBubble.TileUpType type;
-    private MoveBubble.TileUpType oldType;
+    public TileUpType type;
+    private TileUpType oldType;
 
-    [ShowIf("isLever")]
-    public GameObject door;
-    private GameObject oldDoor;
-
-    [ShowIf("isKeyDoor")]
-    public int numberKeyRequired = 1;
+    [ShowIf("isWinTrappe")]
+    public int numberPartKeyRequired = 1;
 
     [ShowIf("isBrasero")]
-    public int refillAmount = 10;
+    public int refillAmountBrasero = 10;
 
-    [ShowIf("isOneWayWall")]
-    public TileDown.Direction directionToGoThrough;
 
-    [ShowIf("isPortalDoor")]
-    public GameObject otherDoor;
-    private GameObject oldOtherDoor;
+
+    [ShowIf("isTorch")]
+    public int refillAmountTorch = 5;
+
+    [ShowIf("isVentilateur")]
+    public TileDown.Direction dirWind;
+    private TileDown.Direction oldDirWind;
+
+    [ShowIf("isWind")]
+    public TileDown.Direction direction;
+    [ShowIf("isWind")]
+    public int pushNumberTiles;
 
     [ShowIf("isBlock")]
     public GameObject block;
 
-    [ShowIf("isPressurePlate")]
-    public GameObject doorPressurePlate;
-    private GameObject oldDoorPressurePlate;
+    [ShowIf("isWall")]
+    public WallPosition wallPosition;
+
+    [ShowIf("isWallSide")]
+    public WallSideOrientation _wallSideOrientation;
+
+    [ShowIf("isWallCorner")]
+    public WallCornerOrientation _wallCornerOrientation;
 
     [Header("- ToHook -")]
     [SerializeField] GameObject blockPrefab;
+    public GameObject lightPrefab;
+    public GameObject flameTorchPrefab;
+    public GameObject flameBraseroPrefab;
     [SerializeField] SpriteUp sprites;
 
+    //public hide
     [HideInInspector] public bool isActivated = false;
+    [HideInInspector] public TileMap tileMap;
+    [HideInInspector] public TileUpMap tileUpMap;
+    [HideInInspector] public bool wasWind; 
+    [HideInInspector] public GameObject lightBrasero;
+    [HideInInspector] public GameObject flameBrasero;
+    [HideInInspector] public GameObject lightTorch;
+    [HideInInspector] public GameObject flameTorch;
+    [HideInInspector] public GameObject lightKey;
+
+    public enum TileUpType
+    {
+        None,
+        Wall,
+        Key,
+        Brasero,
+        Torch,
+        Block,
+        WinTrappe,
+        Collectible,
+        Ventilateur,
+        Wind
+    }
 
     public void GoBackToWhite ()
     {
         GetComponent<SpriteRenderer>().color = Color.white;
+        GetComponent<SpriteRenderer>().sprite = spritesUp.spriteNone[0];
     }
 
+    [Button("RefreshTile")]
+    private void RefreshTile()
+    {
+        RefreshColorSprite(false);
+    }
+
+    #if(UNITY_EDITOR)
     // change la door lorqu'on la met dans l'inspecteur
     private void OnValidate()
     {
-        // si l'on ne désigne plus la case comme étant block, on delete le block (object)
-        if (type != MoveBubble.TileUpType.Block && block != null)
+        // si l'on ne dï¿½signe plus la case comme ï¿½tant block, on delete le block (object)
+        if (type != TileUpType.Block && block != null)
         {
-            UnityEditor.EditorApplication.delayCall += () =>
+            EditorApplication.delayCall += () =>
             {
                 DestroyImmediate(block);
             };
         }
 
-        if (doorPressurePlate != null && type == MoveBubble.TileUpType.PressurePlate)
-        {
-            if (oldDoorPressurePlate != null)
-            {
-                oldDoorPressurePlate.GetComponent<TileUp>().type = MoveBubble.TileUpType.None;
-                oldDoorPressurePlate.GetComponent<SpriteRenderer>().color = Color.white;
-            }
-
-            doorPressurePlate.GetComponent<TileUp>().type = MoveBubble.TileUpType.Door;
-            doorPressurePlate.GetComponent<SpriteRenderer>().color = sprites.colorDoor;
-            oldDoorPressurePlate = doorPressurePlate;
-        }
-
-
-        if (door != null && type == MoveBubble.TileUpType.Lever)
-        {
-            if (oldDoor != null)
-            {
-                oldDoor.GetComponent<TileUp>().type = MoveBubble.TileUpType.None;
-                oldDoor.GetComponent<SpriteRenderer>().color = Color.white;
-            }
-
-            door.GetComponent<TileUp>().type = MoveBubble.TileUpType.Door;
-            door.GetComponent<SpriteRenderer>().color = sprites.colorDoor;
-            oldDoor = door;
-        }
-
-        if (otherDoor != null && type == MoveBubble.TileUpType.PortalDoor)
-        {
-            if (oldOtherDoor != null)
-            {
-                oldOtherDoor.GetComponent<TileUp>().type = MoveBubble.TileUpType.None;
-                oldOtherDoor.GetComponent<SpriteRenderer>().color = Color.white;
-            }
-
-            otherDoor.GetComponent<TileUp>().type = MoveBubble.TileUpType.PortalDoor;
-            otherDoor.GetComponent<TileUp>().otherDoor = gameObject;
-            otherDoor.GetComponent<SpriteRenderer>().color = sprites.colorPortalDoor;
-            oldOtherDoor = otherDoor;
-        }
-
         if (oldType != type)
         {
-            switch (type)
-            {
-                case MoveBubble.TileUpType.None:
-                    GetComponent<SpriteRenderer>().color = sprites.colorNone;
-                    break;
-                case MoveBubble.TileUpType.Wall:
-                    GetComponent<SpriteRenderer>().color = sprites.colorWall;
-                    gameObject.AddComponent<ShadowCaster2D>();
-                    break;
-                case MoveBubble.TileUpType.Door:
-                    GetComponent<SpriteRenderer>().color = sprites.colorDoor;
-                    break;
-                case MoveBubble.TileUpType.Lever:
-                    GetComponent<SpriteRenderer>().color = sprites.colorLever;
-                    break;
-                case MoveBubble.TileUpType.KeyFragment:
-                    GetComponent<SpriteRenderer>().color = sprites.colorKeyFragment;
-                    break;
-                case MoveBubble.TileUpType.KeyDoor:
-                    GetComponent<SpriteRenderer>().color = sprites.colorDoorKey;
-                    break;
-                case MoveBubble.TileUpType.OneWayWall:
-                    GetComponent<SpriteRenderer>().color = sprites.colorOneWayWall;
-                    break;
-                case MoveBubble.TileUpType.PortalDoor:
-                    GetComponent<SpriteRenderer>().color = sprites.colorPortalDoor;
-                    break;
-                case MoveBubble.TileUpType.Block:
-                    if (block == null)
-                    {
-                        GameObject temp = Instantiate(blockPrefab, transform);
-                        block = temp;
-                    }
-                    break;
-                case MoveBubble.TileUpType.PressurePlate:
-                    GetComponent<SpriteRenderer>().color = sprites.colorPressurePlate;
-                    break;
-                case MoveBubble.TileUpType.WinBlock:
-                    GetComponent<SpriteRenderer>().color = sprites.colorWin;
-                    break;
-
-                default:
-                    break;
-            }
+            RefreshColorSprite(true);
 
             switch (oldType)
             {
-                case MoveBubble.TileUpType.Lever:
-                    if (door != null)
-                    {
-                        door.GetComponent<TileUp>().type = MoveBubble.TileUpType.None;
-                        door.GetComponent<SpriteRenderer>().color = Color.white;
-                        door = null;
-                    }
-                    break;
-
-                case MoveBubble.TileUpType.PressurePlate:
-                    if (doorPressurePlate != null)
-                    {
-                        doorPressurePlate.GetComponent<TileUp>().type = MoveBubble.TileUpType.None;
-                        doorPressurePlate.GetComponent<SpriteRenderer>().color = Color.white;
-                        doorPressurePlate = null;
-                    }
-                    break;
-
-                case MoveBubble.TileUpType.PortalDoor:
-                    if (otherDoor != null)
-                    {
-                        otherDoor.GetComponent<SpriteRenderer>().color = Color.white;
-                        otherDoor.GetComponent<TileUp>().otherDoor = null;
-                        otherDoor.GetComponent<TileUp>().type = MoveBubble.TileUpType.None;
-                    }
-                    break;
-                case MoveBubble.TileUpType.Wall:
+                case TileUpType.Wall:
                     DestroyImmediate(GetComponent<ShadowCaster2D>());
                     break;
+
+                case TileUpType.Ventilateur:
+                    Vector3 nextPos = transform.position + DirectionAddMovePos(dirWind);
+                    RecursiveCheckNextWind(nextPos, dirWind, true, spritesUp.spriteNone[0]);
+                    oldType = TileUpType.None;
+                    break;
+
+                case TileUpType.Torch:
+                    if (lightTorch != null)
+                    {
+                        UnityEditor.EditorApplication.delayCall += () =>
+                        {
+                            DestroyImmediate(lightTorch);
+                        };
+                    }
+                    if (flameTorch != null)
+                    {
+                        UnityEditor.EditorApplication.delayCall += () =>
+                        {
+                            DestroyImmediate(flameTorch);
+                        };
+                    }
+                    break;
+
+                case TileUpType.Brasero:
+                    if (lightBrasero != null)
+                    {
+                        UnityEditor.EditorApplication.delayCall += () =>
+                        {
+                            DestroyImmediate(lightBrasero);
+                        };
+                    }
+                    if (flameBrasero != null)
+                    {
+                        UnityEditor.EditorApplication.delayCall += () =>
+                        {
+                            DestroyImmediate(flameBrasero);
+                        };
+                    }
+                    break;
+
+                case TileUpType.Key:
+                    if (lightKey != null)
+                    {
+                        UnityEditor.EditorApplication.delayCall += () =>
+                        {
+                            DestroyImmediate(lightKey);
+                        };
+                    }
+                    break;
+
                 default:
                     break;
             }
+        }
+
+        if (oldDirWind != dirWind && type == TileUpType.Ventilateur)   
+        {
+            Vector3 nextPosSuppr = transform.position + DirectionAddMovePos(oldDirWind);
+            RecursiveCheckNextWind(nextPosSuppr, oldDirWind, true, spritesUp.spriteNone[0]);
+
+            Vector3 nextPosAdd = transform.position + DirectionAddMovePos(dirWind);
+            RecursiveCheckNextWind(nextPosAdd, dirWind, false, spritesUp.spriteWind[0]);
+
+            oldDirWind = dirWind;
         }
 
         oldType = type;
     }
+    #endif
+
+    public void RefreshColorSprite(bool checkBlock)
+    {
+        switch (type)
+        {
+            case TileUpType.None:
+                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteNone[0];
+                
+                break;
+            case TileUpType.Wall:
+                GetComponent<SpriteRenderer>().color = Color.white;
+                switch (wallPosition)
+                {
+                    case WallPosition.Side:
+                        switch (_wallSideOrientation)
+                        {
+                            case WallSideOrientation.UpOneSide:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteSideWall[Random.Range(0, 2)];
+                                break;
+                            case WallSideOrientation.DownOneSide:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteSideWall[2];
+                                break;
+                            case WallSideOrientation.LeftOneSide:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteSideWall[Random.Range(3, 5)];
+                                break;
+                            case WallSideOrientation.RightOneSide:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteSideWall[Random.Range(5, 7)];
+                                break;
+                            case WallSideOrientation.VerticalTwoSides:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteSideWall[Random.Range(7, 9)];
+                                break;
+                            case WallSideOrientation.HorizontalTwoSides:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteSideWall[9];
+                                break;
+                            case WallSideOrientation.EndHorizontalTwoSidesR:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteSideWall[10];
+                                break;
+                            case WallSideOrientation.EndHorizontalTwoSidesL:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteSideWall[11];
+                                break;
+                            case WallSideOrientation.EndVerticalTwoSidesU:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteSideWall[12];
+                                break;
+                            case WallSideOrientation.EndVerticalTwoSidesD:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteSideWall[13];
+                                break;
+                            case WallSideOrientation.SoloSide:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteSideWall[14];
+                                break;
+                        }
+                        break;
+                    case WallPosition.Corner:
+
+                        switch (_wallCornerOrientation)
+                        {
+                            case WallCornerOrientation.LeftDownExterior:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[0];
+                                break;
+                            case WallCornerOrientation.LeftUpExterior:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[1];
+                                break;
+                            case WallCornerOrientation.RightDownExterior:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[2];
+                                break;
+                            case WallCornerOrientation.RightUpExterior:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[3];
+                                break;
+                            case WallCornerOrientation.LeftDownInterior:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[4];
+                                break;
+                            case WallCornerOrientation.LeftUpInterior:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[5];
+                                break;
+                            case WallCornerOrientation.RightDownInterior:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[6];
+                                break;
+                            case WallCornerOrientation.RightUpInterior:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[7];
+                                break;
+                        }
+                        break;
+                }
+                gameObject.AddComponent<ShadowCaster2D>();
+                break;
+
+            case TileUpType.Key:
+                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteKey[0];
+                if (lightKey == null)
+                {
+                    GameObject tempLightK = Instantiate(lightPrefab, transform);
+                    lightKey = tempLightK;
+
+                }
+                lightKey.GetComponent<Light2D>().pointLightOuterRadius = sprites.radiusLightKey;
+                lightKey.GetComponent<Light2D>().color = sprites.colorLightKey;
+                break;
 
 
-    private bool isWall() { return type == MoveBubble.TileUpType.Wall; }
-    private bool isDoor() { return type == MoveBubble.TileUpType.Door; }
-    private bool isLever() { return type == MoveBubble.TileUpType.Lever; }
-    private bool isKeyDoor() { return type == MoveBubble.TileUpType.KeyDoor;}
-    private bool isOneWayWall() { return type == MoveBubble.TileUpType.OneWayWall; }
-    private bool isBrasero() { return type == MoveBubble.TileUpType.Brasero; }
-    private bool isPortalDoor() { return type == MoveBubble.TileUpType.PortalDoor; }
-    private bool isBlock() { return type == MoveBubble.TileUpType.Block; }
-    private bool isPressurePlate() { return type == MoveBubble.TileUpType.PressurePlate; }
+            case TileUpType.Torch:
+                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteTorch[0];
+                if (lightTorch == null)
+                {
+                    GameObject tempLightT = Instantiate(lightPrefab, transform);
+                    lightTorch = tempLightT;
+                    GameObject tempFlameT = Instantiate(flameTorchPrefab, transform.position + new Vector3(0, 0.58f, 0), Quaternion.identity, transform);
+                    flameTorch = tempFlameT;
+
+                    lightTorch.GetComponent<Light2D>().pointLightOuterRadius = sprites.radiusLightTorch;
+                    lightTorch.GetComponent<Light2D>().color = sprites.colorLightTorch;
+                }
+                break;
+
+            case TileUpType.Brasero:
+                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteBrasero[0];
+                if (lightBrasero == null)
+                {
+                    GameObject tempLightB = Instantiate(lightPrefab, transform);
+                    lightBrasero = tempLightB;
+                    GameObject tempFlameB = Instantiate(flameBraseroPrefab, transform.position + new Vector3(0, 0.527f, 0), Quaternion.identity, transform);
+                    flameBrasero = tempFlameB;                
+                    lightBrasero.GetComponent<Light2D>().pointLightOuterRadius = sprites.radiusLightBrasero;
+                    lightBrasero.GetComponent<Light2D>().color = sprites.colorLightBrasero;
+                }
+
+                break;
+
+
+            case TileUpType.WinTrappe:
+                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteWinTrappe[0];
+                break;
+            case TileUpType.Ventilateur:
+                Vector3 nextPos = transform.position + DirectionAddMovePos(dirWind);
+                RecursiveCheckNextWind(nextPos, dirWind, false, spritesUp.spriteWind[0]);
+                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteVentilateur[0];
+                break;
+
+            case TileUpType.Wind:
+                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteWind[Random.Range(0, spritesUp.spriteWind.Count)];
+                break;
+
+            case TileUpType.Block:
+                if (block == null && checkBlock)
+                {
+                    GameObject temp = Instantiate(blockPrefab, transform);
+                    block = temp;
+                }
+                break;
+            case TileUpType.Collectible:
+                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCollectible[0];
+                break;
+
+        }
+    }
+
+    private void RecursiveCheckNextWind(Vector3 pos, TileDown.Direction direction, bool isPutting, Sprite spriteReplace)
+    {
+        //TileDown tempTileDown = tileMap.FindTileWithPosEditor(pos);
+        TileUp tempTileUp = tileUpMap.FindTileWithPosEditor(pos);
+
+        pos += DirectionAddMovePos(direction);
+
+        if (tempTileUp == null || tempTileUp.type == TileUpType.WinTrappe || tempTileUp.type == TileUpType.Wall || tempTileUp.type == TileUpType.Ventilateur)
+        {
+            return;
+        }
+        else if (!isPutting)
+        {
+            tempTileUp.type = TileUpType.Wind;
+            tempTileUp.direction = direction;
+            tempTileUp.pushNumberTiles = 1;
+            tempTileUp.GetComponent<SpriteRenderer>().sprite = spriteReplace;
+            tempTileUp.GetComponent<SpriteRenderer>().material = spritesUp.windMat;
+
+            switch (direction)
+            {
+                case TileDown.Direction.Left:
+                    tempTileUp.transform.rotation = Quaternion.Euler(0, 0, 90);
+                    break;
+                case TileDown.Direction.Right:
+                    tempTileUp.transform.rotation = Quaternion.Euler(0, 0, -90);
+                    break;
+                case TileDown.Direction.Up:
+                    tempTileUp.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    break;
+                case TileDown.Direction.Down:
+                    tempTileUp.transform.rotation = Quaternion.Euler(0, 0, -180);
+                    break;
+            }
+
+            RecursiveCheckNextWind(pos, direction, isPutting, spriteReplace);
+        }
+        else
+        {
+            tempTileUp.type = TileUpType.None;
+            tempTileUp.GetComponent<SpriteRenderer>().sprite = spriteReplace;
+            tempTileUp.GetComponent<SpriteRenderer>().material = spritesUp.normalMat;
+            tempTileUp.transform.rotation = Quaternion.Euler(0, 0, 0);
+
+            RecursiveCheckNextWind(pos, direction, isPutting, spriteReplace);
+        }
+    }
+
+    public void SwitchOffTorch()
+    {
+        DOTween.To(() => lightTorch.GetComponent<Light2D>().pointLightOuterRadius, x => lightTorch.GetComponent<Light2D>().pointLightOuterRadius = x, 0, 0.5f).SetEase(Ease.OutExpo);
+        Destroy(flameTorch);
+    }
+    public enum WallPosition
+    {
+        None,
+        Side,
+        Corner
+    }
+
+    private bool isWall() { return type == TileUpType.Wall; }
+    private bool isBrasero() { return type == TileUpType.Brasero; }
+    private bool isTorch() { return type == TileUpType.Torch; }
+    private bool isBlock() { return type == TileUpType.Block; }
+    private bool isWinTrappe() { return type == TileUpType.WinTrappe; }
+    private bool isWallSide() { return wallPosition == WallPosition.Side; }
+    private bool isWallCorner() { return wallPosition == WallPosition.Corner; }
+    private bool isVentilateur() { return type == TileUpType.Ventilateur; }
+    private bool isWind() { return type == TileUpType.Wind; }
+
+    public enum WallCornerOrientation
+    {
+        LeftUpExterior,
+        RightUpExterior,
+        LeftDownExterior,
+        RightDownExterior,
+        LeftUpInterior,
+        RightUpInterior,
+        LeftDownInterior,
+        RightDownInterior
+    }
+
+    public enum WallSideOrientation
+    {
+        LeftOneSide,
+        RightOneSide,
+        DownOneSide,
+        UpOneSide,
+        HorizontalTwoSides,
+        VerticalTwoSides,
+        EndHorizontalTwoSidesL,
+        EndHorizontalTwoSidesR,
+        EndVerticalTwoSidesU,
+        EndVerticalTwoSidesD,
+        SoloSide
+    }
+
+
 }

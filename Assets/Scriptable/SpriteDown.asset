@@ -16,19 +16,39 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 4e7c85a1bf99bf643b925648bad8f37d, type: 3}
   - {fileID: 21300000, guid: 2fa3f22364fdb6e48a11fb39e23b728b, type: 3}
   - {fileID: 21300000, guid: 008e6fc0b71ca2d43b371fe3baeb15ab, type: 3}
+  spriteSideRock:
+  - {fileID: 21300000, guid: 6ed2cc251031a014bb05ae28bba041a9, type: 3}
+  - {fileID: 21300000, guid: 30330a3606c33264095a21a5800c97b8, type: 3}
+  - {fileID: 21300000, guid: 3853296da48166c44b6c57783096a41b, type: 3}
+  - {fileID: 21300000, guid: 6cb9ed32afe88254b98bba1042d2c3c3, type: 3}
+  - {fileID: 21300000, guid: 3a97d208634cc364d99b6e36bf5026e9, type: 3}
+  - {fileID: 21300000, guid: c97b5f7a832375842b94479c911640c6, type: 3}
+  - {fileID: 21300000, guid: 6f09bc5484bd5b24c94ff6fffda0d057, type: 3}
+  spriteCornerRock:
+  - {fileID: 21300000, guid: 1cdc6b32e2b7f2c459a44e881d365ba7, type: 3}
+  - {fileID: 21300000, guid: 489ab9e4473f08f46bf1b1d33b07c0ef, type: 3}
+  - {fileID: 21300000, guid: d17ad145408ad0447ba5e990f0f39f4d, type: 3}
+  - {fileID: 21300000, guid: 4b85c123f3fddef43b1dc2b519368d51, type: 3}
+  - {fileID: 21300000, guid: 4b85c123f3fddef43b1dc2b519368d51, type: 3}
+  - {fileID: 21300000, guid: 4b85c123f3fddef43b1dc2b519368d51, type: 3}
+  - {fileID: 21300000, guid: 4b85c123f3fddef43b1dc2b519368d51, type: 3}
+  - {fileID: 21300000, guid: 4b85c123f3fddef43b1dc2b519368d51, type: 3}
   spriteIce:
-  - {fileID: 0}
+  - {fileID: 21300000, guid: 4e7c85a1bf99bf643b925648bad8f37d, type: 3}
   spriteVoid:
-  - {fileID: 0}
+  - {fileID: 7482667652216324306, guid: c79affc3b101484459e2bfbe79c3d4e1, type: 3}
   spriteWater:
-  - {fileID: 0}
-  spriteWind:
-  - {fileID: 0}
+  - {fileID: 21300000, guid: 7031d772bfe517f47973b5233924fc31, type: 3}
+  - {fileID: 21300000, guid: e4079a1a310aea04290dac6f7ca7815c, type: 3}
+  - {fileID: 21300000, guid: f520223a4dbeb1e40be052a607b0f927, type: 3}
+  - {fileID: 21300000, guid: 058d67151ae72494eb9c3753b96848b0, type: 3}
   spriteBreakable:
-  - {fileID: 0}
+  - {fileID: 21300000, guid: 546c695f2e184be45b34745a46effb05, type: 3}
+  - {fileID: 21300000, guid: a82ecaab855e31a4199e7221b4ebcfdd, type: 3}
   colorRock: {r: 1, g: 1, b: 1, a: 1}
   colorIce: {r: 0, g: 0.6054748, b: 0.8207547, a: 1}
-  colorVoid: {r: 0.16979694, g: 0.11904589, b: 0.41509432, a: 1}
-  colorWater: {r: 0.20188677, g: 0.3048692, b: 1, a: 1}
-  colorWind: {r: 0.42207193, g: 0.7169812, b: 0.4668349, a: 1}
+  colorVoid: {r: 0, g: 0, b: 0, a: 1}
+  colorWater: {r: 1, g: 1, b: 1, a: 1}
   colorBreakable: {r: 0.3018868, g: 0.22125366, b: 0.13214666, a: 1}
+  voidMat: {fileID: 2100000, guid: 44713f073fc5a294e83df4634bfca422, type: 2}
+  normalMat: {fileID: 2100000, guid: a681ebd0efc761441bd4e4f8c4d63a81, type: 2}

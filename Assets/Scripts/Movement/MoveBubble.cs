@@ -2,79 +2,68 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Etouch = UnityEngine.InputSystem.EnhancedTouch;
-using UnityEngine.Tilemaps;
 using System;
+using static TileUp;
+using UnityEngine.Rendering.Universal;
+using DG.Tweening;
 
 public class MoveBubble : MonoBehaviour
 {
-    [Header ("- References -")]
-    [SerializeField] GameManager manager;
+    [Header("- References -")]
+    [SerializeField] public GameManager manager;
+    [SerializeField] Light2D _generalLight;
+    [SerializeField] MonsterSpawn _monsterSpawn;
 
     [Header("- Stats -")]
+    [SerializeField] float _slideSensitivity;
     [SerializeField] float _delayLerpMove;
     [SerializeField] AnimationCurve _curveLerp;
     [SerializeField] AnimationCurve _curveLerpIce;
-
-    [SerializeField] float _slideSensitivity;
 
     [Header("Buddy")]
     [SerializeField] AnimationCurve _curveBuddy;
     [SerializeField] GameObject _buddy;
     [SerializeField] float _delayMovement;
 
-    //runtime
+    //runtime public
+    [HideInInspector] public float currentDelayLerpMove;
+
+    //runtime private
+    bool _firstMove = true;
     float _movementAmount;
     bool _isMoving = false;
     bool _canMove = true;
-    public float currentDelayLerpMove;
     float _moveTimer = 0;
     Vector3 _goToPosition;
     Vector3 _distFromPlayer;
     Vector3 _startPos;
     Vector2 _startPositionFinger;
     AnimationCurve _currentAnimCurve;
+    AudioManager _audioManager;
+
+    bool _shouldStopCheckingTile;
+
+    int _keyFragmentNumber;
     bool _collectibleAcquired = false;
+    List<Vector3> _prePosList;
+    TileDown.Direction _direction;
+    FlameManager _flameManager;
+
 
     //use for current standing
-    TileType _tileStanding;
-    TileUpType _tileStandingUp;
-    private int _keyFragmentNumber;
-    private int _keyNumber;
+    TileDown.TileType _tileStanding;
+    TileUp.TileUpType _tileStandingUp;
 
     //use for current movement ex: ice skatting
-    TileType _tileMoving;
-    TileUpType _tileMovingUp;
+    TileDown.TileType _tileMoving;
+    TileUp.TileUpType _tileMovingUp;
 
     public Action OnDie;
     public Action OnWin;
-
-    public enum TileType
-    {
-        Rock,
-        Ice,
-        Void,
-        Water,
-        Wind,
-        Breakable
-    }
-
-    public enum TileUpType
-    {
-        None,
-        Wall,
-        Door,
-        Lever,
-        KeyFragment,
-        KeyDoor,
-        OneWayWall,
-        Brasero,
-        PortalDoor,
-        PressurePlate,
-        Block,
-        WinBlock,
-        Collectible
-    }
-
+    public Action OnFirstMove;
+    public Action OnKeyTaken;
+    public Action OnCollectableTaken;
+    
     private void Awake()
     {
         Etouch.EnhancedTouchSupport.Enable();
@@ -88,11 +77,16 @@ public class MoveBubble : MonoBehaviour
         _distFromPlayer = _buddy.transform.position - transform.position;
         currentDelayLerpMove = _delayLerpMove;
         _goToPosition = transform.position;
+
+        
     }
 
     private void Start()
     {
         _movementAmount = manager.tileMap.tileSize;
+        _prePosList = new List<Vector3>();
+        _flameManager = GetComponent<FlameManager>();
+        _audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
         //Debug.LogWarning(_movementAmount);
     }
 
@@ -112,34 +106,34 @@ public class MoveBubble : MonoBehaviour
         }
     }
 
+    private void Win()
+    {
+        Debug.LogWarning("WINNN !!!!");
+
+        Etouch.Touch.onFingerDown -= Touch_onFingerDown;
+        Etouch.Touch.onFingerUp -= Touch_onFingerUp;
+
+        if(DataManager.Instance != null)
+        {
+            DataManager.Instance.LevelData[GameManager.Instance.CurrentLevel].Complete(_collectibleAcquired);
+            SaveSystem.SaveData(DataManager.Instance.LevelData);
+        }
+
+        GameManager.Instance.WinScreen.SetActive(true);
+    }
+    private void Die ()
+    {
+        _flameManager.isDeadFromMonsters = false;
+        GetComponent<FlameManager>().ModifyFlame(true, 10000);
+        Etouch.Touch.onFingerDown -= Touch_onFingerDown;
+        Etouch.Touch.onFingerUp -= Touch_onFingerUp;
+        _monsterSpawn.playerIsDead = true;
+        GameManager.Instance.LoseScreen.SetActive(true);
+    }
+
     private void ChangeRendering (bool isVisible)
     {
         GetComponent<SpriteRenderer>().enabled = isVisible;
-    }
-
-    // check if going in diagonal and return
-    private Vector3 CheckReturnDiagonal ()
-    {
-        Vector3 preGoToPosition;
-
-        //Debug.LogWarning("start x : " + _startPos.x + " / y : " + _startPos.y);
-        //Debug.LogWarning("end x : " + _goToPosition.x + " / y : " + _goToPosition.y);
-
-        if (_startPos.y != _goToPosition.y && _startPos.x != _goToPosition.x)
-        {
-            if (Mathf.Abs(_goToPosition.y - _startPos.y) < Mathf.Abs(_goToPosition.x - _startPos.x))
-            {
-                preGoToPosition = new Vector3(_startPos.x, _goToPosition.y, 0);
-            }
-            else
-            {
-                preGoToPosition = new Vector3(_goToPosition.x, _startPos.y, 0);
-            }
-
-            return preGoToPosition;
-        }
-
-        return Vector3.zero;
     }
 
     private IEnumerator MoveToPosition ()
@@ -147,20 +141,13 @@ public class MoveBubble : MonoBehaviour
         _startPos = transform.position;
 
         // si l'on va en diagonal
-        if ((_startPos.y != _goToPosition.y && _startPos.x != _goToPosition.x) && _tileMovingUp != TileUpType.PortalDoor)
+        if (_startPos.y != _goToPosition.y && _startPos.x != _goToPosition.x)
         {
-            yield return StartCoroutine(MoveToPos(CheckReturnDiagonal(), _delayLerpMove)); 
-        }
-
-        //si l'on passe un portail a la portal, on deviens invisible
-        switch (_tileMovingUp)
-        {
-            case TileUpType.PortalDoor:
-                ChangeRendering(false);
-                _currentAnimCurve = _curveLerpIce;
-                break;
-            default:
-                break;
+            while (_prePosList.Count > 0)
+            {
+                yield return StartCoroutine(MoveToPos(_prePosList[0], _delayLerpMove));
+                _prePosList.RemoveAt(0);
+            }
         }
 
         _startPos = transform.position;
@@ -178,182 +165,196 @@ public class MoveBubble : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
-        //réapparaitre après le portail
-        switch (_tileMovingUp)
-        {
-            case TileUpType.PortalDoor:
-                ChangeRendering(true);
-                _currentAnimCurve = _curveLerpIce;
-                break;
-            default:
-                break;
-        }
-
+        // reset variables aprï¿½s mouvement
         _isMoving = false;
         currentDelayLerpMove = _delayLerpMove;
-        _tileMoving = TileType.Rock;
-        _tileMovingUp = TileUpType.None;
+        _tileMoving = TileDown.TileType.Rock;
+        _tileMovingUp = TileUp.TileUpType.None;
     }
 
-    private void CheckNextTileEffect(TileDown.Direction direction)
+    private void SwitchOnTileUp (TileUp tempTileUp, TileDown.Direction direction)
     {
-        TileDown tempTile = manager.tileMap.FindTileWithPos(_goToPosition);
-        TileUp tempTileUp = manager.tileUpMap.FindTileWithPos(_goToPosition);
+        _shouldStopCheckingTile = false;
 
         switch (tempTileUp.type)
         {
-            case TileUpType.Wall:
+            case TileUp.TileUpType.Wall:
                 GoBack(direction);
+                _shouldStopCheckingTile = true;
                 return;
 
-            case TileUpType.Door:
-                if (!tempTileUp.isActivated)
-                {
-                    GoBack(direction);
-                    return;
-                }
-                else
-                {
-                    tempTileUp.GoBackToWhite();
-                    break;
-                }
+            case TileUp.TileUpType.Ventilateur:
+                GoBack(direction);
+                _shouldStopCheckingTile = true;
+                return;
 
-            case TileUpType.Lever:
-                tempTileUp.isActivated = true;
-                tempTileUp.door.GetComponent<TileUp>().isActivated = true;
-                break;
-
-            case TileUpType.KeyFragment:
+            case TileUp.TileUpType.Key:
                 if (!tempTileUp.isActivated)
                 {
                     tempTileUp.isActivated = true;
+                    _audioManager.PlaySFX(_audioManager.keyPickUp);
+                    tempTileUp.type = TileUpType.None;
+                    Destroy(tempTileUp.lightKey);
                     AddKeyFragment(1);
                     tempTileUp.GoBackToWhite();
+                    OnKeyTaken?.Invoke();
                 }
                 break;
 
-            case TileUpType.KeyDoor:
+            case TileUp.TileUpType.Brasero:
+                GetComponent<FlameManager>().ModifyFlame(false, tempTileUp.refillAmountBrasero);
+                _shouldStopCheckingTile = true;
+                return;
+
+            case TileUp.TileUpType.Torch:
                 if (!tempTileUp.isActivated)
                 {
-                    if (UseKey(tempTileUp.numberKeyRequired))
+                    GetComponent<FlameManager>().ModifyFlame(false, tempTileUp.refillAmountTorch);
+                    tempTileUp.isActivated = true;
+                    tempTileUp.SwitchOffTorch();
+                    _shouldStopCheckingTile = true;
+                }
+                break;
+
+            case TileUp.TileUpType.Block:
+                if (_tileMovingUp != TileUp.TileUpType.Wind && !PushBlock(direction, tempTileUp))
+                {
+                    // si l'on peut pousser le bloque
+                    _shouldStopCheckingTile = true;
+
+                    //re-check car on vient de modif la tileup sur laquelle on va marcher (block -> wind)
+                    SwitchOnTileUp(tempTileUp, direction);
+                    break;
+                }
+                else
+                {
+                    // si le rocher a Ã©tÃ© bloquer par mur
+                    GoBack(direction);
+                    _shouldStopCheckingTile = true;
+                    break;
+                }
+
+            case TileUp.TileUpType.WinTrappe:
+                if (!tempTileUp.isActivated)
+                {
+                    if (UseKey(tempTileUp.numberPartKeyRequired))
                     {
                         tempTileUp.isActivated = true;
-                        tempTileUp.GoBackToWhite();
-                        OnWin?.Invoke();
+                        Win();
+                    }
+                    else
+                    {
+                        break;
                     }
                 }
                 break;
 
-            case TileUpType.OneWayWall:
-                if (direction == tempTileUp.directionToGoThrough)
-                {
-                    break;
-                }
-                else
-                {
-                    GoBack(direction);
-                    return;
-                }
-
-            case TileUpType.Brasero:
+            case TileUp.TileUpType.Collectible:
                 if (!tempTileUp.isActivated)
                 {
-                    GetComponent<FlameManager>().ModifyFlame(false, tempTileUp.refillAmount);
-                    tempTileUp.isActivated = true;
-                    tempTileUp.GoBackToWhite();
-                }
-                break;
-
-            case TileUpType.PortalDoor:
-                _startPos = tempTileUp.otherDoor.transform.position;
-                _goToPosition = tempTileUp.otherDoor.transform.position;
-                GoBack(direction);
-                _tileMovingUp = TileUpType.PortalDoor;
-                return;
-
-            case TileUpType.Block:
-                PushBlock(direction, tempTileUp);
-                break;
-
-            case TileUpType.PressurePlate:
-                if (tempTileUp.block != null)
-                {
-                    PushBlock(direction, tempTileUp);
-                }
-
-                tempTileUp.isActivated = false;
-                tempTileUp.doorPressurePlate.GetComponent<TileUp>().isActivated = false;
-                break;
-            case TileUpType.Collectible:
-                if (!tempTileUp.isActivated)
-                {
+                    _audioManager.PlaySFX(_audioManager.cranePickUpSound);
                     tempTileUp.isActivated = true;
                     _collectibleAcquired = true;
                     tempTileUp.GoBackToWhite();
+                    OnCollectableTaken?.Invoke();
                 }
                 break;
 
-            case TileUpType.WinBlock:
-                OnWin?.Invoke();
+            case TileUp.TileUpType.Wind:
+                //wind fiouuuuuu
+
+                if (!tempTileUp.isActivated)
+                {
+                    TileDown tempTile = manager.tileMap.FindTileWithPos(_goToPosition);
+                    Vector3 test = tempTileUp.transform.position - DirectionAddMovePos(direction);
+                    TileUp tempBeforeUp = manager.tileUpMap.FindTileWithPos(test);
+
+                    if (tempBeforeUp.direction != tempTileUp.direction)
+                    {
+                        _prePosList.Add(tempTileUp.transform.position);
+                    }
+                    
+                    //enleve une flamme sur le premier deplacement
+                    if (_tileMovingUp != TileUp.TileUpType.Wind)
+                    {
+                        _flameManager.ModifyFlame(true, 1);
+                    }
+
+                    _tileMovingUp = TileUp.TileUpType.Wind;
+
+                    //vÃ©rifie sur quelle tile je marche
+                    SwitchOnTileDown(tempTile, direction);
+
+                    if (_tileMovingUp != TileUp.TileUpType.Wind)
+                    {
+                        return;
+                    }
+
+                    MoveNextTile(tempTileUp.direction);
+                    //currentDelayLerpMove += _delayLerpMove;
+                }
                 break;
 
             default:
                 break;
         }
+    }
 
+    private void SwitchOnTileDown (TileDown tempTile, TileDown.Direction direction)
+    {
         switch (tempTile.type)
         {
-            case TileType.Rock:
+            case TileDown.TileType.Rock:
+            case TileDown.TileType.WaterRock:
+                if (_tileMovingUp != TileUp.TileUpType.Wind)
+                { 
+                    _flameManager.ModifyFlame(true, 1);
+                    
+                }
                 //rock solid !
-                GetComponent<FlameManager>().ModifyFlame(true, 1);
                 break;
 
-            case TileType.Ice:
-                if (_tileMoving != TileType.Wind)
+            case TileDown.TileType.Ice:
+                if (_tileMovingUp != TileUp.TileUpType.Wind)
                 {
                     //zooppppppp ice
                     MoveNextTile(direction);
                     currentDelayLerpMove += _delayLerpMove;
-                    _tileMoving = TileType.Ice;
+                    _tileMoving = TileDown.TileType.Ice;
                 }
                 break;
 
-            case TileType.Void:
-            case TileType.Water:
+            case TileDown.TileType.Void:
+                _audioManager.PlaySFX(_audioManager.fallSound);
                 OnDie?.Invoke();
                 break;
+            case TileDown.TileType.Water:
+                //glou glou water
+                _audioManager.PlaySFX(_audioManager.waterSound);
+                OnDie?.Invoke();
 
-            case TileType.Wind:
-                //wind fiouuuuuu
-                _tileMoving = TileType.Wind;
-
-                Tile temp = null;
-                Tile tempNext = manager.tileMap.FindTileWithPos(_goToPosition);
-
-                for (int i = 0; i < tempTile.pushNumberTiles; i++)
+                if (_tileMovingUp == TileUp.TileUpType.Wind)
                 {
-                    if (temp != tempNext)
-                    {
-                        temp = tempNext;
-                        tempNext = MoveNextTile(tempTile.direction);
-                        currentDelayLerpMove += _delayLerpMove;
-                        if (i != 0 && i != 1)
-                        {
-                            GetComponent<FlameManager>().ModifyFlame(true, 1);
-                        }
-                    }
-                };
+                    _tileMovingUp = TileUp.TileUpType.None;
+                    _goToPosition = tempTile.transform.position;
+                }
                 break;
 
-            case TileType.Breakable:
+            case TileDown.TileType.Breakable:
+                if (_tileMovingUp != TileUp.TileUpType.Wind)
+                {
+                    _flameManager.ModifyFlame(true, 1);
+                }
+
                 if (!tempTile.isActivated)
                 {
                     tempTile.isActivated = true;
+                    tempTile.GetComponent<SpriteRenderer>().sprite = tempTile.spritesDown.spriteBreakable[1];
                     break;
                 }
                 else
                 {
-                    //Tu meurs bozooo
+                    _audioManager.PlaySFX(_audioManager.fallSound);
                     OnDie?.Invoke();
                     break;
                 }
@@ -363,30 +364,30 @@ public class MoveBubble : MonoBehaviour
         }
     }
 
-    private void Win()
+    private void CheckNextTileEffect(TileDown.Direction direction)
     {
-        Etouch.Touch.onFingerDown -= Touch_onFingerDown;
-        Etouch.Touch.onFingerUp -= Touch_onFingerUp;
+        TileDown tempTile = manager.tileMap.FindTileWithPos(_goToPosition);
+        TileUp tempTileUp = manager.tileUpMap.FindTileWithPos(_goToPosition);
 
-        GameManager.Instance.LevelData[GameManager.Instance.CurrentLevel].Complete(_collectibleAcquired);
-        SaveSystem.SaveData(GameManager.Instance.LevelData);
+        SwitchOnTileUp(tempTileUp, direction);
 
-        GameManager.Instance.WinScreen.SetActive(true);
+        //si l'on veut arreter de check les tiles down
+        if (!_shouldStopCheckingTile)
+        {
+            SwitchOnTileDown(tempTile, direction);
+        }
     }
 
     private void AddKeyFragment (int number)
     {
         _keyFragmentNumber += number;
-
-        _keyNumber += _keyFragmentNumber / 3;
-        _keyFragmentNumber %= 3;
     }
 
     private bool UseKey (int number)
     {
-        if (_keyNumber >= number)
+        if (_keyFragmentNumber >= number)
         {
-            _keyNumber -= number;
+            _keyFragmentNumber -= number;
             return true;
         }
         else
@@ -395,7 +396,7 @@ public class MoveBubble : MonoBehaviour
         }
     }
 
-    private void GoBack(TileDown.Direction direction)
+    public void GoBack(TileDown.Direction direction)
     {
         //trouve le vector d'ajout de position selon la direction du slide
         _goToPosition -= DirectionAddMovePos(direction);
@@ -404,38 +405,11 @@ public class MoveBubble : MonoBehaviour
         _goToPosition = manager.tileMap.FindTileWithPos(_goToPosition).transform.position;
     }
 
-    private void PushBlock(TileDown.Direction direction, TileUp TileBlock)
+    private bool PushBlock(TileDown.Direction direction, TileUp TileBlock)
     {
-        Vector3 vecTemp;
-        //trouve le vector d'ajout de position selon la direction du slide
-        vecTemp = TileBlock.transform.position + DirectionAddMovePos(direction);
-
-        //trouve le millieu de la tile ou l'on atterie
-        TileUp tileUpNext = manager.tileUpMap.FindTileWithPos(vecTemp);
-
-        // si la case n'est pas libre on ne push pas le block
-        if (tileUpNext.type != TileUpType.None && tileUpNext.type != TileUpType.PressurePlate)
-        {
-            GoBack(direction);
-            return;
-        }
-
-        tileUpNext.block = TileBlock.block;
-
-        if (tileUpNext.type == TileUpType.PressurePlate)
-        {
-            tileUpNext.isActivated = true;
-            tileUpNext.doorPressurePlate.GetComponent<TileUp>().isActivated = true;
-        }
-        else
-        {
-            tileUpNext.type = TileUpType.Block;
-        }
-
-        TileBlock.block.GetComponent<BlockToMove>().toGoPosBlock = tileUpNext.transform.position;
-        TileBlock.block.GetComponent<BlockToMove>().StartCoroutine(TileBlock.block.GetComponent<BlockToMove>().PushBlockCorout(this));
-        TileBlock.block = null;
-        TileBlock.type = TileUpType.None;
+        //commence le mouvement du block et check si le block est bloquer
+        bool isBlocked = TileBlock.block.GetComponent<BlockToMove>().StartMoving(direction, this);
+        return isBlocked;
     }
 
     private void CheckStandingDownTile(Vector3 pos)
@@ -463,7 +437,7 @@ public class MoveBubble : MonoBehaviour
     {
         //trouve le vector d'ajout de position selon la direction du slide
         _goToPosition += DirectionAddMovePos(direction);
-        Tile tileToMove = manager.tileMap.FindTileWithPos(_goToPosition);
+        Tile tileToMove = manager.tileUpMap.FindTileWithPos(_goToPosition);
 
         //trouve le millieu de la tile ou l'on atterie
         _goToPosition = tileToMove.transform.position;
@@ -478,17 +452,13 @@ public class MoveBubble : MonoBehaviour
     {
         Vector2 fingerTouchDelta = finger.screenPosition - _startPositionFinger;
 
-        if (fingerTouchDelta == Vector2.zero)
-        {
-            return;
-        }
         // check if swipe < slide horizontal
-        else if (Mathf.Abs(fingerTouchDelta.x) > Mathf.Abs(fingerTouchDelta.y) && Mathf.Abs(fingerTouchDelta.x) < _slideSensitivity)
+        if (Mathf.Abs(fingerTouchDelta.x) >= Mathf.Abs(fingerTouchDelta.y) && Mathf.Abs(fingerTouchDelta.x) <= _slideSensitivity)
         {
             return;
         }
         // check if swipe < slide vertical
-        else if (Mathf.Abs(fingerTouchDelta.y) > Mathf.Abs(fingerTouchDelta.x) && Mathf.Abs(fingerTouchDelta.y) < _slideSensitivity)
+        else if (Mathf.Abs(fingerTouchDelta.y) >= Mathf.Abs(fingerTouchDelta.x) && Mathf.Abs(fingerTouchDelta.y) <= _slideSensitivity)
         {
             return;
         }
@@ -496,22 +466,19 @@ public class MoveBubble : MonoBehaviour
         //bloque le mouvement selon le mouvement et la tile ou l'on est
         switch (_tileMoving)
         {
-            case TileType.Rock:
+            case TileDown.TileType.Rock:
                 break;
 
-            case TileType.Ice:
-            case TileType.Void:
-            case TileType.Water:
-            case TileType.Wind:
+            case TileDown.TileType.Ice:
+            case TileDown.TileType.Void:
+            case TileDown.TileType.Water:
                 return;
         }
 
         switch (_tileMovingUp)
         {
-            case TileUpType.PortalDoor:
+            case TileUp.TileUpType.Wind:
                 return;
-            default:
-                break;
         }
 
 
@@ -528,6 +495,13 @@ public class MoveBubble : MonoBehaviour
         //change anim curve based on tile type current moving
         ChangeAnimCurve();
 
+        if (_firstMove)
+        {
+            _firstMove = false;
+            _monsterSpawn.StartSpawn();
+            DOTween.To(() => _generalLight.intensity, x => _generalLight.intensity = x, 0.05f, 1f).SetEase(Ease.OutExpo);
+        }
+
         // si l'on bouge pas encore, lance l'animation
         if (!_isMoving)
         {
@@ -540,6 +514,8 @@ public class MoveBubble : MonoBehaviour
             _startPos = transform.position;
             _moveTimer = 0;
         }
+
+        _audioManager.PlaySFX(_audioManager.movementSounds[UnityEngine.Random.Range(0, _audioManager.movementSounds.Count)]);
     }
 
     private void ChangeAnimCurve ()
@@ -547,15 +523,12 @@ public class MoveBubble : MonoBehaviour
         switch (_tileMoving)
         {
             // ice movement
-            case TileType.Ice:
-            case TileType.Wind:
-                _currentAnimCurve = _curveLerpIce;
-                break;
+            case TileDown.TileType.Ice:
             
             //normal movement
-            case TileType.Void:
-            case TileType.Water:
-            case TileType.Rock:
+            case TileDown.TileType.Void:
+            case TileDown.TileType.Water:
+            case TileDown.TileType.Rock:
                 _currentAnimCurve = _curveLerp;
                 break;
 
@@ -564,9 +537,16 @@ public class MoveBubble : MonoBehaviour
                 _currentAnimCurve = _curveLerp;
                 break;
         }
+
+        switch (_tileMovingUp)
+        {
+            case TileUp.TileUpType.Wind:
+                _currentAnimCurve = _curveLerpIce;
+                break;
+        }
     }
 
-    private Vector3 DirectionAddMovePos (TileDown.Direction direction)
+    public Vector3 DirectionAddMovePos (TileDown.Direction direction)
     {
         switch (direction)
         {
@@ -636,17 +616,21 @@ public class MoveBubble : MonoBehaviour
         return TileDown.Direction.Left;
     }
 
-    private void Die()
-    {
-        GetComponent<FlameManager>().ModifyFlame(true, 10000);
-        Etouch.Touch.onFingerDown -= Touch_onFingerDown;
-        Etouch.Touch.onFingerUp -= Touch_onFingerUp;
-
-        GameManager.Instance.LoseScreen.SetActive(true);
-    }
-
     private void Touch_onFingerDown(Etouch.Finger finger)
     {
         _startPositionFinger = finger.screenPosition;
+    }
+
+    internal void SetTouchControlsActive(bool active)
+    {
+        if (active)
+        {
+            Etouch.Touch.onFingerDown += Touch_onFingerDown;
+            Etouch.Touch.onFingerUp += Touch_onFingerUp;
+        } else
+        {
+            Etouch.Touch.onFingerDown -= Touch_onFingerDown;
+            Etouch.Touch.onFingerUp -= Touch_onFingerUp;
+        }
     }
 }

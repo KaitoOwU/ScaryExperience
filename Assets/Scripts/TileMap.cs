@@ -13,6 +13,9 @@ public class TileMap : MonoBehaviour
 
     List<Tile> _tileMap = new List<Tile>();
 
+    [SerializeField] SpriteUp spritesUpTiles;
+    [SerializeField] SpriteDown spritesDownTiles;
+
     private void Awake()
     {
         AddAllTiles();
@@ -51,7 +54,7 @@ public class TileMap : MonoBehaviour
     [Button("ClearMap")]
     private void DestroyMap()
     {
-        Debug.LogWarning("Destroying");
+        Debug.LogWarning("Clearing ...");
         for (int i = 0; i < transform.childCount; i++)
         {
             if (Application.isEditor)
@@ -64,6 +67,19 @@ public class TileMap : MonoBehaviour
                 Destroy(transform.GetChild(i).gameObject);
                 i--;
             }
+        }
+    }
+
+    [Button("RefreshMap")]
+    private void RefreshMap ()
+    {
+        Debug.LogWarning("Refreshing ...");
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            TileDown tile = transform.GetChild(i).GetComponent<TileDown>();
+            tile.spritesDown = spritesDownTiles;
+            tile.spritesUp = spritesUpTiles;
+            tile.RefreshColorSprite();
         }
     }
 
@@ -85,6 +101,25 @@ public class TileMap : MonoBehaviour
         return null;
     }
 
+    public TileDown FindTileWithPosEditor(Vector3 pos)
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            TileDown tile = transform.GetChild(i).GetComponent<TileDown>();
 
+            //check x pos
+            if (tile.transform.position.x - 1 / 2 <= pos.x && tile.transform.position.x + 1 / 2 >= pos.x)
+            {
+
+                //check y pos
+                if (tile.transform.position.y - 1 / 2 <= pos.y && tile.transform.position.y + 1 / 2 >= pos.y)
+                {
+                    return tile;
+                }
+            }
+        }
+
+        return null;
+    }
 
 }
