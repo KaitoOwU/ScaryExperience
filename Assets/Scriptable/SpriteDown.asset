@@ -36,7 +36,7 @@ MonoBehaviour:
   spriteIce:
   - {fileID: 21300000, guid: 4e7c85a1bf99bf643b925648bad8f37d, type: 3}
   spriteVoid:
-  - {fileID: 21300000, guid: 4e7c85a1bf99bf643b925648bad8f37d, type: 3}
+  - {fileID: 7482667652216324306, guid: c79affc3b101484459e2bfbe79c3d4e1, type: 3}
   spriteWater:
   - {fileID: 21300000, guid: 7031d772bfe517f47973b5233924fc31, type: 3}
   - {fileID: 21300000, guid: e4079a1a310aea04290dac6f7ca7815c, type: 3}
@@ -50,3 +50,5 @@ MonoBehaviour:
   colorVoid: {r: 0, g: 0, b: 0, a: 1}
   colorWater: {r: 1, g: 1, b: 1, a: 1}
   colorBreakable: {r: 0.3018868, g: 0.22125366, b: 0.13214666, a: 1}
+  voidMat: {fileID: 2100000, guid: 44713f073fc5a294e83df4634bfca422, type: 2}
+  normalMat: {fileID: 2100000, guid: a681ebd0efc761441bd4e4f8c4d63a81, type: 2}
