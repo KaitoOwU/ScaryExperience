@@ -296,7 +296,7 @@ public class TileUp : Tile
                 {
                     GameObject tempLightB = Instantiate(lightPrefab, transform);
                     lightBrasero = tempLightB;
-                    GameObject tempFlameB = Instantiate(flameBraseroPrefab, transform.position + new Vector3(-0.093f, 0.527f, 0), Quaternion.identity, transform);
+                    GameObject tempFlameB = Instantiate(flameBraseroPrefab, transform.position + new Vector3(0, 0.527f, 0), Quaternion.identity, transform);
                     flameBrasero = tempFlameB;                
                     lightBrasero.GetComponent<Light2D>().pointLightOuterRadius = sprites.radiusLightBrasero;
                     lightBrasero.GetComponent<Light2D>().color = sprites.colorLightBrasero;
