@@ -51,6 +51,7 @@ public class LevelSelect : MonoBehaviour
 
     public void LaunchLevel()
     {
+        _audioManager.PlaySFX(_audioManager.button);
         DataManager.Instance.IsLevelLaunchedFromMainMenu = true;
 
         _transition.gameObject.SetActive(true);

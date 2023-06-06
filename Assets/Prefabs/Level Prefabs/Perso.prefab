@@ -101,6 +101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   manager: {fileID: 0}
   _generalLight: {fileID: 0}
+  _monsterSpawn: {fileID: 0}
   _slideSensitivity: 1
   _delayLerpMove: 0.5
   _curveLerp:

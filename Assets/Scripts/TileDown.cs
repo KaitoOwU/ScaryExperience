@@ -16,6 +16,9 @@ public class TileDown : Tile
     [ShowIf("isCorner")]
     public CornerOrientation orientationCorner;
 
+    [ShowIf("isWater")]
+    public WaterType waterType;
+
     public bool isActivated = false;
 
     public enum TileType
@@ -88,7 +91,6 @@ public class TileDown : Tile
 
             case TileType.Ice:
                 GetComponent<SpriteRenderer>().sprite = spritesDown.spriteIce[Random.Range(0, spritesDown.spriteIce.Count)];
-                GetComponent<SpriteRenderer>().color = spritesDown.colorIce;
                 break;
 
             case TileType.Void:
@@ -96,7 +98,23 @@ public class TileDown : Tile
                 GetComponent<SpriteRenderer>().color = spritesDown.colorVoid;
                 break;
             case TileType.Water:
-                GetComponent<SpriteRenderer>().sprite = spritesDown.spriteWater[Random.Range(0, spritesDown.spriteWater.Count)];
+                switch (waterType)
+                {
+                    case WaterType.Normal:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteWater[0];
+                        break;
+                    case WaterType.SideR:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteWater[1];
+                        break;
+                    case WaterType.Middle:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteWater[2];
+                        break;
+                    case WaterType.SideL:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteWater[3];
+                        break;
+
+                }
+                
 
                 break;
             case TileType.Breakable:
@@ -152,8 +170,17 @@ public class TileDown : Tile
         RightDown
     }
 
+    public enum WaterType
+    {
+        Normal,
+        SideR,
+        Middle,
+        SideL
+    }
+
     private bool isRock() { return type == TileType.Rock; }
     private bool isSide() { return position == Position.Side; }
     private bool isCorner() { return position == Position.Corner; }
+    private bool isWater() { return type == TileType.Water; }
 
 }

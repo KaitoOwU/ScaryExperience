@@ -12,6 +12,13 @@ public class BlockToMove : MonoBehaviour
     private MoveBubble _bubble;
     [SerializeField] Sprite waterRock;
 
+    AudioManager _audioManager;
+
+    private void Awake()
+    {
+        _audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+    }
+
     public IEnumerator PushBlockCorout(MoveBubble playerMovement)
     {
         _startPos = transform.position;
@@ -34,6 +41,7 @@ public class BlockToMove : MonoBehaviour
 
     public bool StartMoving (TileDown.Direction direction, MoveBubble bubble)
     {
+        _audioManager.PlaySFX(_audioManager.rockSound[Random.Range(0, _audioManager.rockSound.Count)]);
         Vector3 oldToGo = toGoPosBlock;
         MoveNextTile(direction, bubble);
         StartCoroutine(PushBlockCorout(bubble));
@@ -155,6 +163,7 @@ public class BlockToMove : MonoBehaviour
                 break;
 
             case TileDown.TileType.Water:
+                _audioManager.PlaySFX(_audioManager.waterSound);
                 tempTile.type = TileDown.TileType.WaterRock;
                 tempTile.GetComponent<SpriteRenderer>().sprite = waterRock;
                 Destroy(gameObject, 0.4f);
