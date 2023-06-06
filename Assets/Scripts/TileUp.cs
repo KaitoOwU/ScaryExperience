@@ -325,6 +325,9 @@ public class TileUp : Tile
                     block = temp;
                 }
                 break;
+            case TileUpType.Collectible:
+                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCollectible[0];
+                break;
 
         }
     }
