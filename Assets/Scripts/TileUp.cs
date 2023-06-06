@@ -322,12 +322,14 @@ public class TileUp : Tile
                 {
                     GameObject tempLightT = Instantiate(lightPrefab, transform);
                     lightTorch = tempLightT;
-                    GameObject tempFlameT = Instantiate(flameTorchPrefab, transform.position + new Vector3(0, 0.58f, 0), Quaternion.identity, transform);
+                    GameObject tempFlameT = Instantiate(flameTorchPrefab, transform.position + new Vector3(0, 0.3f, 0), Quaternion.identity, transform);
                     flameTorch = tempFlameT;
 
-                    lightTorch.GetComponent<Light2D>().pointLightOuterRadius = sprites.radiusLightTorch;
-                    lightTorch.GetComponent<Light2D>().color = sprites.colorLightTorch;
+                    
                 }
+                flameTorch.transform.localPosition = new Vector3(0, 0.3f, 0);
+                lightTorch.GetComponent<Light2D>().pointLightOuterRadius = sprites.radiusLightTorch;
+                lightTorch.GetComponent<Light2D>().color = sprites.colorLightTorch;
                 break;
 
             case TileUpType.Brasero:
@@ -338,9 +340,11 @@ public class TileUp : Tile
                     lightBrasero = tempLightB;
                     GameObject tempFlameB = Instantiate(flameBraseroPrefab, transform.position + new Vector3(0, 0.527f, 0), Quaternion.identity, transform);
                     flameBrasero = tempFlameB;                
-                    lightBrasero.GetComponent<Light2D>().pointLightOuterRadius = sprites.radiusLightBrasero;
-                    lightBrasero.GetComponent<Light2D>().color = sprites.colorLightBrasero;
+                    
                 }
+                flameBrasero.transform.localPosition = new Vector3(0, 0.527f, 0);
+                lightBrasero.GetComponent<Light2D>().pointLightOuterRadius = sprites.radiusLightBrasero;
+                lightBrasero.GetComponent<Light2D>().color = sprites.colorLightBrasero;
 
                 break;
 
