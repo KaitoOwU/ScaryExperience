@@ -29,12 +29,12 @@ public class GameManager : MonoBehaviour
 
     private void OnEnable()
     {
-        //_flameManager.OnFlameValueChange += CheckForLoseCondition;
+        _flameManager.OnFlameValueChange += CheckForLoseCondition;
     }
 
     private void OnDisable()
     {
-        //_flameManager.OnFlameValueChange -= CheckForLoseCondition;
+        _flameManager.OnFlameValueChange -= CheckForLoseCondition;
     }
 
     public Vector3 DirectionAddMovePos(TileDown.Direction direction)
