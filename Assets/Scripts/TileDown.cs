@@ -96,6 +96,7 @@ public class TileDown : Tile
             case TileType.Void:
                 GetComponent<SpriteRenderer>().sprite = spritesDown.spriteVoid[Random.Range(0, spritesDown.spriteVoid.Count)];
                 GetComponent<SpriteRenderer>().color = spritesDown.colorVoid;
+                GetComponent<SpriteRenderer>().material = spritesDown.voidMat;
                 break;
             case TileType.Water:
                 switch (waterType)
@@ -129,6 +130,7 @@ public class TileDown : Tile
                 break;
             case TileType.Void:
                 GetComponent<SpriteRenderer>().color = Color.white;
+                GetComponent<SpriteRenderer>().material = spritesDown.normalMat;
                 break;
         }
     }

@@ -164,7 +164,7 @@ public class TileUp : Tile
             }
         }
 
-        if (oldDirWind != dirWind && type == TileUpType.Wind)
+        if (oldDirWind != dirWind && type == TileUpType.Ventilateur)   
         {
             Vector3 nextPosSuppr = transform.position + DirectionAddMovePos(oldDirWind);
             RecursiveCheckNextWind(nextPosSuppr, oldDirWind, true, spritesUp.spriteNone[0]);
@@ -350,6 +350,23 @@ public class TileUp : Tile
             tempTileUp.pushNumberTiles = 1;
             tempTileUp.GetComponent<SpriteRenderer>().sprite = spriteReplace;
             tempTileUp.GetComponent<SpriteRenderer>().material = spritesUp.windMat;
+
+            switch (direction)
+            {
+                case TileDown.Direction.Left:
+                    tempTileUp.transform.rotation = Quaternion.Euler(0, 0, 90);
+                    break;
+                case TileDown.Direction.Right:
+                    tempTileUp.transform.rotation = Quaternion.Euler(0, 0, -90);
+                    break;
+                case TileDown.Direction.Up:
+                    tempTileUp.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    break;
+                case TileDown.Direction.Down:
+                    tempTileUp.transform.rotation = Quaternion.Euler(0, 0, -180);
+                    break;
+            }
+
             RecursiveCheckNextWind(pos, direction, isPutting, spriteReplace);
         }
         else
@@ -357,6 +374,8 @@ public class TileUp : Tile
             tempTileUp.type = TileUpType.None;
             tempTileUp.GetComponent<SpriteRenderer>().sprite = spriteReplace;
             tempTileUp.GetComponent<SpriteRenderer>().material = spritesUp.normalMat;
+            tempTileUp.transform.rotation = Quaternion.Euler(0, 0, 0);
+
             RecursiveCheckNextWind(pos, direction, isPutting, spriteReplace);
         }
     }
