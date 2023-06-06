@@ -104,10 +104,6 @@ MonoBehaviour:
   type: 0
   numberPartKeyRequired: 1
   refillAmountBrasero: 10
-  lightBrasero: {fileID: 0}
-  flameBrasero: {fileID: 0}
-  lightTorch: {fileID: 0}
-  flameTorch: {fileID: 0}
   refillAmountTorch: 5
   dirWind: 0
   direction: 0
@@ -120,8 +116,16 @@ MonoBehaviour:
   lightPrefab: {fileID: 3812639126627071096, guid: 2983dbd564046aa40948be3a1fa1a601, type: 3}
   flameTorchPrefab: {fileID: 3555511754035136751, guid: 84444cb44ee1d8c44ac73a8f97d9f293, type: 3}
   flameBraseroPrefab: {fileID: 832701237368821300, guid: 2b2c198e3296ad34dbad023e8e427e3b, type: 3}
+  grillePrefab: {fileID: 7981532634770275236, guid: 2ac6796a1b0047a459858d9c703aa639, type: 3}
   sprites: {fileID: 11400000, guid: 8283f955754fdc840b48fa33532ced97, type: 2}
   isActivated: 0
   tileMap: {fileID: 0}
   tileUpMap: {fileID: 0}
   wasWind: 0
+  lightBrasero: {fileID: 0}
+  flameBrasero: {fileID: 0}
+  lightTorch: {fileID: 0}
+  flameTorch: {fileID: 0}
+  lightKey: {fileID: 0}
+  lightTrappe: {fileID: 0}
+  grilleTrappe: {fileID: 0}

@@ -21,6 +21,7 @@ public class TileUpMap : MonoBehaviour
 
     [SerializeField] GameObject torchPrefab;
     [SerializeField] GameObject braseroPrefab;
+    [SerializeField] GameObject grillePrefab;
 
     private void Awake()
     {
@@ -91,6 +92,7 @@ public class TileUpMap : MonoBehaviour
             tile.lightPrefab = lightPrefab;
             tile.flameBraseroPrefab = braseroPrefab;
             tile.flameTorchPrefab = torchPrefab;
+            tile.grillePrefab = grillePrefab;
         }
     }
 
