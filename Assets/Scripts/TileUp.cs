@@ -396,7 +396,7 @@ public class TileUp : Tile
 
         pos += DirectionAddMovePos(direction);
 
-        if (tempTileUp == null || tempTileUp.type == TileUpType.WinTrappe || tempTileUp.type == TileUpType.Wall || tempTileUp.type == TileUpType.Ventilateur)
+        if (tempTileUp == null || tempTileUp.type == TileUpType.WinTrappe || tempTileUp.type == TileUpType.Wall || tempTileUp.type == TileUpType.Ventilateur || tempTileUp.type == TileUpType.Block)
         {
             return;
         }
