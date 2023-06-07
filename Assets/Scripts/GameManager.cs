@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,6 +15,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject _loseScreen, _winScreen, _pauseScreen;
     [SerializeField] FlameManager _flameManager;
     [SerializeField] MoveBubble _moveBubble;
+    [SerializeField] Animator _playerAnim;
+
+    [Header("-- Level Data --")]
+    [SerializeField] bool _levelWithoutKey;
+    [SerializeField] GameObject _grid;
 
     
     int _currentLevel;
@@ -21,10 +27,16 @@ public class GameManager : MonoBehaviour
     public GameObject LoseScreen { get => _loseScreen; private set => _loseScreen = value; }
     public GameObject WinScreen { get => _winScreen; private set => _winScreen = value; }
     public GameObject PauseScreen { get => _pauseScreen; private set => _pauseScreen = value; }
+    public bool HaveKey { get => !_levelWithoutKey; }
+    public GameObject Grid { get => _grid; }
 
     private void Awake()
     {
         Instance = this;
+        if (_levelWithoutKey)
+        {
+            _grid.SetActive(false);
+        }
     }
 
     private void OnEnable()
@@ -35,26 +47,6 @@ public class GameManager : MonoBehaviour
     private void OnDisable()
     {
         _flameManager.OnFlameValueChange -= CheckForLoseCondition;
-    }
-
-    public Vector3 DirectionAddMovePos(TileDown.Direction direction)
-    {
-        switch (direction)
-        {
-            case TileDown.Direction.Left:
-                return new Vector3(-1, 0, 0);
-
-            case TileDown.Direction.Right:
-                return new Vector3(1, 0, 0);
-
-            case TileDown.Direction.Up:
-                return new Vector3(0, 1, 0);
-
-            case TileDown.Direction.Down:
-                return new Vector3(0, -1, 0);
-        }
-
-        return Vector3.zero;
     }
 
     private void CheckForLoseCondition(float flameValue)
@@ -74,5 +66,29 @@ public class GameManager : MonoBehaviour
     internal void SetTouchControlsActive(bool active)
     {
         _moveBubble.SetTouchControlsActive(active);
+    }
+
+    internal void AnimatePlayer(TileDown.Direction down)
+    {
+        switch (down)
+        {
+            case TileDown.Direction.Left:
+                _playerAnim.Play("PlayerDashSide");
+                _playerAnim.gameObject.GetComponent<SpriteRenderer>().flipX = false;
+                break;
+            case TileDown.Direction.Right:
+                _playerAnim.Play("PlayerDashSide");
+                _playerAnim.gameObject.GetComponent<SpriteRenderer>().flipX = true;
+                break;
+            case TileDown.Direction.Up:
+                _playerAnim.Play("PlayerDashBack");
+                _playerAnim.gameObject.GetComponent<SpriteRenderer>().flipX = false;
+                break;
+            case TileDown.Direction.Down:
+                _playerAnim.Play("PlayerDashFront");
+                Debug.LogWarning("ZOBIZOB");
+                _playerAnim.gameObject.GetComponent<SpriteRenderer>().flipX = false;
+                break;
+        }
     }
 }
