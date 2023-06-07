@@ -617,7 +617,7 @@ public class MoveBubble : MonoBehaviour
             if (fingerTouchDelta.x > 0) { return TileDown.Direction.Right; }
 
             //move left
-            else { return TileDown.Direction.Down; }
+            else { return TileDown.Direction.Left; }
         }
 
         //y
