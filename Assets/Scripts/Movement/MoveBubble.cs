@@ -330,6 +330,10 @@ public class MoveBubble : MonoBehaviour
                     _flameManager.ModifyFlame(true, 1);
                     
                 }
+                if(tempBeforeDown.type == TileDown.TileType.Breakable && tempBeforeDown.isActivated)
+                {
+                    tempBeforeDown.GetComponent<SpriteRenderer>().sprite = tempTile.spritesDown.spriteBreakable[1];
+                }
                 //rock solid !
                 break;
 
@@ -378,7 +382,7 @@ public class MoveBubble : MonoBehaviour
                 if (!tempTile.isActivated)
                 {
                     tempTile.isActivated = true;
-                    tempTile.GetComponent<SpriteRenderer>().sprite = tempTile.spritesDown.spriteBreakable[1];
+                    
                     break;
                 }
                 else
