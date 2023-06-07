@@ -47,6 +47,8 @@ public class MoveBubble : MonoBehaviour
     TileDown.Direction _direction;
     FlameManager _flameManager;
 
+    TileDown.TileType _oldType;
+
     //use for current standing
     TileDown.TileType _tileStanding;
     TileUp.TileUpType _tileStandingUp;
@@ -175,6 +177,7 @@ public class MoveBubble : MonoBehaviour
         switch (tempTileUp.type)
         {
             case TileUp.TileUpType.Wall:
+                _isSliding = false;
                 GoBack(direction);
                 _shouldStopCheckingTile = true;
                 return;
@@ -313,12 +316,16 @@ public class MoveBubble : MonoBehaviour
     private void SwitchOnTileDown (TileDown tempTile, TileDown.Direction direction)
     {
         GameManager.Instance.AnimatePlayer(direction);
+        TileDown tempTileDown = manager.tileMap.FindTileWithPos(_goToPosition);
+        Vector3 test = tempTile.transform.position - DirectionAddMovePos(direction);
+        TileDown tempBeforeDown = manager.tileMap.FindTileWithPos(test);
         switch (tempTile.type)
         {
             case TileDown.TileType.Rock:
+
             case TileDown.TileType.WaterRock:
                 _isSliding = false;
-                if (_tileMovingUp != TileUp.TileUpType.Wind)
+                if (_tileMovingUp != TileUp.TileUpType.Wind && tempBeforeDown.type != TileDown.TileType.Ice)
                 { 
                     _flameManager.ModifyFlame(true, 1);
                     
@@ -327,8 +334,10 @@ public class MoveBubble : MonoBehaviour
                 break;
 
             case TileDown.TileType.Ice:
+                
                 if (!_isSliding)
                 {
+                    
                     _flameManager.ModifyFlame(true, 1);
                     _isSliding = true;
                 }
@@ -459,6 +468,7 @@ public class MoveBubble : MonoBehaviour
         _goToPosition += DirectionAddMovePos(direction);
         Tile tileToMove = manager.tileUpMap.FindTileWithPos(_goToPosition);
 
+        
         //trouve le millieu de la tile ou l'on atterie
         _goToPosition = tileToMove.transform.position;
 
@@ -467,6 +477,7 @@ public class MoveBubble : MonoBehaviour
 
         return tileToMove;
     }
+
 
     private void Touch_onFingerUp(Etouch.Finger finger) 
     {
@@ -501,14 +512,14 @@ public class MoveBubble : MonoBehaviour
                 return;
         }
 
-
+        
         //trouve le vector d'ajout de position selon la direction du slide
         _goToPosition += VectorAddMovePos(fingerTouchDelta);
 
         //trouve le millieu de la tile ou l'on atterie
         _goToPosition = manager.tileMap.FindTileWithPos(_goToPosition).transform.position;
 
-
+        
         //verifie si la tile ou l'on va bouger contiens un effet, si oui applique l'effet
         CheckNextTileEffect(FingerToDirection(finger));
 
@@ -617,7 +628,7 @@ public class MoveBubble : MonoBehaviour
             if (fingerTouchDelta.x > 0) { return TileDown.Direction.Right; }
 
             //move left
-            else { return TileDown.Direction.Down; }
+            else { return TileDown.Direction.Left; }
         }
 
         //y
