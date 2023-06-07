@@ -76,7 +76,7 @@ public class BlockToMove : MonoBehaviour
         TileDown currentTileDown = _bubble.manager.tileMap.FindTileWithPos(currentGoPos);
 
         // si la case n'est pas libre on ne push pas le block
-        if (tileUpToMove.type != TileUp.TileUpType.None && tileUpToMove.type != TileUp.TileUpType.Wind)
+        if (tileUpToMove.type != TileUp.TileUpType.None && tileUpToMove.type != TileUp.TileUpType.Wind && tileDownToMove.type != TileDown.TileType.WaterRock)
         {
             GoBack(direction);
             TileUp tileUpEnd = _bubble.manager.tileUpMap.FindTileWithPos(toGoPosBlock);
@@ -114,7 +114,7 @@ public class BlockToMove : MonoBehaviour
         CheckNextTileEffect(direction);
 
         // si tomber dans l'eau ou le void on ne met pas le block sur la prochaine case
-        if (tileDownToMove.type != TileDown.TileType.WaterRock && tileDownToMove.type != TileDown.TileType.Void && tileDownToMove.type != TileDown.TileType.Ice)
+        if (tileDownToMove.type != TileDown.TileType.Water && tileDownToMove.type != TileDown.TileType.Void && tileDownToMove.type != TileDown.TileType.Ice)
         {
             tileUpToMove.block = gameObject;
             tileUpToMove.type = TileUp.TileUpType.Block;
@@ -128,9 +128,12 @@ public class BlockToMove : MonoBehaviour
         TileUp tempTileUp = _bubble.manager.tileUpMap.FindTileWithPos(pos);
         pos += _bubble.DirectionAddMovePos(direction);
 
-        if (tempTileUp.type == TileUp.TileUpType.Wind && tempTileUp.direction == direction)
+        
+
+        if (tempTileUp != null && tempTileUp.type == TileUp.TileUpType.Wind && tempTileUp.direction == direction)
         {
             tempTileUp.isActivated = isStopped;
+            tempTileUp.PutOfWithdrawShaderWind(isStopped);
             tempTileUp.GetComponent<SpriteRenderer>().sprite = spriteReplace;
             RecursiveCheckNextWind(pos, direction, isStopped, spriteReplace);
         }

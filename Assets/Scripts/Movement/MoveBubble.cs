@@ -439,6 +439,11 @@ public class MoveBubble : MonoBehaviour
         _goToPosition += DirectionAddMovePos(direction);
         Tile tileToMove = manager.tileUpMap.FindTileWithPos(_goToPosition);
 
+        //hors du level
+        if (tileToMove == null) {
+            OnDie?.Invoke();
+            return null;
+        }
         //trouve le millieu de la tile ou l'on atterie
         _goToPosition = tileToMove.transform.position;
 

@@ -433,6 +433,20 @@ public class TileUp : Tile
         }
     }
 
+    public void PutOfWithdrawShaderWind (bool isStopped)
+    {
+        Debug.Log(spritesUp.windMat);
+
+        if (!isStopped)
+        {
+            GetComponent<SpriteRenderer>().material = spritesUp.windMat;
+        }
+        else
+        {
+            GetComponent<SpriteRenderer>().material = spritesUp.normalMat;
+        }
+    }
+
     public void SwitchOffTorch()
     {
         DOTween.To(() => lightTorch.GetComponent<Light2D>().pointLightOuterRadius, x => lightTorch.GetComponent<Light2D>().pointLightOuterRadius = x, 0, 0.5f).SetEase(Ease.OutExpo);

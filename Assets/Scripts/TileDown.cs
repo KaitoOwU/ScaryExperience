@@ -21,8 +21,7 @@ public class TileDown : Tile
 
 
     [HideInInspector] public int idWater;
-
-    public bool isActivated = false;
+    [HideInInspector] public bool isActivated = false;
 
     public enum TileType
     {
