@@ -20,6 +20,15 @@ public class KeyUI : MonoBehaviour
         _audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
     }
 
+    private void Start()
+    {
+        if (!GameManager.Instance.HaveKey)
+        {
+            _colDotted.DOColor(new(1, 1, 1, 0), 1.5f);
+
+        }
+    }
+
     private void CollectableTaken()
     {
         _colWhite.DOColor(new(1, 1, 1, 1), 0);
