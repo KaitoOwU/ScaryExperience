@@ -6,6 +6,7 @@ using System;
 using static TileUp;
 using UnityEngine.Rendering.Universal;
 using DG.Tweening;
+using UnityEngine.UI;
 
 public class MoveBubble : MonoBehaviour
 {
@@ -191,6 +192,16 @@ public class MoveBubble : MonoBehaviour
                     Destroy(tempTileUp.lightKey);
                     AddKeyFragment(1);
                     tempTileUp.GoBackToWhite();
+
+
+                    GrilleCadenas _refs = GameManager.Instance.Grid.GetComponent<GrilleCadenas>();
+                    _refs.Locker.transform.DOScale(2, 1f);
+                    _refs.Locker.DOColor(new(1, 1, 1, 0), 1f).OnComplete(() =>
+                    {
+                        _refs.Grid.transform.DOLocalMoveY(1, 5f).SetEase(Ease.OutExpo);
+                    });
+                    Destroy(_refs.gameObject, 6f);
+
                     OnKeyTaken?.Invoke();
                 }
                 break;
