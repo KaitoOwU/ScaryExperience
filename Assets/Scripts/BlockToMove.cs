@@ -45,7 +45,6 @@ public class BlockToMove : MonoBehaviour
         Vector3 oldToGo = toGoPosBlock;
         MoveNextTile(direction, bubble);
         StartCoroutine(PushBlockCorout(bubble));
-
         //check if blocked
         return oldToGo == toGoPosBlock;
     }
@@ -74,10 +73,12 @@ public class BlockToMove : MonoBehaviour
 
         Vector3 currentGoPos = toGoPosBlock - bubble.DirectionAddMovePos(direction);
         TileDown currentTileDown = _bubble.manager.tileMap.FindTileWithPos(currentGoPos);
+        
 
         // si la case n'est pas libre on ne push pas le block
         if (tileUpToMove.type != TileUp.TileUpType.None && tileUpToMove.type != TileUp.TileUpType.Wind)
         {
+
             GoBack(direction);
             TileUp tileUpEnd = _bubble.manager.tileUpMap.FindTileWithPos(toGoPosBlock);
 
@@ -89,6 +90,7 @@ public class BlockToMove : MonoBehaviour
 
             tileUpEnd.block = gameObject;
             tileUpEnd.type = TileUp.TileUpType.Block;
+
             return;
         }
 
@@ -104,21 +106,25 @@ public class BlockToMove : MonoBehaviour
         {
             lastTileUp.block = null;
             lastTileUp.type = TileUp.TileUpType.None;
+
         }
 
         //trouve le millieu de la tile ou l'on atterie
         toGoPosBlock = tileUpToMove.transform.position;
 
         lastTileUp = tileUpToMove;
-        //verifie si la tile ou l'on va bouger contiens un effet, si oui applique l'effet
-        CheckNextTileEffect(direction);
+        
 
         // si tomber dans l'eau ou le void on ne met pas le block sur la prochaine case
-        if (tileDownToMove.type != TileDown.TileType.WaterRock && tileDownToMove.type != TileDown.TileType.Void && tileDownToMove.type != TileDown.TileType.Ice)
+        if (tileDownToMove.type != TileDown.TileType.Void && tileDownToMove.type != TileDown.TileType.Ice)
         {
+
             tileUpToMove.block = gameObject;
             tileUpToMove.type = TileUp.TileUpType.Block;
+            
         }
+        //verifie si la tile ou l'on va bouger contiens un effet, si oui applique l'effet
+        CheckNextTileEffect(direction);
 
         return;
     }

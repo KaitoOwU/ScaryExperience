@@ -31,6 +31,7 @@ public class MoveBubble : MonoBehaviour
     bool _isMoving = false;
     bool _canMove = true;
     float _moveTimer = 0;
+    bool _isSliding = false;
     Vector3 _goToPosition;
     Vector3 _distFromPlayer;
     Vector3 _startPos;
@@ -45,7 +46,6 @@ public class MoveBubble : MonoBehaviour
     List<Vector3> _prePosList;
     TileDown.Direction _direction;
     FlameManager _flameManager;
-
 
     //use for current standing
     TileDown.TileType _tileStanding;
@@ -170,6 +170,7 @@ public class MoveBubble : MonoBehaviour
     private void SwitchOnTileUp (TileUp tempTileUp, TileDown.Direction direction)
     {
         _shouldStopCheckingTile = false;
+        
 
         switch (tempTileUp.type)
         {
@@ -224,7 +225,7 @@ public class MoveBubble : MonoBehaviour
             case TileUp.TileUpType.Block:
                 if (_tileMovingUp != TileUp.TileUpType.Wind && !PushBlock(direction, tempTileUp))
                 {
-                    // si l'on peut pousser le bloque
+                    // si l'on peut pousser le block
                     _shouldStopCheckingTile = true;
 
                     //re-check car on vient de modif la tileup sur laquelle on va marcher (block -> wind)
@@ -311,6 +312,7 @@ public class MoveBubble : MonoBehaviour
         {
             case TileDown.TileType.Rock:
             case TileDown.TileType.WaterRock:
+                _isSliding = false;
                 if (_tileMovingUp != TileUp.TileUpType.Wind)
                 { 
                     _flameManager.ModifyFlame(true, 1);
@@ -320,9 +322,15 @@ public class MoveBubble : MonoBehaviour
                 break;
 
             case TileDown.TileType.Ice:
+                if (!_isSliding)
+                {
+                    _flameManager.ModifyFlame(true, 1);
+                    _isSliding = true;
+                }
                 if (_tileMovingUp != TileUp.TileUpType.Wind)
                 {
-                    //zooppppppp ice
+
+
                     MoveNextTile(direction);
                     currentDelayLerpMove += _delayLerpMove;
                     _tileMoving = TileDown.TileType.Ice;
@@ -330,11 +338,12 @@ public class MoveBubble : MonoBehaviour
                 break;
 
             case TileDown.TileType.Void:
+                _isSliding = false;
                 _audioManager.PlaySFX(_audioManager.fallSound);
                 OnDie?.Invoke();
                 break;
             case TileDown.TileType.Water:
-                //glou glou water
+                _isSliding = false;
                 _audioManager.PlaySFX(_audioManager.waterSound);
                 OnDie?.Invoke();
 
@@ -346,6 +355,7 @@ public class MoveBubble : MonoBehaviour
                 break;
 
             case TileDown.TileType.Breakable:
+                _isSliding = false;
                 if (_tileMovingUp != TileUp.TileUpType.Wind)
                 {
                     _flameManager.ModifyFlame(true, 1);
