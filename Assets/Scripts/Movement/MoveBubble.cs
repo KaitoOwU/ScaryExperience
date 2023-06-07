@@ -196,10 +196,11 @@ public class MoveBubble : MonoBehaviour
 
 
                     GrilleCadenas _refs = GameManager.Instance.Grid.GetComponent<GrilleCadenas>();
-                    _refs.Locker.transform.DOScale(2, 1f);
+                    _refs.Locker.transform.DOScale(4, 1f);
                     _refs.Locker.DOColor(new(1, 1, 1, 0), 1f).OnComplete(() =>
                     {
-                        _refs.Grid.transform.DOLocalMoveY(1, 5f).SetEase(Ease.OutExpo);
+                        _refs.Grid.transform.DOLocalMoveY(1, 3f);
+                        _refs.Grid.DOColor(new(1, 1, 1, 0), 3f);
                     });
                     Destroy(_refs.gameObject, 6f);
 
@@ -250,6 +251,9 @@ public class MoveBubble : MonoBehaviour
                     }
                     else
                     {
+                        Debug.LogWarning("zobizob");
+                        GoBack(direction);
+                        _shouldStopCheckingTile = true;
                         break;
                     }
                 }
@@ -308,6 +312,7 @@ public class MoveBubble : MonoBehaviour
 
     private void SwitchOnTileDown (TileDown tempTile, TileDown.Direction direction)
     {
+        GameManager.Instance.AnimatePlayer(direction);
         switch (tempTile.type)
         {
             case TileDown.TileType.Rock:
@@ -567,13 +572,10 @@ public class MoveBubble : MonoBehaviour
         {
             case TileDown.Direction.Left:
                 return new Vector3(-_movementAmount, 0, 0);
-
             case TileDown.Direction.Right:
                 return new Vector3(_movementAmount, 0, 0);
-
             case TileDown.Direction.Up:
                 return new Vector3(0, _movementAmount, 0);
-
             case TileDown.Direction.Down:
                 return new Vector3(0, -_movementAmount, 0);
         }
@@ -615,7 +617,7 @@ public class MoveBubble : MonoBehaviour
             if (fingerTouchDelta.x > 0) { return TileDown.Direction.Right; }
 
             //move left
-            else { return TileDown.Direction.Left; }
+            else { return TileDown.Direction.Down; }
         }
 
         //y
@@ -628,7 +630,7 @@ public class MoveBubble : MonoBehaviour
             else { return TileDown.Direction.Down; }
         }
 
-        return TileDown.Direction.Left;
+        return TileDown.Direction.Down;
     }
 
     private void Touch_onFingerDown(Etouch.Finger finger)
