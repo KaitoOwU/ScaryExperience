@@ -16,8 +16,6 @@ public class TileUp : Tile
     [ShowIf("isBrasero")]
     public int refillAmountBrasero = 10;
 
-
-
     [ShowIf("isTorch")]
     public int refillAmountTorch = 5;
 
@@ -54,7 +52,10 @@ public class TileUp : Tile
     [HideInInspector] public bool isActivated = false;
     [HideInInspector] public TileMap tileMap;
     [HideInInspector] public TileUpMap tileUpMap;
-    [HideInInspector] public bool wasWind; 
+
+    [HideInInspector] public bool wasWind;
+    [HideInInspector] public int blockerBlock;
+
     [HideInInspector] public GameObject lightBrasero;
     [HideInInspector] public GameObject flameBrasero;
     [HideInInspector] public GameObject lightTorch;
@@ -437,7 +438,7 @@ public class TileUp : Tile
         }
     }
 
-    public void PutOfWithdrawShaderWind (bool isStopped)
+    public void PutOrWithdrawShaderWind (bool isStopped)
     {
         Debug.Log(spritesUp.windMat);
 

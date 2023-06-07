@@ -6,6 +6,7 @@ public class BlockToMove : MonoBehaviour
 {
     Vector3 _startPos;
     float _moveTimer;
+    public int id;
     [SerializeField] AnimationCurve _currentAnimCurve;
     [HideInInspector] public Vector3 toGoPosBlock;
     [HideInInspector] public TileUp lastTileUp;
@@ -92,12 +93,22 @@ public class BlockToMove : MonoBehaviour
             return;
         }
 
-        else if (lastTileUp != null && lastTileUp.wasWind) 
+        // si on retire le block d'une case ou il y avait du vent avec le même block qui la arreter
+        else if (lastTileUp != null && lastTileUp.wasWind && lastTileUp.blockerBlock == id)
         {
             lastTileUp.block = null;
             lastTileUp.type = TileUp.TileUpType.Wind;
             lastTileUp.isActivated = false;
             RecursiveCheckNextWind(lastTileUp.transform.position, lastTileUp.direction, false, lastTileUp.spritesUp.spriteWind[0]);
+        }
+
+        // ce n'est pas le même block qui a blocker le vent alors on remet vend mais arreter
+        else if (lastTileUp != null && lastTileUp.wasWind && lastTileUp.blockerBlock != id)
+        {
+            lastTileUp.type = TileUp.TileUpType.Wind;
+            lastTileUp.isActivated = true;
+            lastTileUp.PutOrWithdrawShaderWind(true);
+            lastTileUp.GetComponent<SpriteRenderer>().sprite = lastTileUp.spritesUp.spriteNone[0];
         }
 
         else if (lastTileUp != null && currentTileDown.type != TileDown.TileType.Ice)
@@ -110,6 +121,7 @@ public class BlockToMove : MonoBehaviour
         toGoPosBlock = tileUpToMove.transform.position;
 
         lastTileUp = tileUpToMove;
+
         //verifie si la tile ou l'on va bouger contiens un effet, si oui applique l'effet
         CheckNextTileEffect(direction);
 
@@ -128,12 +140,16 @@ public class BlockToMove : MonoBehaviour
         TileUp tempTileUp = _bubble.manager.tileUpMap.FindTileWithPos(pos);
         pos += _bubble.DirectionAddMovePos(direction);
 
-        
-
         if (tempTileUp != null && tempTileUp.type == TileUp.TileUpType.Wind && tempTileUp.direction == direction)
         {
             tempTileUp.isActivated = isStopped;
-            tempTileUp.PutOfWithdrawShaderWind(isStopped);
+
+            if (isStopped)
+            {
+                tempTileUp.blockerBlock = id;
+            }
+
+            tempTileUp.PutOrWithdrawShaderWind(isStopped);
             tempTileUp.GetComponent<SpriteRenderer>().sprite = spriteReplace;
             RecursiveCheckNextWind(pos, direction, isStopped, spriteReplace);
         }
@@ -181,12 +197,17 @@ public class BlockToMove : MonoBehaviour
         switch (tempTileUp.type)
         {
             case TileUp.TileUpType.Wind:
-                RecursiveCheckNextWind(toGoPosBlock, tempTileUp.direction, true, tempTileUp.spritesUp.spriteNone[0]);
+                if (!tempTileUp.isActivated)
+                {
+                    RecursiveCheckNextWind(toGoPosBlock, tempTileUp.direction, true, tempTileUp.spritesUp.spriteNone[0]);
+                }
+
                 tempTileUp.wasWind = true;
                 break;
 
             default:
                 tempTileUp.wasWind = false;
+                tempTileUp.blockerBlock = 0;
                 break;
         }
     }

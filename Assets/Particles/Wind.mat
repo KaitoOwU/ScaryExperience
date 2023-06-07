@@ -47,10 +47,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _NoiseScale: 1
+    - _NoiseScale: 8
     m_Colors:
     - _Colorwind: {r: 1, g: 1, b: 1, a: 1}
     - _Direction: {r: 0, g: -1, b: 0, a: 0}
     - _NoiseSpeed: {r: 1, g: 1, b: 0, a: 0}
-    - _NoiseTiling: {r: 3, g: 0.3, b: 0, a: 0}
+    - _NoiseTiling: {r: 10, g: 0.3, b: 0, a: 0}
   m_BuildTextureStacks: []
