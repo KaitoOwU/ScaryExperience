@@ -359,7 +359,7 @@ public class TileUp : Tile
                 }
                 lightTrappe.GetComponent<Light2D>().pointLightOuterRadius = sprites.radiusLightTrappe;
                 lightTrappe.GetComponent<Light2D>().color = sprites.colorLightTrappe;
-                if(grilleTrappe == null)
+                if(grilleTrappe == null && grillePrefab != null)
                 {
                     GameObject tempGrille= Instantiate(grillePrefab, transform);
                     grilleTrappe = tempGrille;
