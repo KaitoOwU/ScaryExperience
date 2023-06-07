@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,16 +16,26 @@ public class GameManager : MonoBehaviour
     [SerializeField] FlameManager _flameManager;
     [SerializeField] MoveBubble _moveBubble;
 
+    [Header("-- Level Data --")]
+    [SerializeField] bool _levelWithoutKey;
+    [SerializeField] GameObject _grid;
+
     
     int _currentLevel;
     public int CurrentLevel { get => _currentLevel; private set => _currentLevel = value; }
     public GameObject LoseScreen { get => _loseScreen; private set => _loseScreen = value; }
     public GameObject WinScreen { get => _winScreen; private set => _winScreen = value; }
     public GameObject PauseScreen { get => _pauseScreen; private set => _pauseScreen = value; }
+    public bool HaveKey { get => !_levelWithoutKey; }
+    public GameObject Grid { get => _grid; }
 
     private void Awake()
     {
         Instance = this;
+        if (_levelWithoutKey)
+        {
+            _grid.SetActive(false);
+        }
     }
 
     private void OnEnable()
