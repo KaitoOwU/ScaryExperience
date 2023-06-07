@@ -6,6 +6,7 @@ using System;
 using static TileUp;
 using UnityEngine.Rendering.Universal;
 using DG.Tweening;
+using UnityEngine.UI;
 
 public class MoveBubble : MonoBehaviour
 {
@@ -20,10 +21,6 @@ public class MoveBubble : MonoBehaviour
     [SerializeField] AnimationCurve _curveLerp;
     [SerializeField] AnimationCurve _curveLerpIce;
 
-    [Header("Buddy")]
-    [SerializeField] AnimationCurve _curveBuddy;
-    [SerializeField] GameObject _buddy;
-    [SerializeField] float _delayMovement;
 
     //runtime public
     [HideInInspector] public float currentDelayLerpMove;
@@ -74,7 +71,6 @@ public class MoveBubble : MonoBehaviour
         OnWin += Win;
         OnDie += Die;
 
-        _distFromPlayer = _buddy.transform.position - transform.position;
         currentDelayLerpMove = _delayLerpMove;
         _goToPosition = transform.position;
 
@@ -160,7 +156,6 @@ public class MoveBubble : MonoBehaviour
 
             transform.position = Vector3.Lerp(_startPos, _goToPosition, _currentAnimCurve.Evaluate(_moveTimer / currentDelayLerpMove));
 
-            _buddy.transform.position = Vector3.Lerp(_startPos + _distFromPlayer, _goToPosition + _distFromPlayer, _curveBuddy.Evaluate(_moveTimer / currentDelayLerpMove));
 
             yield return new WaitForFixedUpdate();
         }
@@ -197,6 +192,16 @@ public class MoveBubble : MonoBehaviour
                     Destroy(tempTileUp.lightKey);
                     AddKeyFragment(1);
                     tempTileUp.GoBackToWhite();
+
+
+                    GrilleCadenas _refs = GameManager.Instance.Grid.GetComponent<GrilleCadenas>();
+                    _refs.Locker.transform.DOScale(2, 1f);
+                    _refs.Locker.DOColor(new(1, 1, 1, 0), 1f).OnComplete(() =>
+                    {
+                        _refs.Grid.transform.DOLocalMoveY(1, 5f).SetEase(Ease.OutExpo);
+                    });
+                    Destroy(_refs.gameObject, 6f);
+
                     OnKeyTaken?.Invoke();
                 }
                 break;
@@ -499,7 +504,7 @@ public class MoveBubble : MonoBehaviour
         {
             _firstMove = false;
             _monsterSpawn.StartSpawn();
-            DOTween.To(() => _generalLight.intensity, x => _generalLight.intensity = x, 0.05f, 1f).SetEase(Ease.OutExpo);
+            DOTween.To(() => _generalLight.intensity, x => _generalLight.intensity = x, 0f, 1f).SetEase(Ease.OutExpo);
         }
 
         // si l'on bouge pas encore, lance l'animation
