@@ -51,3 +51,6 @@ MonoBehaviour:
   _pauseScreen: {fileID: 0}
   _flameManager: {fileID: 0}
   _moveBubble: {fileID: 0}
+  _playerAnim: {fileID: 0}
+  _levelWithoutKey: 0
+  _grid: {fileID: 0}
