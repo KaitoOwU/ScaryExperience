@@ -9,14 +9,29 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 35204034bfee719418c3a0638552fce5
   - enabled: 1
-    path: Assets/Scenes/DebugProg/Kevin.unity
-    guid: d79fead486e41e640b27cd7da3e94a92
+    path: Assets/Scenes/LD Final/01_LD_Sang_A.unity
+    guid: 9a072510887c2b54a979bf14d65363b4
   - enabled: 1
-    path: Assets/Scenes/DebugProg/Justin.unity
-    guid: 6edb07a5473ee2449a9c237366ee2ba2
+    path: "Assets/Scenes/LD Final/04_LD D\xE9placements_N.unity"
+    guid: 1cf9e36f83928a047a6920371884e796
   - enabled: 1
-    path: Assets/Scenes/Alexis.unity
-    guid: 0f2974f6900e7384fb2cd15f9f9068e3
+    path: "Assets/Scenes/LD Final/XX_LD_D\xE9placements_A.unity"
+    guid: 5a12e4407d2fd434e890279861281f83
+  - enabled: 1
+    path: Assets/Scenes/Tuto/Tuto Block.unity
+    guid: 0d4bfa7b18ae2fc45bf765fb39d0958f
+  - enabled: 1
+    path: Assets/Scenes/Tuto/Tuto Dalles Friables.unity
+    guid: e360e2b15fbc7e1459fbc210db9b4ad2
+  - enabled: 1
+    path: Assets/Scenes/Tuto/Tuto Deplacements.unity
+    guid: b70fc806e156b5f478ab243308bf567e
+  - enabled: 1
+    path: Assets/Scenes/Tuto/Tuto Glace.unity
+    guid: 162cba39c58395e46828e914f1745cba
+  - enabled: 1
+    path: Assets/Scenes/Tuto/Tuto Vent.unity
+    guid: e3632a198aa11aa4983dc0ee96eff9e2
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 192fb96f9bfa53045ab9c0bd532b0a94, type: 2}
     com.unity.adaptiveperformance.samsung.android.provider_settings: {fileID: 11400000, guid: bb18aef228e5f8a4dafc46e87c1ff4f3, type: 2}

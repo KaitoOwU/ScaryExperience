@@ -88,11 +88,12 @@ public class TileUpMap : MonoBehaviour
             TileUp tile = transform.GetChild(i).GetComponent<TileUp>();
             tile.spritesDown = spritesDownTiles;
             tile.spritesUp = spritesUpTiles;
-            tile.RefreshColorSprite(false);
+            
             tile.lightPrefab = lightPrefab;
             tile.flameBraseroPrefab = braseroPrefab;
             tile.flameTorchPrefab = torchPrefab;
             tile.grillePrefab = grillePrefab;
+            tile.RefreshColorSprite(false);
         }
     }
 
