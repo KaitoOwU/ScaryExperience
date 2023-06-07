@@ -5,10 +5,10 @@ public class DataManager : MonoBehaviour
 {
     public static DataManager Instance;
 
-    [SerializeField] List<Level> _levels;
+    [SerializeField] List<LevelLoadData> _levels;
     Dictionary<int, LevelData> _levelData = new();
     public Dictionary<int, LevelData> LevelData { get => _levelData; }
-    public IReadOnlyList<Level> LevelList { get => _levels; }
+    public IReadOnlyList<LevelLoadData> LevelList { get => _levels; }
 
     public bool IsLevelLaunchedFromMainMenu { get; set; } = true;
 
@@ -53,10 +53,19 @@ public class LevelData
     public void Complete(bool withCollectible)
     {
 
-        _collectibleAcquired = withCollectible;
+        if(!_collectibleAcquired)
+            _collectibleAcquired = withCollectible;
+
         if (DataManager.Instance.LevelData.ContainsKey(_levelId + 1))
         {
             DataManager.Instance.LevelData[_levelId + 1].IsUnlocked = true;
         }
     }
+}
+
+[System.Serializable]
+public struct LevelLoadData
+{
+    public string _levelSceneName;
+    public string _levelName;
 }

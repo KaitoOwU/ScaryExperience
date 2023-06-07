@@ -12,6 +12,7 @@ public class LevelUI : MonoBehaviour
 {
 
     [SerializeField, ReadOnly] int levelNumber;
+    [SerializeField] Color _golded;
     [SerializeField] TextMeshProUGUI _levelName;
     [SerializeField] Button _play;
     LevelSelect levelSelect;
@@ -26,6 +27,10 @@ public class LevelUI : MonoBehaviour
     {
         levelSelect = FindObjectOfType<LevelSelect>();
         _play.interactable = DataManager.Instance.LevelData[levelNumber].IsUnlocked;
+        if (DataManager.Instance.LevelData[levelNumber].CollectibleAcquired)
+        {
+            _play.GetComponent<Image>().color = _golded;
+        }
     }
 
     public void LaunchLevel()

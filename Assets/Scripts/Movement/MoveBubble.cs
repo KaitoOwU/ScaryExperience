@@ -113,8 +113,11 @@ public class MoveBubble : MonoBehaviour
         Etouch.Touch.onFingerDown -= Touch_onFingerDown;
         Etouch.Touch.onFingerUp -= Touch_onFingerUp;
 
-        //GameManager.Instance.LevelData[GameManager.Instance.CurrentLevel].Complete(_collectibleAcquired);
-        //SaveSystem.SaveData(GameManager.Instance.LevelData);
+        if(DataManager.Instance != null)
+        {
+            DataManager.Instance.LevelData[GameManager.Instance.CurrentLevel].Complete(_collectibleAcquired);
+            SaveSystem.SaveData(DataManager.Instance.LevelData);
+        }
 
         GameManager.Instance.WinScreen.SetActive(true);
     }

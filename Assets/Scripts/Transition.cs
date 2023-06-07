@@ -26,9 +26,9 @@ public class Transition : MonoBehaviour
 
     private IEnumerator StartAnimation()
     {
-        Level lvl = DataManager.Instance.LevelList[GameManager.Instance.CurrentLevel];
+        LevelLoadData lvl = DataManager.Instance.LevelList[GameManager.Instance.CurrentLevel];
         _levelNumber.text = "Level " + (GameManager.Instance.CurrentLevel + 1);
-        _levelName.text = lvl.levelName;
+        _levelName.text = lvl._levelName;
 
         //START ANIMATION
         _levelNumber.DOColor(Color.white, 1f).SetEase(Ease.InOutExpo);

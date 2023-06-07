@@ -19,7 +19,10 @@ public class TileDown : Tile
     [ShowIf("isWater")]
     public WaterType waterType;
 
-    public bool isActivated = false;
+
+    [HideInInspector] public int idWater;
+
+    [HideInInspector] public bool isActivated = false;
 
     public enum TileType
     {
@@ -43,9 +46,20 @@ public class TileDown : Tile
 
     public void RefreshColorSprite()
     {
+        switch (oldType)
+        {
+            case TileType.Ice:
+                GetComponent<SpriteRenderer>().color = Color.white;
+                break;
+            case TileType.Void:
+                GetComponent<SpriteRenderer>().color = Color.white;
+                GetComponent<SpriteRenderer>().material = spritesDown.normalMat;
+                break;
+        }
         switch (type)
         {
             case TileType.Rock:
+                GetComponent<SpriteRenderer>().color = spritesDown.colorRock;
                 switch (position)
                 {
                     case Position.Normal:
@@ -96,21 +110,26 @@ public class TileDown : Tile
             case TileType.Void:
                 GetComponent<SpriteRenderer>().sprite = spritesDown.spriteVoid[Random.Range(0, spritesDown.spriteVoid.Count)];
                 GetComponent<SpriteRenderer>().color = spritesDown.colorVoid;
+                GetComponent<SpriteRenderer>().material = spritesDown.voidMat;
                 break;
             case TileType.Water:
                 switch (waterType)
                 {
                     case WaterType.Normal:
                         GetComponent<SpriteRenderer>().sprite = spritesDown.spriteWater[0];
+                        idWater = 0;
                         break;
                     case WaterType.SideR:
                         GetComponent<SpriteRenderer>().sprite = spritesDown.spriteWater[1];
+                        idWater = 1;
                         break;
                     case WaterType.Middle:
                         GetComponent<SpriteRenderer>().sprite = spritesDown.spriteWater[2];
+                        idWater = 2;
                         break;
                     case WaterType.SideL:
                         GetComponent<SpriteRenderer>().sprite = spritesDown.spriteWater[3];
+                        idWater = 3;
                         break;
 
                 }
@@ -122,15 +141,7 @@ public class TileDown : Tile
                 break;
         }
 
-        switch (oldType)
-        {
-            case TileType.Ice:
-                GetComponent<SpriteRenderer>().color = Color.white;
-                break;
-            case TileType.Void:
-                GetComponent<SpriteRenderer>().color = Color.white;
-                break;
-        }
+        
     }
 
     [Button("RefreshTile")]

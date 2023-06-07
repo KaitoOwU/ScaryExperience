@@ -269,6 +269,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6402676020191382400, guid: 5ebf54a5b335c6145bf02496bc78a480, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 674031871158201679}
     - target: {fileID: 6402676020191382403, guid: 5ebf54a5b335c6145bf02496bc78a480, type: 3}
       propertyPath: m_Name
       value: -- UI --
@@ -433,6 +437,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 674031869736967919, guid: 75b06501780e5054b94fd67ec260318c, type: 3}
+      propertyPath: m_Lens.OrthographicSize
+      value: 8.5
+      objectReference: {fileID: 0}
     - target: {fileID: 674031871137111762, guid: 75b06501780e5054b94fd67ec260318c, type: 3}
       propertyPath: m_LocalPosition.x
       value: -28.052584
@@ -441,8 +449,17 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -8.703712
       objectReference: {fileID: 0}
+    - target: {fileID: 674031871137111790, guid: 75b06501780e5054b94fd67ec260318c, type: 3}
+      propertyPath: orthographic size
+      value: 8.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 75b06501780e5054b94fd67ec260318c, type: 3}
+--- !u!20 &674031871158201679 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 674031871137111790, guid: 75b06501780e5054b94fd67ec260318c, type: 3}
+  m_PrefabInstance: {fileID: 674031871158201678}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &705866168438234939
 PrefabInstance:
   m_ObjectHideFlags: 0
