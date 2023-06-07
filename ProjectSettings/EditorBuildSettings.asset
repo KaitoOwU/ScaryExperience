@@ -21,10 +21,10 @@ EditorBuildSettings:
     path: Assets/Scenes/Tuto/Tuto Vent.unity
     guid: e3632a198aa11aa4983dc0ee96eff9e2
   - enabled: 1
-    path: Assets/Scenes/01_LD_Sang.unity
+    path: Assets/Scenes/LD Final/01_LD_Sang_A.unity
     guid: 9a072510887c2b54a979bf14d65363b4
   - enabled: 1
-    path: "Assets/Scenes/04_LD D\xE9placements.unity"
+    path: "Assets/Scenes/LD Final/04_LD D\xE9placements_N.unity"
     guid: 1cf9e36f83928a047a6920371884e796
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 192fb96f9bfa53045ab9c0bd532b0a94, type: 2}
