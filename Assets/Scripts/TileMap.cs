@@ -11,7 +11,7 @@ public class TileMap : MonoBehaviour
     [SerializeField] GameObject tile;
     [HideInInspector] public float tileSize;
 
-    List<Tile> _tileMap = new List<Tile>();
+    List<TileDown> _tileMap = new List<TileDown>();
 
     [SerializeField] SpriteUp spritesUpTiles;
     [SerializeField] SpriteDown spritesDownTiles;
@@ -26,7 +26,7 @@ public class TileMap : MonoBehaviour
     {
         for (int i = 0; i < transform.childCount; i++)
         {
-            _tileMap.Add(transform.GetChild(i).GetComponent<Tile>());
+            _tileMap.Add(transform.GetChild(i).GetComponent<TileDown>());
         }
     }
 
@@ -87,6 +87,12 @@ public class TileMap : MonoBehaviour
 
     public TileDown FindTileWithPos(Vector3 pos)
     {
+        TileDown test = _tileMap[(int)(Mathf.Floor(Mathf.Abs(pos.x)) + Mathf.Floor(Mathf.Abs(pos.y)) * numberTileX)];
+        if (test != null)
+        {
+            return test;
+        }
+
         foreach (TileDown tile in _tileMap)
         {
             //check x pos
