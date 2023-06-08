@@ -11,7 +11,7 @@ public class TileUp : Tile
     private TileUpType oldType;
 
     [ShowIf("isWinTrappe")]
-    public int numberPartKeyRequired = 1;
+    public int numberPartKeyRequired = 0;
 
     [ShowIf("isBrasero")]
     public int refillAmountBrasero = 10;
