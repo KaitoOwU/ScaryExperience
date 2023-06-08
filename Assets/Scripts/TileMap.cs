@@ -16,7 +16,7 @@ public class TileMap : MonoBehaviour
     [SerializeField] SpriteUp spritesUpTiles;
     [SerializeField] SpriteDown spritesDownTiles;
 
-    private void Start()
+    private void Awake()
     {
         AddAllTiles();
         tileSize = 1;

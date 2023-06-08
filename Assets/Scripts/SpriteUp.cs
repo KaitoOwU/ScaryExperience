@@ -7,6 +7,7 @@ public class SpriteUp : ScriptableObject
 {
     [Header("- Sprite -")]
     public List<Sprite> spriteNone;
+    public List<Sprite> spriteNoneWall;
     public List<Sprite> spriteSideWall;
     public List<Sprite> spriteCornerWall;
     public List<Sprite> spriteKey;
