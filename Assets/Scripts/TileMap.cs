@@ -44,6 +44,8 @@ public class TileMap : MonoBehaviour
                 Tile tileTemp = Instantiate(tile, new Vector3(xOffset, yOffset, 0), Quaternion.identity, transform).GetComponent<Tile>();
                 tileTemp.name = "X : " + j.ToString() + " / Y : " + i.ToString();
                 xOffset += tile.GetComponent<SpriteRenderer>().bounds.size.x;
+                tileTemp.spritesDown = spritesDownTiles;
+                tileTemp.spritesUp = spritesUpTiles;
             }
 
             xOffset = 0;

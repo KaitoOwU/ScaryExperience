@@ -12,10 +12,16 @@ public class Pause : MonoBehaviour
     {
         _audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
     }
+
+    private void Start()
+    {
+        GameManager.Instance.SetTouchControlsActive(false);
+        GameManager.Instance.SetTouchControlsActive(true);
+        DOTween.Kill(transform);
+    }
+
     private void OnEnable()
     {
-        
-
         GameManager.Instance.SetTouchControlsActive(false);
         DOTween.Kill(transform);
         transform.DOScale(1, 1.5f).SetEase(Ease.OutExpo);

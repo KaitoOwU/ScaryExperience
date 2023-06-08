@@ -19,7 +19,13 @@ public class TileDown : Tile
     [ShowIf("isWater")]
     public WaterType waterType;
 
-    public bool isActivated = false;
+    [ShowIf("isIce")]
+    public IceType iceType;
+
+
+    [HideInInspector] public int idWater;
+
+    [HideInInspector] public bool isActivated = false;
 
     public enum TileType
     {
@@ -43,9 +49,20 @@ public class TileDown : Tile
 
     public void RefreshColorSprite()
     {
+        switch (oldType)
+        {
+            case TileType.Ice:
+                GetComponent<SpriteRenderer>().color = Color.white;
+                break;
+            case TileType.Void:
+                GetComponent<SpriteRenderer>().color = Color.white;
+                GetComponent<SpriteRenderer>().material = spritesDown.normalMat;
+                break;
+        }
         switch (type)
         {
             case TileType.Rock:
+                GetComponent<SpriteRenderer>().color = spritesDown.colorRock;
                 switch (position)
                 {
                     case Position.Normal:
@@ -90,7 +107,49 @@ public class TileDown : Tile
                 break;
 
             case TileType.Ice:
-                GetComponent<SpriteRenderer>().sprite = spritesDown.spriteIce[Random.Range(0, spritesDown.spriteIce.Count)];
+                switch (iceType)
+                {
+                    case IceType.Center:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteIce[0];
+                        break;
+                    case IceType.SideR:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteIce[1];
+                        break;
+                    case IceType.SideU:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteIce[2];
+                        break;
+                    case IceType.SideL:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteIce[3];
+                        break;
+                    case IceType.SideD:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteIce[4];
+                        break;
+                    case IceType.ExteriorCornerUR:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteIce[5];
+                        break;
+                    case IceType.ExteriorCornerUL:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteIce[6];
+                        break;
+                    case IceType.ExteriorCornerDL:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteIce[7];
+                        break;
+                    case IceType.ExteriorCornerDR:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteIce[8];
+                        break;
+                    case IceType.InteriorCornerUR:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteIce[9];
+                        break;
+                    case IceType.InteriorCornerUL:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteIce[10];
+                        break;
+                    case IceType.InteriorCornerDL:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteIce[11];
+                        break;
+                    case IceType.InteriorCornerDR:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteIce[12];
+                        break;
+
+                }
                 break;
 
             case TileType.Void:
@@ -103,15 +162,19 @@ public class TileDown : Tile
                 {
                     case WaterType.Normal:
                         GetComponent<SpriteRenderer>().sprite = spritesDown.spriteWater[0];
+                        idWater = 0;
                         break;
                     case WaterType.SideR:
                         GetComponent<SpriteRenderer>().sprite = spritesDown.spriteWater[1];
+                        idWater = 1;
                         break;
                     case WaterType.Middle:
                         GetComponent<SpriteRenderer>().sprite = spritesDown.spriteWater[2];
+                        idWater = 2;
                         break;
                     case WaterType.SideL:
                         GetComponent<SpriteRenderer>().sprite = spritesDown.spriteWater[3];
+                        idWater = 3;
                         break;
 
                 }
@@ -123,16 +186,7 @@ public class TileDown : Tile
                 break;
         }
 
-        switch (oldType)
-        {
-            case TileType.Ice:
-                GetComponent<SpriteRenderer>().color = Color.white;
-                break;
-            case TileType.Void:
-                GetComponent<SpriteRenderer>().color = Color.white;
-                GetComponent<SpriteRenderer>().material = spritesDown.normalMat;
-                break;
-        }
+        
     }
 
     [Button("RefreshTile")]
@@ -180,9 +234,27 @@ public class TileDown : Tile
         SideL
     }
 
+    public enum IceType
+    {
+        Center,
+        SideR,
+        SideU,
+        SideL,
+        SideD,
+        ExteriorCornerUR,
+        ExteriorCornerUL,
+        ExteriorCornerDL,
+        ExteriorCornerDR,
+        InteriorCornerUR,
+        InteriorCornerUL,
+        InteriorCornerDL,
+        InteriorCornerDR,
+    }
+
     private bool isRock() { return type == TileType.Rock; }
     private bool isSide() { return position == Position.Side; }
     private bool isCorner() { return position == Position.Corner; }
     private bool isWater() { return type == TileType.Water; }
+    private bool isIce() { return type == TileType.Ice; }
 
 }

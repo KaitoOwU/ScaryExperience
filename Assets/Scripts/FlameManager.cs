@@ -32,6 +32,9 @@ public class FlameManager : MonoBehaviour
 
     public bool isDeadFromMonsters = true;
 
+    Tween tween1;
+    Tween tween2;
+
     private void Awake()
     {
         _audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
@@ -88,15 +91,15 @@ public class FlameManager : MonoBehaviour
         {
             _noise.m_AmplitudeGain = 0;
             _noise.m_FrequencyGain = 0;
+            
         }
+        tween1 = DOTween.To(() => monsterSpawn._radius, x => monsterSpawn._radius = x, _light.pointLightOuterRadius + 2, 1f).SetEase(Ease.OutExpo).OnComplete(() =>
+        {
+            tween2 = DOTween.To(() => monsterSpawn._radius, x => monsterSpawn._radius = x, _light.pointLightOuterRadius, 2);
+        });
 
-        
     }
 
-    private void Update()
-    {
-        monsterSpawn._radius = _light.pointLightOuterRadius;
-    }
 
 
 

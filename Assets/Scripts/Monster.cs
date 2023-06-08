@@ -11,9 +11,9 @@ public class Monster : MonoBehaviour
     public AnimationClip clip;
     PlayableGraph playableGraph;
     AnimationPlayableOutput playableOutput;
+    public MonsterSpawn monsterSpawn;
     private void Awake()
     {
-        
 
         playableGraph = PlayableGraph.Create();
 
@@ -43,6 +43,7 @@ public class Monster : MonoBehaviour
 
     private void Update()
     {
+
         if (!isAroundCircle)
         {
             if (Vector3.Distance(player.position, transform.position) <= playerRadius)
@@ -60,7 +61,12 @@ public class Monster : MonoBehaviour
             {
                 gameObject.SetActive(false);
             }*/
+            Vector3 dir = (transform.position - player.position).normalized;
+
+            transform.localPosition = dir * (monsterSpawn._radius - 0.5f);
         }
+
+        
         
     }
 }
