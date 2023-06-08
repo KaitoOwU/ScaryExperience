@@ -11,7 +11,6 @@ using UnityEngine.UI;
 public class MoveBubble : MonoBehaviour
 {
     [Header("- References -")]
-    [SerializeField] public GameManager manager;
     [SerializeField] Light2D _generalLight;
     [SerializeField] MonsterSpawn _monsterSpawn;
 
@@ -81,7 +80,7 @@ public class MoveBubble : MonoBehaviour
 
     private void Start()
     {
-        _movementAmount = manager.tileMap.tileSize;
+        _movementAmount = GameManager.Instance.tileMap.tileSize;
         _prePosList = new List<Vector3>();
         _flameManager = GetComponent<FlameManager>();
         _audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
@@ -265,9 +264,9 @@ public class MoveBubble : MonoBehaviour
 
                 if (!tempTileUp.isActivated)
                 {
-                    TileDown tempTile = manager.tileMap.FindTileWithPos(_goToPosition);
+                    TileDown tempTile = GameManager.Instance.tileMap.FindTileWithPos(_goToPosition);
                     Vector3 posTileBefore = tempTileUp.transform.position - DirectionAddMovePos(direction);
-                    TileUp tempBeforeUp = manager.tileUpMap.FindTileWithPos(posTileBefore);
+                    TileUp tempBeforeUp = GameManager.Instance.tileUpMap.FindTileWithPos(posTileBefore);
 
                     // si l'on change de direction, on ajoute une position a la liste de position a se deplacer
                     if (tempBeforeUp.direction != tempTileUp.direction)
@@ -306,9 +305,9 @@ public class MoveBubble : MonoBehaviour
     private void SwitchOnTileDown (TileDown tempTile, TileDown.Direction direction)
     {
         GameManager.Instance.AnimatePlayer(direction);
-        TileDown tempTileDown = manager.tileMap.FindTileWithPos(_goToPosition);
+        TileDown tempTileDown = GameManager.Instance.tileMap.FindTileWithPos(_goToPosition);
         Vector3 test = tempTile.transform.position - DirectionAddMovePos(direction);
-        TileDown tempBeforeDown = manager.tileMap.FindTileWithPos(test);
+        TileDown tempBeforeDown = GameManager.Instance.tileMap.FindTileWithPos(test);
 
         switch (tempTile.type)
         {
@@ -386,8 +385,8 @@ public class MoveBubble : MonoBehaviour
 
     private void CheckNextTileEffect(TileDown.Direction direction)
     {
-        TileDown tempTile = manager.tileMap.FindTileWithPos(_goToPosition);
-        TileUp tempTileUp = manager.tileUpMap.FindTileWithPos(_goToPosition);
+        TileDown tempTile = GameManager.Instance.tileMap.FindTileWithPos(_goToPosition);
+        TileUp tempTileUp = GameManager.Instance.tileUpMap.FindTileWithPos(_goToPosition);
 
         SwitchOnTileUp(tempTileUp, direction);
 
@@ -423,7 +422,7 @@ public class MoveBubble : MonoBehaviour
         _goToPosition -= DirectionAddMovePos(direction);
 
         //trouve le millieu de la tile ou l'on atterie
-        _goToPosition = manager.tileMap.FindTileWithPos(_goToPosition).transform.position;
+        _goToPosition = GameManager.Instance.tileMap.FindTileWithPos(_goToPosition).transform.position;
     }
 
     private bool PushBlock(TileDown.Direction direction, TileUp TileBlock)
@@ -435,7 +434,7 @@ public class MoveBubble : MonoBehaviour
 
     private TileDown CheckStandingDownTile(Vector3 pos)
     {
-        TileDown temp = manager.tileMap.FindTileWithPos(pos);
+        TileDown temp = GameManager.Instance.tileMap.FindTileWithPos(pos);
 
         if (temp != null)
         {
@@ -448,7 +447,7 @@ public class MoveBubble : MonoBehaviour
 
     private TileUp CheckStandingUpTile(Vector3 pos)
     {
-        TileUp temp = manager.tileUpMap.FindTileWithPos(pos);
+        TileUp temp = GameManager.Instance.tileUpMap.FindTileWithPos(pos);
 
         if (temp != null)
         {
@@ -489,7 +488,7 @@ public class MoveBubble : MonoBehaviour
     {
         //trouve le vector d'ajout de position selon la direction du slide
         _goToPosition += DirectionAddMovePos(direction);
-        Tile tileToMove = manager.tileUpMap.FindTileWithPos(_goToPosition);
+        Tile tileToMove = GameManager.Instance.tileUpMap.FindTileWithPos(_goToPosition);
 
         //hors du level
         if (tileToMove == null) {
@@ -550,7 +549,7 @@ public class MoveBubble : MonoBehaviour
         _goToPosition += VectorAddMovePos(fingerTouchDelta);
 
         //trouve le millieu de la tile ou l'on atterie
-        _goToPosition = manager.tileMap.FindTileWithPos(_goToPosition).transform.position;
+        _goToPosition = GameManager.Instance.tileMap.FindTileWithPos(_goToPosition).transform.position;
 
         
         //verifie si la tile ou l'on va bouger contiens un effet, si oui applique l'effet

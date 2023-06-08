@@ -35,11 +35,6 @@ public class FlameManager : MonoBehaviour
     Tween tween1;
     Tween tween2;
 
-    private void Awake()
-    {
-        _audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
-    }
-
     void Start()
     {
         _noise = _vCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
@@ -49,6 +44,7 @@ public class FlameManager : MonoBehaviour
 
     public void ModifyFlame(bool substract, int amount)
     {
+        _audioManager = GameManager.Instance.AudioManager;
         if (substract)
         {
             _value -= amount;
@@ -68,6 +64,7 @@ public class FlameManager : MonoBehaviour
             DOTween.To(() => _light.intensity, x => _light.intensity = x, 0, 0.5f).SetEase(Ease.OutExpo);
             if (isDeadFromMonsters)
             {
+
                 _audioManager.PlaySFX(_audioManager.deathByMonsterSound);
                 monsterSpawn.playerIsDead = true;
             }
@@ -79,7 +76,7 @@ public class FlameManager : MonoBehaviour
         }
         
         _light.color = new Color(Mathf.Lerp(_minColor.r, _maxColor.r, _value / 10), Mathf.Lerp(_minColor.g, _maxColor.g, _value / 10), Mathf.Lerp(_minColor.b, _maxColor.b, _value / 10));
-        
+
         _audioManager.glbGlb.volume = (10 - _value) / 10;
         OnFlameValueChange?.Invoke(_value);
         if(_value <= 5)
@@ -100,10 +97,6 @@ public class FlameManager : MonoBehaviour
 
     }
 
-    private void Update()
-    {
-        
-    }
 
 
 

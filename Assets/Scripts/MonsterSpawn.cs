@@ -20,16 +20,19 @@ public class MonsterSpawn : MonoBehaviour
     [Header("Monster Cricle")]
     [SerializeField] int _monsterCircleCount;
     [SerializeField] List<AnimationClip> _animationsCircle;
-    List<GameObject> monstersCircle = new List<GameObject>();
+    public List<GameObject> monstersCircle = new List<GameObject>();
 
 
     AudioManager _audioManager;
+    FlameManager _flameManager;
+
 
     [HideInInspector] public bool playerIsDead = false;
 
     private void Awake()
     {
         _audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+        _flameManager = _player.gameObject.GetComponent<FlameManager>();
     }
     public void StartSpawn()
     {
@@ -85,16 +88,22 @@ public class MonsterSpawn : MonoBehaviour
                 monster.transform.position = new Vector3(Random.Range(_player.position.x - width / 2, _player.position.x + width / 2), Random.Range(_player.position.y - height / 2, _player.position.y + height / 2), 0);
 
                 CheckIfInCirecle(_player, monster.transform, _radius);
+                monster.SetActive(true);
+                monster.GetComponent<Monster>().PlayClip();
+                StartCoroutine(SpawningCooldown(monster.GetComponent<Monster>().clip.length, monster));
             }
             else
             {
                 monster.GetComponent<Monster>().clip = _animationsCircle[Random.Range(0, _animationsCircle.Count)];
                 SpawnAroundCircle(monster);
-            }
-            monster.SetActive(true);
+                monster.SetActive(true);
+                monster.GetComponent<Monster>().PlayClip();
+                StartCoroutine(SpawningCooldown(monster.GetComponent<Monster>().clip.length, monster));
 
-            monster.GetComponent<Monster>().PlayClip();
-            StartCoroutine(SpawningCooldown(monster.GetComponent<Monster>().clip.length, monster));
+            }
+            
+
+            
         }
         
 
@@ -157,6 +166,7 @@ public class MonsterSpawn : MonoBehaviour
         monster.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90 + rotationAngle));
 
     }
+
 
     
 

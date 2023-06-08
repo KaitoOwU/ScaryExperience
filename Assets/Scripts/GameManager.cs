@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] FlameManager _flameManager;
     [SerializeField] MoveBubble _moveBubble;
     [SerializeField] Animator _playerAnim;
+    [SerializeField] AudioManager _audioManager;
 
     [Header("-- Level Data --")]
     [SerializeField] bool _levelWithoutKey;
@@ -29,6 +30,7 @@ public class GameManager : MonoBehaviour
     public GameObject PauseScreen { get => _pauseScreen; private set => _pauseScreen = value; }
     public bool HaveKey { get => !_levelWithoutKey; }
     public GameObject Grid { get => _grid; }
+    public AudioManager AudioManager { get => _audioManager; }
 
     private void Awake()
     {

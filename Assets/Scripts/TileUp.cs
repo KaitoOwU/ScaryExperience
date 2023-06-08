@@ -299,7 +299,11 @@ public class TileUp : Tile
                         }
                         break;
                 }
-                gameObject.AddComponent<ShadowCaster2D>();
+                if(GetComponent<ShadowCaster2D>() == null)
+                {
+                    gameObject.AddComponent<ShadowCaster2D>();
+                }
+                
                 ShadowCaster2D shadowCastTemp = GetComponent<ShadowCaster2D>();
                 shadowCastTemp.selfShadows = true;
                 break;
@@ -383,6 +387,7 @@ public class TileUp : Tile
                     block = temp;
                 }
                 break;
+                
             case TileUpType.Collectible:
                 GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCollectible[0];
                 break;
@@ -397,10 +402,16 @@ public class TileUp : Tile
 
         pos += DirectionAddMovePos(direction);
 
-        if (tempTileUp == null || tempTileUp.type == TileUpType.WinTrappe || tempTileUp.type == TileUpType.Wall || tempTileUp.type == TileUpType.Ventilateur || tempTileUp.type == TileUpType.Block)
+        if (tempTileUp == null || tempTileUp.type == TileUpType.WinTrappe || tempTileUp.type == TileUpType.Wall || tempTileUp.type == TileUpType.Ventilateur || tempTileUp.type == TileUpType.Block || tempTileUp.type == TileUpType.Torch || tempTileUp.type == TileUpType.Brasero)
         {
+            if (tempTileUp != null)
+            {
+                tempTileUp.wasWind = true;
+                tempTileUp.isActivated = false;
+            }
             return;
         }
+
         else if (!isPutting)
         {
             tempTileUp.type = TileUpType.Wind;
@@ -409,32 +420,38 @@ public class TileUp : Tile
             tempTileUp.GetComponent<SpriteRenderer>().sprite = spriteReplace;
             tempTileUp.GetComponent<SpriteRenderer>().material = spritesUp.windMat;
 
-            switch (direction)
-            {
-                case TileDown.Direction.Left:
-                    tempTileUp.transform.rotation = Quaternion.Euler(0, 0, 90);
-                    break;
-                case TileDown.Direction.Right:
-                    tempTileUp.transform.rotation = Quaternion.Euler(0, 0, -90);
-                    break;
-                case TileDown.Direction.Up:
-                    tempTileUp.transform.rotation = Quaternion.Euler(0, 0, 0);
-                    break;
-                case TileDown.Direction.Down:
-                    tempTileUp.transform.rotation = Quaternion.Euler(0, 0, -180);
-                    break;
-            }
+            RotateDirectionWind(tempTileUp, direction);
 
             RecursiveCheckNextWind(pos, direction, isPutting, spriteReplace);
         }
         else
         {
+            Debug.LogWarning("PROUT");
             tempTileUp.type = TileUpType.None;
             tempTileUp.GetComponent<SpriteRenderer>().sprite = spriteReplace;
             tempTileUp.GetComponent<SpriteRenderer>().material = spritesUp.normalMat;
             tempTileUp.transform.rotation = Quaternion.Euler(0, 0, 0);
 
             RecursiveCheckNextWind(pos, direction, isPutting, spriteReplace);
+        }
+    }
+
+    public void RotateDirectionWind (TileUp tempTileUp, TileDown.Direction direction)
+    {
+        switch (direction)
+        {
+            case TileDown.Direction.Left:
+                tempTileUp.transform.rotation = Quaternion.Euler(0, 0, 90);
+                break;
+            case TileDown.Direction.Right:
+                tempTileUp.transform.rotation = Quaternion.Euler(0, 0, -90);
+                break;
+            case TileDown.Direction.Up:
+                tempTileUp.transform.rotation = Quaternion.Euler(0, 0, 0);
+                break;
+            case TileDown.Direction.Down:
+                tempTileUp.transform.rotation = Quaternion.Euler(0, 0, -180);
+                break;
         }
     }
 
