@@ -152,7 +152,6 @@ public class MoveBubble : MonoBehaviour
             _moveTimer += Time.fixedDeltaTime;
             CheckStandingDownTile(transform.position);
             CheckStandingUpTile(transform.position);
-
             transform.position = Vector3.Lerp(_startPos, _goToPosition, _currentAnimCurve.Evaluate(_moveTimer / currentDelayLerpMove));
 
             yield return new WaitForFixedUpdate();
@@ -434,6 +433,7 @@ public class MoveBubble : MonoBehaviour
 
     private TileDown CheckStandingDownTile(Vector3 pos)
     {
+
         TileDown temp = GameManager.Instance.tileMap.FindTileWithPos(pos);
 
         if (temp != null)
@@ -513,11 +513,13 @@ public class MoveBubble : MonoBehaviour
         // check if swipe < slide horizontal
         if (Mathf.Abs(fingerTouchDelta.x) >= Mathf.Abs(fingerTouchDelta.y) && Mathf.Abs(fingerTouchDelta.x) <= _slideSensitivity)
         {
+            
             return;
         }
         // check if swipe < slide vertical
         else if (Mathf.Abs(fingerTouchDelta.y) >= Mathf.Abs(fingerTouchDelta.x) && Mathf.Abs(fingerTouchDelta.y) <= _slideSensitivity)
         {
+            
             return;
         }
 
@@ -548,6 +550,7 @@ public class MoveBubble : MonoBehaviour
         //trouve le vector d'ajout de position selon la direction du slide
         _goToPosition += VectorAddMovePos(fingerTouchDelta);
 
+
         //trouve le millieu de la tile ou l'on atterie
         _goToPosition = GameManager.Instance.tileMap.FindTileWithPos(_goToPosition).transform.position;
 
@@ -568,6 +571,7 @@ public class MoveBubble : MonoBehaviour
         // si l'on bouge pas encore, lance l'animation
         if (!_isMoving)
         {
+
             StartCoroutine(MoveToPosition());
             _isMoving = true;
         }
