@@ -16,10 +16,10 @@ public class TileMap : MonoBehaviour
     [SerializeField] SpriteUp spritesUpTiles;
     [SerializeField] SpriteDown spritesDownTiles;
 
-    private void Awake()
+    private void Start()
     {
         AddAllTiles();
-        tileSize = _tileMap[0].GetComponent<SpriteRenderer>().bounds.size.x;
+        tileSize = 1;
     }
 
     private void AddAllTiles()

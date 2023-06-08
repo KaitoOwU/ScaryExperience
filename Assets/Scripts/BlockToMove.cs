@@ -56,7 +56,7 @@ public class BlockToMove : MonoBehaviour
         toGoPosBlock -= _bubble.DirectionAddMovePos(direction);
 
         //trouve le millieu de la tile ou l'on atterie
-        toGoPosBlock = _bubble.manager.tileMap.FindTileWithPos(toGoPosBlock).transform.position;
+        toGoPosBlock = GameManager.Instance.tileMap.FindTileWithPos(toGoPosBlock).transform.position;
     }
 
     public void MoveNextTile(TileDown.Direction direction, MoveBubble bubble)
@@ -64,23 +64,23 @@ public class BlockToMove : MonoBehaviour
         if (_bubble == null)
         {
             _bubble = bubble;
-            lastTileUp = _bubble.manager.tileUpMap.FindTileWithPos(toGoPosBlock);
+            lastTileUp = GameManager.Instance.tileUpMap.FindTileWithPos(toGoPosBlock);
         }
 
         //trouve le vector d'ajout de position selon la direction du slide
         toGoPosBlock += bubble.DirectionAddMovePos(direction);
-        TileUp tileUpToMove = bubble.manager.tileUpMap.FindTileWithPos(toGoPosBlock);
-        TileUp tileBefore = bubble.manager.tileUpMap.FindTileWithPos(lastTileUp.transform.position - bubble.DirectionAddMovePos(lastTileUp.direction));
-        TileDown tileDownToMove = _bubble.manager.tileMap.FindTileWithPos(toGoPosBlock);
+        TileUp tileUpToMove = GameManager.Instance.tileUpMap.FindTileWithPos(toGoPosBlock);
+        TileUp tileBefore = GameManager.Instance.tileUpMap.FindTileWithPos(lastTileUp.transform.position - bubble.DirectionAddMovePos(lastTileUp.direction));
+        TileDown tileDownToMove = GameManager.Instance.tileMap.FindTileWithPos(toGoPosBlock);
 
         Vector3 currentGoPos = toGoPosBlock - bubble.DirectionAddMovePos(direction);
-        TileDown currentTileDown = _bubble.manager.tileMap.FindTileWithPos(currentGoPos);
+        TileDown currentTileDown = GameManager.Instance.tileMap.FindTileWithPos(currentGoPos);
 
         // si la case n'est pas libre on ne push pas le block
         if (tileUpToMove.type != TileUp.TileUpType.None && tileUpToMove.type != TileUp.TileUpType.Wind && tileDownToMove.type != TileDown.TileType.WaterRock)
         {
             GoBack(direction);
-            TileUp tileUpEnd = _bubble.manager.tileUpMap.FindTileWithPos(toGoPosBlock);
+            TileUp tileUpEnd = GameManager.Instance.tileUpMap.FindTileWithPos(toGoPosBlock);
 
             //si la case d'arriver c'est du vent alors on applique l'effet
             if (tileUpEnd.type == TileUp.TileUpType.Wind)
@@ -152,7 +152,7 @@ public class BlockToMove : MonoBehaviour
 
     private void RecursiveCheckNextWind (Vector3 pos, TileDown.Direction direction, bool isStopped, Sprite spriteReplace)
     {
-        TileUp tempTileUp = _bubble.manager.tileUpMap.FindTileWithPos(pos);
+        TileUp tempTileUp = GameManager.Instance.tileUpMap.FindTileWithPos(pos);
         pos += _bubble.DirectionAddMovePos(direction);
 
         if (tempTileUp != null && (tempTileUp.type == TileUp.TileUpType.Wind || tempTileUp.type == TileUp.TileUpType.None))
@@ -181,8 +181,8 @@ public class BlockToMove : MonoBehaviour
 
     private void SwitchOnTiles(TileDown.Direction direction)
     {
-        TileDown tempTile = _bubble.manager.tileMap.FindTileWithPos(toGoPosBlock);
-        TileUp tempTileUp = _bubble.manager.tileUpMap.FindTileWithPos(toGoPosBlock);
+        TileDown tempTile = GameManager.Instance.tileMap.FindTileWithPos(toGoPosBlock);
+        TileUp tempTileUp = GameManager.Instance.tileUpMap.FindTileWithPos(toGoPosBlock);
 
         switch (tempTile.type)
         {
