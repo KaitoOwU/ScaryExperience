@@ -299,7 +299,11 @@ public class TileUp : Tile
                         }
                         break;
                 }
-                gameObject.AddComponent<ShadowCaster2D>();
+                if(GetComponent<ShadowCaster2D>() == null)
+                {
+                    gameObject.AddComponent<ShadowCaster2D>();
+                }
+                
                 ShadowCaster2D shadowCastTemp = GetComponent<ShadowCaster2D>();
                 shadowCastTemp.selfShadows = true;
                 break;

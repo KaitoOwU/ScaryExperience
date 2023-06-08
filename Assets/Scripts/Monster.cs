@@ -14,7 +14,6 @@ public class Monster : MonoBehaviour
     public MonsterSpawn monsterSpawn;
     private void Awake()
     {
-        
 
         playableGraph = PlayableGraph.Create();
 
@@ -62,11 +61,12 @@ public class Monster : MonoBehaviour
             {
                 gameObject.SetActive(false);
             }*/
+            Vector3 dir = (transform.position - player.position).normalized;
+
+            transform.localPosition = dir * (monsterSpawn._radius - 0.5f);
         }
 
-        Vector3 dir = (transform.position - player.position).normalized;
         
-        transform.localPosition = dir * (monsterSpawn._radius - 0.5f);
         
     }
 }

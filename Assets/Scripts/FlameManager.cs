@@ -100,10 +100,6 @@ public class FlameManager : MonoBehaviour
 
     }
 
-    private void Update()
-    {
-        
-    }
 
 
 
