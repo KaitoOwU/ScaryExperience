@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteNone:
   - {fileID: 7482667652216324306, guid: 3e1447669fd29d9479c1e672b447d7d7, type: 3}
+  spriteNoneWall:
+  - {fileID: 21300000, guid: 779e000fbfc546648a29d39436d62b5f, type: 3}
   spriteSideWall:
   - {fileID: 21300000, guid: 2be1c40ca1f3794468f1fba7bae7d848, type: 3}
   - {fileID: 21300000, guid: 2be1c40ca1f3794468f1fba7bae7d848, type: 3}
@@ -43,6 +45,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: d3b914ec0a8afa24098d4ac1fca311cb, type: 3}
   - {fileID: 21300000, guid: 3840bba3de8e4b848a12633c11b58428, type: 3}
   - {fileID: 21300000, guid: b41a97b802424b943b6a047a4ed6636f, type: 3}
+  - {fileID: 21300000, guid: bd0b318b6dc15d64aa911a936993d996, type: 3}
+  - {fileID: 21300000, guid: 9a892c5cd4e5f0b498b2aac0f95745f9, type: 3}
   spriteKey:
   - {fileID: 21300000, guid: 8de3fb304a933d3408c9a67ff8e375b1, type: 3}
   spriteBrasero:
