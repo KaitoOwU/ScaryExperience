@@ -73,13 +73,11 @@ public class MoveBubble : MonoBehaviour
         OnDie += Die;
 
         currentDelayLerpMove = _delayLerpMove;
-        goToPosition = transform.position;
-
-        
     }
 
     private void Start()
     {
+        goToPosition = transform.position;
         _movementAmount = GameManager.Instance.tileMap.tileSize;
         _prePosList = new List<Vector3>();
         _flameManager = GetComponent<FlameManager>();
@@ -312,11 +310,6 @@ public class MoveBubble : MonoBehaviour
         Vector3 test = tempTile.transform.position - DirectionAddMovePos(direction);
         TileDown tempBeforeDown = GameManager.Instance.tileMap.FindTileWithPos(test);
 
-        if (tempBeforeDown.type == TileDown.TileType.Breakable && tempBeforeDown.isActivated)
-        {
-            tempBeforeDown.GetComponent<SpriteRenderer>().sprite = tempTile.spritesDown.spriteBreakable[1];
-        }
-
         switch (tempTile.type)
         {
             case TileDown.TileType.Rock:
@@ -392,6 +385,14 @@ public class MoveBubble : MonoBehaviour
         TileUp tempTileUp = GameManager.Instance.tileUpMap.FindTileWithPos(goToPosition);
 
         SwitchOnTileUp(tempTileUp, direction);
+
+        Vector3 test = tempTile.transform.position - DirectionAddMovePos(direction);
+        TileDown tempBeforeDown = GameManager.Instance.tileMap.FindTileWithPos(test);
+
+        if (tempBeforeDown.type == TileDown.TileType.Breakable && tempBeforeDown.isActivated)
+        {
+            tempBeforeDown.GetComponent<SpriteRenderer>().sprite = tempTile.spritesDown.spriteBreakable[1];
+        }
 
         //si l'on veut arreter de check les tiles down
         if (!_shouldStopCheckingTile)
