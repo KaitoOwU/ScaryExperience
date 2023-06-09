@@ -26,8 +26,8 @@ public class DataManager : MonoBehaviour
         for (int i = 0; i < _levels.Count; i++)
         {
             _levelData[i] = new(i);
+            _levelData[i].IsUnlocked = true;
         }
-        _levelData[0].IsUnlocked = true;
         SaveSystem.SaveData(_levelData);
     }
 }

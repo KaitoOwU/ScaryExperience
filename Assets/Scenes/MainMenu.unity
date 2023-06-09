@@ -2476,7 +2476,7 @@ MonoBehaviour:
   _levels:
   - _levelSceneName: TutoDeplac
     _levelName: "Suivre la lumi\xE8re"
-  - _levelSceneName: Tuto Dalles Friables
+  - _levelSceneName: TutoDallesBoom
     _levelName: "Qui s'y frotte \xE9ffrite"
   - _levelSceneName: Tuto Glace
     _levelName: Glissades dangereuses

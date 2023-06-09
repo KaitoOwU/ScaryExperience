@@ -15,7 +15,7 @@ MonoBehaviour:
   spriteNone:
   - {fileID: 7482667652216324306, guid: 3e1447669fd29d9479c1e672b447d7d7, type: 3}
   spriteNoneWall:
-  - {fileID: 21300000, guid: 779e000fbfc546648a29d39436d62b5f, type: 3}
+  - {fileID: 21300000, guid: a0af477ef32656940be78821b568aaba, type: 3}
   spriteSideWall:
   - {fileID: 21300000, guid: 2be1c40ca1f3794468f1fba7bae7d848, type: 3}
   - {fileID: 21300000, guid: 2be1c40ca1f3794468f1fba7bae7d848, type: 3}
