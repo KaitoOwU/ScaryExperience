@@ -27,6 +27,8 @@ public class TileUp : Tile
     public TileDown.Direction direction;
     [ShowIf("isWind")]
     public int pushNumberTiles;
+    [ShowIf("isWind")]
+    public DirectionLock cornerLockDir;
 
     [ShowIf("isBlock")]
     public GameObject block;
@@ -63,6 +65,15 @@ public class TileUp : Tile
     [HideInInspector] public GameObject lightKey;
     [HideInInspector] public GameObject lightTrappe;
     [HideInInspector] public GameObject grilleTrappe;
+
+    public enum DirectionLock
+    {
+        None,
+        Left,
+        Right,
+        Up,
+        Down
+    }
 
     public enum TileUpType
     {
@@ -105,6 +116,7 @@ public class TileUp : Tile
 
         if (oldType != type)
         {
+            Debug.LogWarning("Changement de type");
             RefreshColorSprite(true);
 
             switch (oldType)
@@ -121,9 +133,10 @@ public class TileUp : Tile
                     break;
 
                 case TileUpType.Ventilateur:
+                    Debug.LogWarning("VENTILO CHANGE 1");
                     Vector3 nextPos = transform.position + DirectionAddMovePos(dirWind);
                     RecursiveCheckNextWind(nextPos, dirWind, true, spritesUp.spriteNone[0]);
-                    oldType = TileUpType.None;
+                    oldType = type;
                     break;
 
                 case TileUpType.Torch:
@@ -193,6 +206,7 @@ public class TileUp : Tile
 
         if (oldDirWind != dirWind && type == TileUpType.Ventilateur)   
         {
+            Debug.LogWarning("VENTILO CHANGE 2");
             Vector3 nextPosSuppr = transform.position + DirectionAddMovePos(oldDirWind);
             RecursiveCheckNextWind(nextPosSuppr, oldDirWind, true, spritesUp.spriteNone[0]);
 
@@ -380,7 +394,9 @@ public class TileUp : Tile
                     grilleTrappe = tempGrille;
                 }
                 break;
+
             case TileUpType.Ventilateur:
+                Debug.LogWarning("VENTILO CHANGE 3");
                 Vector3 nextPos = transform.position + DirectionAddMovePos(dirWind);
                 RecursiveCheckNextWind(nextPos, dirWind, false, spritesUp.spriteWind[0]);
                 GetComponent<SpriteRenderer>().sprite = spritesUp.spriteVentilateur[0];
@@ -425,18 +441,26 @@ public class TileUp : Tile
         else if (!isPutting)
         {
             tempTileUp.type = TileUpType.Wind;
-            tempTileUp.direction = direction;
+
+            if (tempTileUp.cornerLockDir == DirectionLock.None)
+            {
+                tempTileUp.direction = direction;
+            }
+            else
+            {
+                tempTileUp.direction = (TileDown.Direction)(tempTileUp.cornerLockDir - 1);
+            }
+            
             tempTileUp.pushNumberTiles = 1;
             tempTileUp.GetComponent<SpriteRenderer>().sprite = spriteReplace;
             tempTileUp.GetComponent<SpriteRenderer>().material = spritesUp.windMat;
 
-            RotateDirectionWind(tempTileUp, direction);
+            RotateDirectionWind(tempTileUp, tempTileUp.direction);
 
             RecursiveCheckNextWind(pos, direction, isPutting, spriteReplace);
         }
         else
         {
-            Debug.LogWarning("PROUT");
             tempTileUp.type = TileUpType.None;
             tempTileUp.GetComponent<SpriteRenderer>().sprite = spriteReplace;
             tempTileUp.GetComponent<SpriteRenderer>().material = spritesUp.normalMat;
