@@ -11,7 +11,7 @@ public class TileUp : Tile
     private TileUpType oldType;
 
     [ShowIf("isWinTrappe")]
-    public int numberPartKeyRequired = 1;
+    public int numberPartKeyRequired = 0;
 
     [ShowIf("isBrasero")]
     public int refillAmountBrasero = 10;
@@ -218,6 +218,9 @@ public class TileUp : Tile
                 GetComponent<SpriteRenderer>().color = Color.white;
                 switch (wallPosition)
                 {
+                    case WallPosition.None:
+                        GetComponent<SpriteRenderer>().sprite = spritesUp.spriteNoneWall[0];
+                        break;
                     case WallPosition.Side:
                         switch (_wallSideOrientation)
                         {
@@ -296,6 +299,13 @@ public class TileUp : Tile
                             case WallCornerOrientation.RightUpDouble:
                                 GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[11];
                                 break;
+                            case WallCornerOrientation.TUpDouble:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[12];
+                                break;
+                            case WallCornerOrientation.TDownDouble:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[13];
+                                break;
+
                         }
                         break;
                 }
@@ -504,8 +514,9 @@ public class TileUp : Tile
         LeftDownDouble,
         RightDownDouble,
         LeftUpDouble,
-        RightUpDouble
-
+        RightUpDouble,
+        TUpDouble,
+        TDownDouble
     }
 
     public enum WallSideOrientation

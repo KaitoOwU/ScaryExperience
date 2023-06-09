@@ -19,6 +19,7 @@ public class LoseScreen : MonoBehaviour
 
     public void RestartLevel()
     {
+        DataManager.Instance.IsLevelLaunchedFromMainMenu = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 

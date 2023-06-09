@@ -1,5 +1,7 @@
+using NaughtyAttributes;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.EnhancedTouch;
 
 public class DataManager : MonoBehaviour
 {
@@ -7,28 +9,26 @@ public class DataManager : MonoBehaviour
 
     [SerializeField] List<LevelLoadData> _levels;
     Dictionary<int, LevelData> _levelData = new();
+    [SerializeField, ReadOnly] int _currentLevel;
+
     public Dictionary<int, LevelData> LevelData { get => _levelData; }
     public IReadOnlyList<LevelLoadData> LevelList { get => _levels; }
-
+    public int CurrentLevel { get => _currentLevel; set => _currentLevel = value; }
     public bool IsLevelLaunchedFromMainMenu { get; set; } = true;
 
     private void Awake()
     {
+        EnhancedTouchSupport.Enable();
+
         Instance = this;
         DontDestroyOnLoad(this);
 
-        if(SaveSystem.LoadData() == null)
+        for (int i = 0; i < _levels.Count; i++)
         {
-            for (int i = 0; i < _levels.Count; i++)
-            {
-                _levelData[i] = new(i);
-            }
-            _levelData[0].IsUnlocked = true;
-            SaveSystem.SaveData(_levelData);
-        } else
-        {
-            _levelData = SaveSystem.LoadData().levelData;
+            _levelData[i] = new(i);
         }
+        _levelData[0].IsUnlocked = true;
+        SaveSystem.SaveData(_levelData);
     }
 }
 

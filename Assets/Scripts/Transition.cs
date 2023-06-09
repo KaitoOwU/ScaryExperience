@@ -20,14 +20,13 @@ public class Transition : MonoBehaviour
         } else
         {
             StartCoroutine(StartAnimation());
-
         }
     }
 
     private IEnumerator StartAnimation()
     {
-        LevelLoadData lvl = DataManager.Instance.LevelList[GameManager.Instance.CurrentLevel];
-        _levelNumber.text = "Level " + (GameManager.Instance.CurrentLevel + 1);
+        LevelLoadData lvl = DataManager.Instance.LevelList[DataManager.Instance.CurrentLevel];
+        _levelNumber.text = "Level " + (DataManager.Instance.CurrentLevel + 1);
         _levelName.text = lvl._levelName;
 
         //START ANIMATION

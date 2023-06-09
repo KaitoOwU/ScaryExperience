@@ -15,7 +15,7 @@ public class WinScreen : MonoBehaviour
         DOTween.Kill(transform);
         transform.DOScale(1, 1f).SetEase(Ease.OutExpo).OnComplete(() =>
         {
-            if (DataManager.Instance.LevelData[GameManager.Instance.CurrentLevel].CollectibleAcquired)
+            if (DataManager.Instance.LevelData[DataManager.Instance.CurrentLevel].CollectibleAcquired)
             {
                 _collectable.transform.DOScale(1.5f, 0);
                 _collectable.DOColor(new(1, 1, 1), .5f);
@@ -34,7 +34,9 @@ public class WinScreen : MonoBehaviour
 
     public void NextLevel()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        DataManager.Instance.IsLevelLaunchedFromMainMenu = true;
+        DataManager.Instance.CurrentLevel++;
+        SceneManager.LoadScene(DataManager.Instance.LevelList[DataManager.Instance.CurrentLevel]._levelSceneName);
     }
 
     public void MainMenu()
