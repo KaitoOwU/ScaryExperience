@@ -8,6 +8,7 @@ public class BlockToMove : MonoBehaviour
     float _moveTimer;
     [SerializeField] AnimationCurve _currentAnimCurve;
     [HideInInspector] public Vector3 toGoPosBlock;
+    [HideInInspector] public Vector3 oldToGo;
     [HideInInspector] public TileUp lastTileUp;
     private MoveBubble _bubble;
     [SerializeField] List<Sprite> waterRock;
@@ -42,7 +43,7 @@ public class BlockToMove : MonoBehaviour
     public bool StartMoving (TileDown.Direction direction, MoveBubble bubble)
     {
         _audioManager.PlaySFX(_audioManager.rockSound[Random.Range(0, _audioManager.rockSound.Count)]);
-        Vector3 oldToGo = toGoPosBlock;
+        oldToGo = toGoPosBlock;
         MoveNextTile(direction, bubble);
         StartCoroutine(PushBlockCorout(bubble));
 
@@ -116,7 +117,7 @@ public class BlockToMove : MonoBehaviour
             lastTileUp.GetComponent<SpriteRenderer>().sprite = lastTileUp.spritesUp.spriteNone[0];
         }
 
-        else if (lastTileUp != null && currentTileDown.type != TileDown.TileType.Ice)
+        else if (lastTileUp != null)
         {
             lastTileUp.block = null;
             lastTileUp.type = TileUp.TileUpType.None;
@@ -139,6 +140,7 @@ public class BlockToMove : MonoBehaviour
         CheckNextTileEffect(direction);
 
         // si tomber dans l'eau ou le void on ne met pas le block sur la prochaine case
+        // sinon on met le block sur la prochaine case
         if (tileDownToMove.type != TileDown.TileType.Water && tileDownToMove.type != TileDown.TileType.Void && tileDownToMove.type != TileDown.TileType.Ice && tileDownToMove.type != TileDown.TileType.WaterRock)
         {
             tileUpToMove.block = gameObject;
