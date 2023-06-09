@@ -16,25 +16,26 @@ public class GameManager : MonoBehaviour
     [SerializeField] FlameManager _flameManager;
     [SerializeField] MoveBubble _moveBubble;
     [SerializeField] Animator _playerAnim;
+    [SerializeField] AudioManager _audioManager;
 
     [Header("-- Level Data --")]
     [SerializeField] bool _levelWithoutKey;
     [SerializeField] GameObject _grid;
 
     
-    int _currentLevel;
-    public int CurrentLevel { get => _currentLevel; private set => _currentLevel = value; }
     public GameObject LoseScreen { get => _loseScreen; private set => _loseScreen = value; }
     public GameObject WinScreen { get => _winScreen; private set => _winScreen = value; }
     public GameObject PauseScreen { get => _pauseScreen; private set => _pauseScreen = value; }
     public bool HaveKey { get => !_levelWithoutKey; }
     public GameObject Grid { get => _grid; }
+    public AudioManager AudioManager { get => _audioManager; }
 
     private void Awake()
     {
         Instance = this;
         if (_levelWithoutKey)
         {
+            _grid.transform.parent.gameObject.GetComponent<TileUp>().isActivated = true;
             _grid.SetActive(false);
         }
     }
@@ -42,6 +43,8 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         _flameManager.OnFlameValueChange += CheckForLoseCondition;
+        PauseScreen.SetActive(true);
+        PauseScreen.SetActive(false);
     }
 
     private void OnDisable()

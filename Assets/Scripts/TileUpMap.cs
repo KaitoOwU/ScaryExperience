@@ -99,6 +99,14 @@ public class TileUpMap : MonoBehaviour
 
     public TileUp FindTileWithPos(Vector3 pos)
     {
+        //Debug.LogWarning( "x : " + Mathf.Floor(Mathf.Abs(pos.x))+ " y : " + Mathf.Floor(Mathf.Abs(pos.y)));
+
+        TileUp test = _tileMap[(int)(Mathf.Floor(Mathf.Abs(pos.x)) + Mathf.Floor(Mathf.Abs(pos.y)) * numberTileX)];
+        if (test != null)
+        {
+            return test;
+        }
+
         foreach (TileUp tile in _tileMap)
         {
             //check x pos
@@ -107,6 +115,7 @@ public class TileUpMap : MonoBehaviour
                 //check y pos
                 if (tile.transform.position.y - tile.size / 2 < pos.y && tile.transform.position.y + tile.size / 2 > pos.y)
                 {
+                    //Debug.LogWarning("test : " + test + " vs normal : " + tile);
                     return tile;
                 }
             }

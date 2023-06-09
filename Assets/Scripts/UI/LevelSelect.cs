@@ -19,8 +19,6 @@ public class LevelSelect : MonoBehaviour
     private const float LEVEL_HEIGHT_DIFFERENCE = 400f;
     private float RANDOM_X_AXIS { get => Random.Range(-200f, 300f); }
 
-    int currentDisplayedLevel = 0;
-
     private Vector2 fingerPos;
     private float minY, maxY;
 
@@ -49,15 +47,19 @@ public class LevelSelect : MonoBehaviour
         }
     }
 
-    public void LaunchLevel()
+    public void LaunchLevel(int levelNumber)
     {
         DataManager.Instance.IsLevelLaunchedFromMainMenu = true;
+        DataManager.Instance.CurrentLevel = levelNumber;
 
         _transition.gameObject.SetActive(true);
         _transition.DOColor(new(0, 0, 0, 1), 1f).SetEase(Ease.OutExpo).OnComplete(() =>
         {
-            SceneManager.LoadScene(DataManager.Instance.LevelList[currentDisplayedLevel]._levelSceneName);
+            SceneManager.LoadScene(DataManager.Instance.LevelList[levelNumber]._levelSceneName);
         });
+
+        ETouch.Touch.onFingerDown -= SetupPos;
+        ETouch.Touch.onFingerMove -= Scrolling;
     }
 
     public void SetFingerControlActive(bool state)

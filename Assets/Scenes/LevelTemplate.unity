@@ -532,6 +532,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 512086490}
     - target: {fileID: 705866168833114749, guid: 45515c0224e56b04b900aabb25239598, type: 3}
+      propertyPath: _playerAnim
+      value: 
+      objectReference: {fileID: 4759499246008313778}
+    - target: {fileID: 705866168833114749, guid: 45515c0224e56b04b900aabb25239598, type: 3}
       propertyPath: _pauseScreen
       value: 
       objectReference: {fileID: 2017161679}
@@ -869,6 +873,11 @@ PrefabInstance:
       objectReference: {fileID: 572014129}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 02ae8d631e5396a4ca7553c358b50ea7, type: 3}
+--- !u!95 &4759499246008313778 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 4759499246008313782, guid: 02ae8d631e5396a4ca7553c358b50ea7, type: 3}
+  m_PrefabInstance: {fileID: 4759499246008313777}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8744899393373938489
 PrefabInstance:
   m_ObjectHideFlags: 0

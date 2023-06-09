@@ -11,12 +11,10 @@ public class TileUp : Tile
     private TileUpType oldType;
 
     [ShowIf("isWinTrappe")]
-    public int numberPartKeyRequired = 1;
+    public int numberPartKeyRequired = 0;
 
     [ShowIf("isBrasero")]
     public int refillAmountBrasero = 10;
-
-
 
     [ShowIf("isTorch")]
     public int refillAmountTorch = 5;
@@ -54,7 +52,10 @@ public class TileUp : Tile
     [HideInInspector] public bool isActivated = false;
     [HideInInspector] public TileMap tileMap;
     [HideInInspector] public TileUpMap tileUpMap;
-    [HideInInspector] public bool wasWind; 
+
+    [HideInInspector] public bool wasWind;
+    [HideInInspector] public int blockerBlock;
+
     [HideInInspector] public GameObject lightBrasero;
     [HideInInspector] public GameObject flameBrasero;
     [HideInInspector] public GameObject lightTorch;
@@ -217,6 +218,9 @@ public class TileUp : Tile
                 GetComponent<SpriteRenderer>().color = Color.white;
                 switch (wallPosition)
                 {
+                    case WallPosition.None:
+                        GetComponent<SpriteRenderer>().sprite = spritesUp.spriteNoneWall[0];
+                        break;
                     case WallPosition.Side:
                         switch (_wallSideOrientation)
                         {
@@ -295,10 +299,21 @@ public class TileUp : Tile
                             case WallCornerOrientation.RightUpDouble:
                                 GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[11];
                                 break;
+                            case WallCornerOrientation.TUpDouble:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[12];
+                                break;
+                            case WallCornerOrientation.TDownDouble:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[13];
+                                break;
+
                         }
                         break;
                 }
-                gameObject.AddComponent<ShadowCaster2D>();
+                if(GetComponent<ShadowCaster2D>() == null)
+                {
+                    gameObject.AddComponent<ShadowCaster2D>();
+                }
+                
                 ShadowCaster2D shadowCastTemp = GetComponent<ShadowCaster2D>();
                 shadowCastTemp.selfShadows = true;
                 break;
@@ -382,6 +397,7 @@ public class TileUp : Tile
                     block = temp;
                 }
                 break;
+                
             case TileUpType.Collectible:
                 GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCollectible[0];
                 break;
@@ -396,10 +412,16 @@ public class TileUp : Tile
 
         pos += DirectionAddMovePos(direction);
 
-        if (tempTileUp == null || tempTileUp.type == TileUpType.WinTrappe || tempTileUp.type == TileUpType.Wall || tempTileUp.type == TileUpType.Ventilateur || tempTileUp.type == TileUpType.Block)
+        if (tempTileUp == null || tempTileUp.type == TileUpType.WinTrappe || tempTileUp.type == TileUpType.Wall || tempTileUp.type == TileUpType.Ventilateur || tempTileUp.type == TileUpType.Block || tempTileUp.type == TileUpType.Torch || tempTileUp.type == TileUpType.Brasero)
         {
+            if (tempTileUp != null)
+            {
+                tempTileUp.wasWind = true;
+                tempTileUp.isActivated = false;
+            }
             return;
         }
+
         else if (!isPutting)
         {
             tempTileUp.type = TileUpType.Wind;
@@ -408,32 +430,52 @@ public class TileUp : Tile
             tempTileUp.GetComponent<SpriteRenderer>().sprite = spriteReplace;
             tempTileUp.GetComponent<SpriteRenderer>().material = spritesUp.windMat;
 
-            switch (direction)
-            {
-                case TileDown.Direction.Left:
-                    tempTileUp.transform.rotation = Quaternion.Euler(0, 0, 90);
-                    break;
-                case TileDown.Direction.Right:
-                    tempTileUp.transform.rotation = Quaternion.Euler(0, 0, -90);
-                    break;
-                case TileDown.Direction.Up:
-                    tempTileUp.transform.rotation = Quaternion.Euler(0, 0, 0);
-                    break;
-                case TileDown.Direction.Down:
-                    tempTileUp.transform.rotation = Quaternion.Euler(0, 0, -180);
-                    break;
-            }
+            RotateDirectionWind(tempTileUp, direction);
 
             RecursiveCheckNextWind(pos, direction, isPutting, spriteReplace);
         }
         else
         {
+            Debug.LogWarning("PROUT");
             tempTileUp.type = TileUpType.None;
             tempTileUp.GetComponent<SpriteRenderer>().sprite = spriteReplace;
             tempTileUp.GetComponent<SpriteRenderer>().material = spritesUp.normalMat;
             tempTileUp.transform.rotation = Quaternion.Euler(0, 0, 0);
 
             RecursiveCheckNextWind(pos, direction, isPutting, spriteReplace);
+        }
+    }
+
+    public void RotateDirectionWind (TileUp tempTileUp, TileDown.Direction direction)
+    {
+        switch (direction)
+        {
+            case TileDown.Direction.Left:
+                tempTileUp.transform.rotation = Quaternion.Euler(0, 0, 90);
+                break;
+            case TileDown.Direction.Right:
+                tempTileUp.transform.rotation = Quaternion.Euler(0, 0, -90);
+                break;
+            case TileDown.Direction.Up:
+                tempTileUp.transform.rotation = Quaternion.Euler(0, 0, 0);
+                break;
+            case TileDown.Direction.Down:
+                tempTileUp.transform.rotation = Quaternion.Euler(0, 0, -180);
+                break;
+        }
+    }
+
+    public void PutOrWithdrawShaderWind (bool isStopped)
+    {
+        Debug.Log(spritesUp.windMat);
+
+        if (!isStopped)
+        {
+            GetComponent<SpriteRenderer>().material = spritesUp.windMat;
+        }
+        else
+        {
+            GetComponent<SpriteRenderer>().material = spritesUp.normalMat;
         }
     }
 
@@ -472,8 +514,9 @@ public class TileUp : Tile
         LeftDownDouble,
         RightDownDouble,
         LeftUpDouble,
-        RightUpDouble
-
+        RightUpDouble,
+        TUpDouble,
+        TDownDouble
     }
 
     public enum WallSideOrientation

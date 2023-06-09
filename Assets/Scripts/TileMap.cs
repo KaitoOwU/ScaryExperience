@@ -11,7 +11,7 @@ public class TileMap : MonoBehaviour
     [SerializeField] GameObject tile;
     [HideInInspector] public float tileSize;
 
-    List<Tile> _tileMap = new List<Tile>();
+    List<TileDown> _tileMap = new List<TileDown>();
 
     [SerializeField] SpriteUp spritesUpTiles;
     [SerializeField] SpriteDown spritesDownTiles;
@@ -19,14 +19,14 @@ public class TileMap : MonoBehaviour
     private void Awake()
     {
         AddAllTiles();
-        tileSize = _tileMap[0].GetComponent<SpriteRenderer>().bounds.size.x;
+        tileSize = 1;
     }
 
     private void AddAllTiles()
     {
         for (int i = 0; i < transform.childCount; i++)
         {
-            _tileMap.Add(transform.GetChild(i).GetComponent<Tile>());
+            _tileMap.Add(transform.GetChild(i).GetComponent<TileDown>());
         }
     }
 
@@ -44,6 +44,8 @@ public class TileMap : MonoBehaviour
                 Tile tileTemp = Instantiate(tile, new Vector3(xOffset, yOffset, 0), Quaternion.identity, transform).GetComponent<Tile>();
                 tileTemp.name = "X : " + j.ToString() + " / Y : " + i.ToString();
                 xOffset += tile.GetComponent<SpriteRenderer>().bounds.size.x;
+                tileTemp.spritesDown = spritesDownTiles;
+                tileTemp.spritesUp = spritesUpTiles;
             }
 
             xOffset = 0;
@@ -85,6 +87,12 @@ public class TileMap : MonoBehaviour
 
     public TileDown FindTileWithPos(Vector3 pos)
     {
+        TileDown test = _tileMap[(int)(Mathf.Floor(Mathf.Abs(pos.x)) + Mathf.Floor(Mathf.Abs(pos.y)) * numberTileX)];
+        if (test != null)
+        {
+            return test;
+        }
+
         foreach (TileDown tile in _tileMap)
         {
             //check x pos
