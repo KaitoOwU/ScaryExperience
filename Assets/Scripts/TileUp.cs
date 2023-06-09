@@ -3,6 +3,7 @@ using UnityEngine;
 using NaughtyAttributes;
 using UnityEngine.Rendering.Universal;
 using DG.Tweening;
+using System.Collections.Generic;
 
 public class TileUp : Tile
 {
@@ -315,6 +316,7 @@ public class TileUp : Tile
                 }
                 
                 ShadowCaster2D shadowCastTemp = GetComponent<ShadowCaster2D>();
+                shadowCastTemp.useRendererSilhouette = false;
                 shadowCastTemp.selfShadows = true;
                 break;
 

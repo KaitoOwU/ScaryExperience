@@ -36,7 +36,7 @@ public class WinScreen : MonoBehaviour
     {
         DataManager.Instance.IsLevelLaunchedFromMainMenu = true;
         DataManager.Instance.CurrentLevel++;
-        SceneManager.LoadScene(DataManager.Instance.LevelList[DataManager.Instance.CurrentLevel + 1]._levelSceneName);
+        SceneManager.LoadScene(DataManager.Instance.LevelList[DataManager.Instance.CurrentLevel]._levelSceneName);
     }
 
     public void MainMenu()

@@ -23,18 +23,12 @@ public class DataManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(this);
 
-        if(SaveSystem.LoadData() == null)
+        for (int i = 0; i < _levels.Count; i++)
         {
-            for (int i = 0; i < _levels.Count; i++)
-            {
-                _levelData[i] = new(i);
-            }
-            _levelData[0].IsUnlocked = true;
-            SaveSystem.SaveData(_levelData);
-        } else
-        {
-            _levelData = SaveSystem.LoadData().levelData;
+            _levelData[i] = new(i);
+            _levelData[i].IsUnlocked = true;
         }
+        SaveSystem.SaveData(_levelData);
     }
 }
 
