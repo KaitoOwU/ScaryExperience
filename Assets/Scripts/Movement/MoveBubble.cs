@@ -112,7 +112,7 @@ public class MoveBubble : MonoBehaviour
 
         if(DataManager.Instance != null)
         {
-            DataManager.Instance.LevelData[GameManager.Instance.CurrentLevel].Complete(_collectibleAcquired);
+            DataManager.Instance.LevelData[DataManager.Instance.CurrentLevel].Complete(_collectibleAcquired);
             SaveSystem.SaveData(DataManager.Instance.LevelData);
         }
 

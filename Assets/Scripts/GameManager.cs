@@ -23,8 +23,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject _grid;
 
     
-    int _currentLevel;
-    public int CurrentLevel { get => _currentLevel; private set => _currentLevel = value; }
     public GameObject LoseScreen { get => _loseScreen; private set => _loseScreen = value; }
     public GameObject WinScreen { get => _winScreen; private set => _winScreen = value; }
     public GameObject PauseScreen { get => _pauseScreen; private set => _pauseScreen = value; }
@@ -37,6 +35,7 @@ public class GameManager : MonoBehaviour
         Instance = this;
         if (_levelWithoutKey)
         {
+            _grid.transform.parent.gameObject.GetComponent<TileUp>().isActivated = true;
             _grid.SetActive(false);
         }
     }
@@ -44,6 +43,8 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         _flameManager.OnFlameValueChange += CheckForLoseCondition;
+        PauseScreen.SetActive(true);
+        PauseScreen.SetActive(false);
     }
 
     private void OnDisable()

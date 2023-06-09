@@ -35,6 +35,6 @@ public class LevelUI : MonoBehaviour
 
     public void LaunchLevel()
     {
-        levelSelect.LaunchLevel();
+        levelSelect.LaunchLevel(levelNumber);
     }
 }
