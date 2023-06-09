@@ -148,6 +148,55 @@ public class TileDown : Tile
                     case IceType.InteriorCornerDR:
                         GetComponent<SpriteRenderer>().sprite = spritesDown.spriteIce[12];
                         break;
+                    case IceType.TwoCornerR:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteIce[12];
+                        break;
+                    case IceType.TwoCornerU:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteIce[12];
+                        break;
+                    case IceType.TwoCornerL:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteIce[12];
+                        break;
+                    case IceType.TwoCornerD:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteIce[12];
+                        break;
+                    case IceType.ThreeCornerUR:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteIce[12];
+                        break;
+                    case IceType.ThreeCornerUL:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteIce[12];
+                        break;
+                    case IceType.ThreeCornerDL:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteIce[12];
+                        break;
+                    case IceType.ThreeCornerDR:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteIce[12];
+                        break;
+                    case IceType.InteriorCornerDR:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteIce[12];
+                        break;
+                    case IceType.InteriorCornerDR:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteIce[12];
+                        break;
+                    case IceType.InteriorCornerDR:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteIce[12];
+                        break;
+                    case IceType.InteriorCornerDR:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteIce[12];
+                        break;
+                    case IceType.InteriorCornerDR:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteIce[12];
+                        break;
+                    case IceType.InteriorCornerDR:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteIce[12];
+                        break;
+                    case IceType.InteriorCornerDR:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteIce[12];
+                        break;
+                    case IceType.InteriorCornerDR:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteIce[12];
+                        break;
+
 
                 }
                 break;
@@ -249,6 +298,21 @@ public class TileDown : Tile
         InteriorCornerUL,
         InteriorCornerDL,
         InteriorCornerDR,
+        TwoCornerR,
+        TwoCornerU,
+        TwoCornerL,
+        TwoCornerD,
+        ThreeCornerUR,
+        ThreeCornerUL,
+        ThreeCornerDL,
+        ThreeCornerDR,
+        FourCorner,
+        SoloVerticalUp,
+        SoloVerticalMiddle,
+        SoloVerticalDown,
+        SoloHorizontalRight,
+        SoloHorizontalMiddle,
+        SoloHorizontalLeft
     }
 
     private bool isRock() { return type == TileType.Rock; }
