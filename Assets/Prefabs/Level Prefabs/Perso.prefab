@@ -105,7 +105,7 @@ MonoBehaviour:
   _generalLight: {fileID: 0}
   _monsterSpawn: {fileID: 0}
   _slideSensitivity: 1
-  _delayLerpMove: 0.5
+  _delayLerpMove: 0.3
   _curveLerp:
     serializedVersion: 2
     m_Curve:

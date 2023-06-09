@@ -9,6 +9,7 @@ public class LoseScreen : MonoBehaviour
     private void OnEnable()
     {
         DOTween.Kill(transform);
+        GameManager.Instance.SetTouchControlsActive(false);
         transform.DOScale(1, 1.5f).SetEase(Ease.OutExpo);
     }
 

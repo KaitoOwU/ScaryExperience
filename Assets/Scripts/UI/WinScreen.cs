@@ -12,6 +12,7 @@ public class WinScreen : MonoBehaviour
 
     private void OnEnable()
     {
+        GameManager.Instance.SetTouchControlsActive(false);
         DOTween.Kill(transform);
         transform.DOScale(1, 1f).SetEase(Ease.OutExpo).OnComplete(() =>
         {
@@ -42,5 +43,11 @@ public class WinScreen : MonoBehaviour
     public void MainMenu()
     {
         SceneManager.LoadScene("MainMenu");
+    }
+
+    public void Restart()
+    {
+        DataManager.Instance.IsLevelLaunchedFromMainMenu = false;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
