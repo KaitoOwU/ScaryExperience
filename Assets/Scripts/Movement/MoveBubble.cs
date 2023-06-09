@@ -7,6 +7,7 @@ using static TileUp;
 using UnityEngine.Rendering.Universal;
 using DG.Tweening;
 using UnityEngine.UI;
+using NaughtyAttributes;
 
 public class MoveBubble : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class MoveBubble : MonoBehaviour
     [SerializeField] AnimationCurve _curveLerp;
     [SerializeField] AnimationCurve _curveLerpIce;
 
+    [SerializeField] TileMap tileMapEDITORforButton;
 
     //runtime public
     [HideInInspector] public float currentDelayLerpMove;
@@ -75,13 +77,23 @@ public class MoveBubble : MonoBehaviour
         currentDelayLerpMove = _delayLerpMove;
     }
 
+    [Button("ActualisePOS")]
+    private void ActualisePos()
+    {
+        TileDown tempTile = tileMapEDITORforButton.FindTileWithPosEditor(transform.position);
+        transform.position = tempTile.transform.position;
+    }
+
+
     private void Start()
     {
         goToPosition = transform.position;
+
         _movementAmount = GameManager.Instance.tileMap.tileSize;
         _prePosList = new List<Vector3>();
         _flameManager = GetComponent<FlameManager>();
         _audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+        _currentAnimCurve = _curveLerp;
         //Debug.LogWarning(_movementAmount);
     }
 
