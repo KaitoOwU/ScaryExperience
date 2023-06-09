@@ -58,7 +58,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 932287b74e7d6d847940153ad771c5e2, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -102,7 +102,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e90207973c836a34b89fd10ea6ede1f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  manager: {fileID: 0}
   _generalLight: {fileID: 0}
   _monsterSpawn: {fileID: 0}
   _slideSensitivity: 1
@@ -155,7 +154,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  tileMapEDITORforButton: {fileID: 0}
   currentDelayLerpMove: 0
+  goToPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &4759499246184789609
 MonoBehaviour:
   m_ObjectHideFlags: 0
