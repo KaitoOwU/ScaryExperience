@@ -116,11 +116,10 @@ public class TileMap : MonoBehaviour
             TileDown tile = transform.GetChild(i).GetComponent<TileDown>();
 
             //check x pos
-            if (tile.transform.position.x - 1 / 2 <= pos.x && tile.transform.position.x + 1 / 2 >= pos.x)
+            if (tile.transform.position.x - 0.5f <= pos.x && tile.transform.position.x + 0.5f >= pos.x)
             {
-
                 //check y pos
-                if (tile.transform.position.y - 1 / 2 <= pos.y && tile.transform.position.y + 1 / 2 >= pos.y)
+                if (tile.transform.position.y - 0.5f <= pos.y && tile.transform.position.y + 0.5f >= pos.y)
                 {
                     return tile;
                 }
