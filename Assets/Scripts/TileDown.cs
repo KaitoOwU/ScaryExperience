@@ -52,13 +52,17 @@ public class TileDown : Tile
         switch (oldType)
         {
             case TileType.Ice:
-                GetComponent<SpriteRenderer>().color = Color.white;
+                GetComponent<SpriteRenderer>().color = spritesDown.colorRock;
                 break;
             case TileType.Void:
-                GetComponent<SpriteRenderer>().color = Color.white;
+                GetComponent<SpriteRenderer>().color = spritesDown.colorRock;
+                GetComponent<SpriteRenderer>().material = spritesDown.normalMat;
+                break;
+            case TileType.Water:
                 GetComponent<SpriteRenderer>().material = spritesDown.normalMat;
                 break;
         }
+
         switch (type)
         {
             case TileType.Rock:
@@ -107,6 +111,9 @@ public class TileDown : Tile
                 break;
 
             case TileType.Ice:
+
+                GetComponent<SpriteRenderer>().color = spritesDown.colorRock;
+
                 switch (iceType)
                 {
                     case IceType.Center:
@@ -203,23 +210,38 @@ public class TileDown : Tile
                 GetComponent<SpriteRenderer>().color = spritesDown.colorVoid;
                 GetComponent<SpriteRenderer>().material = spritesDown.voidMat;
                 break;
+
             case TileType.Water:
+
+                GetComponent<SpriteRenderer>().sharedMaterial = new Material(spritesDown.waterMat);
+
                 switch (waterType)
                 {
                     case WaterType.Normal:
                         GetComponent<SpriteRenderer>().sprite = spritesDown.spriteWater[0];
+                        GetComponent<SpriteRenderer>().sharedMaterial.SetTexture("_TextureOut", spritesDown.spriteOutWater[0].texture);
+                        GetComponent<SpriteRenderer>().sharedMaterial.SetTexture("_TextureIn", spritesDown.spriteInWater[0].texture);
                         idWater = 0;
                         break;
+
                     case WaterType.SideR:
                         GetComponent<SpriteRenderer>().sprite = spritesDown.spriteWater[1];
+                        GetComponent<SpriteRenderer>().sharedMaterial.SetTexture("_TextureOut", spritesDown.spriteOutWater[1].texture);
+                        GetComponent<SpriteRenderer>().sharedMaterial.SetTexture("_TextureIn", spritesDown.spriteInWater[1].texture);
                         idWater = 1;
                         break;
+
                     case WaterType.Middle:
                         GetComponent<SpriteRenderer>().sprite = spritesDown.spriteWater[2];
+                        GetComponent<SpriteRenderer>().sharedMaterial.SetTexture("_TextureOut", spritesDown.spriteOutWater[2].texture);
+                        GetComponent<SpriteRenderer>().sharedMaterial.SetTexture("_TextureIn", spritesDown.spriteInWater[2].texture);
                         idWater = 2;
                         break;
+
                     case WaterType.SideL:
                         GetComponent<SpriteRenderer>().sprite = spritesDown.spriteWater[3];
+                        GetComponent<SpriteRenderer>().sharedMaterial.SetTexture("_TextureOut", spritesDown.spriteOutWater[3].texture);
+                        GetComponent<SpriteRenderer>().sharedMaterial.SetTexture("_TextureIn", spritesDown.spriteInWater[3].texture);
                         idWater = 3;
                         break;
 

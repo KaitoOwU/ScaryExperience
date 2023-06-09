@@ -414,6 +414,8 @@ public class TileUp : Tile
                     GameObject temp = Instantiate(blockPrefab, transform);
                     block = temp;
                 }
+                block.GetComponent<BlockToMove>().spritesDown = spritesDown;
+
                 break;
                 
             case TileUpType.Collectible:
