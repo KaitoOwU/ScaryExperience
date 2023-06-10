@@ -117,7 +117,6 @@ public class TileUp : Tile
 
         if (oldType != type)
         {
-            Debug.LogWarning("Changement de type");
             RefreshColorSprite(true);
 
             switch (oldType)
@@ -134,7 +133,6 @@ public class TileUp : Tile
                     break;
 
                 case TileUpType.Ventilateur:
-                    Debug.LogWarning("VENTILO CHANGE 1");
                     Vector3 nextPos = transform.position + DirectionAddMovePos(dirWind);
                     RecursiveCheckNextWind(nextPos, dirWind, true, spritesUp.spriteNone[0]);
                     oldType = type;
@@ -207,7 +205,6 @@ public class TileUp : Tile
 
         if (oldDirWind != dirWind && type == TileUpType.Ventilateur)   
         {
-            Debug.LogWarning("VENTILO CHANGE 2");
             Vector3 nextPosSuppr = transform.position + DirectionAddMovePos(oldDirWind);
             RecursiveCheckNextWind(nextPosSuppr, oldDirWind, true, spritesUp.spriteNone[0]);
 
@@ -398,7 +395,6 @@ public class TileUp : Tile
                 break;
 
             case TileUpType.Ventilateur:
-                Debug.LogWarning("VENTILO CHANGE 3");
                 Vector3 nextPos = transform.position + DirectionAddMovePos(dirWind);
                 RecursiveCheckNextWind(nextPos, dirWind, false, spritesUp.spriteWind[0]);
                 GetComponent<SpriteRenderer>().sprite = spritesUp.spriteVentilateur[0];
@@ -457,9 +453,9 @@ public class TileUp : Tile
             
             tempTileUp.pushNumberTiles = 1;
             tempTileUp.GetComponent<SpriteRenderer>().sprite = spriteReplace;
-            tempTileUp.GetComponent<SpriteRenderer>().material = spritesUp.windMat;
+            tempTileUp.GetComponent<SpriteRenderer>().material = spritesUp.windMat[(int) tempTileUp.direction];
 
-            RotateDirectionWind(tempTileUp, tempTileUp.direction);
+            //RotateDirectionWind(tempTileUp, tempTileUp.direction);
 
             RecursiveCheckNextWind(pos, direction, isPutting, spriteReplace);
         }
@@ -495,11 +491,9 @@ public class TileUp : Tile
 
     public void PutOrWithdrawShaderWind (bool isStopped)
     {
-        Debug.Log(spritesUp.windMat);
-
         if (!isStopped)
         {
-            GetComponent<SpriteRenderer>().material = spritesUp.windMat;
+            GetComponent<SpriteRenderer>().material = spritesUp.windMat[(int) direction];
         }
         else
         {

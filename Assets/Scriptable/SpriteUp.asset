@@ -77,5 +77,9 @@ MonoBehaviour:
   colorLightKey: {r: 1, g: 0.85272884, b: 0, a: 1}
   radiusLightTrappe: 0.5
   colorLightTrappe: {r: 1, g: 1, b: 1, a: 1}
-  windMat: {fileID: 2100000, guid: 00c7187c1da760248891b696881cb47f, type: 2}
+  windMat:
+  - {fileID: 2100000, guid: 2a6c18c436bc7d84d9df20eec51642e4, type: 2}
+  - {fileID: 2100000, guid: 523a4679be9a194429a88c431b8288cb, type: 2}
+  - {fileID: 2100000, guid: 00c7187c1da760248891b696881cb47f, type: 2}
+  - {fileID: 2100000, guid: 3f49586813211274c9b8f9c3fe65c4f4, type: 2}
   normalMat: {fileID: 2100000, guid: e6e35d6c38690f046ac81507002ae7b6, type: 2}

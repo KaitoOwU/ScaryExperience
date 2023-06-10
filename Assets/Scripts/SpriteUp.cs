@@ -39,7 +39,7 @@ public class SpriteUp : ScriptableObject
     public Color colorLightTrappe;
 
     [Header("- Material -")]
-    public Material windMat;
+    public List<Material> windMat;
     public Material normalMat;
     
 }
