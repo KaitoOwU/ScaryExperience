@@ -73,6 +73,9 @@ public class DataManager : MonoBehaviour
 
             Instance = this;
             DontDestroyOnLoad(this);
+        } else
+        {
+            Destroy(gameObject);
         }
         
     }

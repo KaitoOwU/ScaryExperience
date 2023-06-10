@@ -353,6 +353,7 @@ public class MoveBubble : MonoBehaviour
             case TileDown.TileType.Void:
                 _isSliding = false;
                 _audioManager.PlaySFX(_audioManager.fallSound);
+                transform.DOScale(0, 1f);
                 OnDie?.Invoke();
                 break;
             case TileDown.TileType.Water:
@@ -382,6 +383,7 @@ public class MoveBubble : MonoBehaviour
                 else
                 {
                     _audioManager.PlaySFX(_audioManager.fallSound);
+                    transform.DOScale(0, 1f);
                     OnDie?.Invoke();
                     break;
                 }

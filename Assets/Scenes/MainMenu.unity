@@ -1742,7 +1742,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1054725716
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2477,7 +2477,7 @@ MonoBehaviour:
     _levelName: "Qui s'y frotte \xE9ffrite"
   - _levelSceneName: Tuto Glace
     _levelName: Glissades dangereuses
-  - _levelSceneName: Tuto Vent
+  - _levelSceneName: Tuto Vent mais qui marche
     _levelName: Se laisser porter
   - _levelSceneName: Tuto Block
     _levelName: "Cr\xE9er le chemin"
@@ -2588,7 +2588,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -215, y: 703}
+  m_AnchoredPosition: {x: -314, y: 703}
   m_SizeDelta: {x: 250, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1612730805
@@ -4079,7 +4079,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -865, y: 703}
+  m_AnchoredPosition: {x: -767, y: 703}
   m_SizeDelta: {x: 250, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1999556239

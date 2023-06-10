@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -194,8 +195,9 @@ public class BlockToMove : MonoBehaviour
                 break;
 
             case TileDown.TileType.Void:
-                Destroy(gameObject, 0.4f);
+                Destroy(gameObject, .9f);
                 tempTileUp.type = TileUp.TileUpType.None;
+                transform.DOScale(0.72f, 0.2f).OnComplete(() => transform.DOScale(0, 1f));
                 break;
 
             case TileDown.TileType.Water:
