@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class WinScreen : MonoBehaviour
 {
 
-    [SerializeField] Image _collectable;
+    [SerializeField] Image _collectable, _missed;
 
     private void OnEnable()
     {
@@ -23,7 +23,7 @@ public class WinScreen : MonoBehaviour
                 _collectable.transform.DOScale(1, 1f).SetEase(Ease.InOutExpo);
             } else
             {
-                _collectable.DOColor(new(1, 1, 1, 0.2f), 1f).SetEase(Ease.OutExpo);
+                _missed.DOColor(new(1, 1, 1, 1f), 1f).SetEase(Ease.OutExpo);
             }
         });
     }
