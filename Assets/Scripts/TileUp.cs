@@ -23,6 +23,9 @@ public class TileUp : Tile
     [ShowIf("isVentilateur")]
     public TileDown.Direction dirWind;
     private TileDown.Direction oldDirWind;
+    [ShowIf("isVentilateur")]
+    public TypeVentilateur typeVentilateur;
+
 
     [ShowIf("isWind")]
     public TileDown.Direction direction;
@@ -401,7 +404,68 @@ public class TileUp : Tile
                 Debug.LogWarning("VENTILO CHANGE 3");
                 Vector3 nextPos = transform.position + DirectionAddMovePos(dirWind);
                 RecursiveCheckNextWind(nextPos, dirWind, false, spritesUp.spriteWind[0]);
-                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteVentilateur[0];
+                switch (typeVentilateur)
+                {
+                    case TypeVentilateur.Block:
+                        switch (dirWind)
+                        {
+                            case TileDown.Direction.Left:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteVentilateur[1];
+                                break;
+                            case TileDown.Direction.Right:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteVentilateur[2];
+                                break;
+                            case TileDown.Direction.Up:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteVentilateur[3];
+                                break;
+                            case TileDown.Direction.Down:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteVentilateur[0];
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case TypeVentilateur.Wall:
+                        switch (dirWind)
+                        {
+                            case TileDown.Direction.Left:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteVentilateur[5];
+                                break;
+                            case TileDown.Direction.Right:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteVentilateur[6];
+                                break;
+                            case TileDown.Direction.Up:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteVentilateur[7];
+                                break;
+                            case TileDown.Direction.Down:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteVentilateur[4];
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case TypeVentilateur.DoubleWall:
+                        switch (dirWind)
+                        {
+                            case TileDown.Direction.Left:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteVentilateur[9];
+                                break;
+                            case TileDown.Direction.Right:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteVentilateur[10];
+                                break;
+                            case TileDown.Direction.Up:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteVentilateur[11];
+                                break;
+                            case TileDown.Direction.Down:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteVentilateur[8];
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                }      
+                
+                
                 break;
 
             case TileUpType.Wind:
@@ -517,6 +581,13 @@ public class TileUp : Tile
         None,
         Side,
         Corner
+    }
+
+    public enum TypeVentilateur
+    {
+        Block,
+        Wall,
+        DoubleWall
     }
 
     private bool isWall() { return type == TileUpType.Wall; }
