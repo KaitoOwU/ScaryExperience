@@ -27,7 +27,10 @@ public class HealthBarManager : MonoBehaviour
         if(_cooldown > 2f)
         {
             _cooldown = 0f;
-            OnAlert?.Invoke();
+            if(int.Parse(_amountText.text) <= 3)
+            {
+                OnAlert?.Invoke();
+            }
         }
     }
 
