@@ -77,7 +77,7 @@ public class FlameManager : MonoBehaviour
         
         _light.color = new Color(Mathf.Lerp(_minColor.r, _maxColor.r, _value / 10), Mathf.Lerp(_minColor.g, _maxColor.g, _value / 10), Mathf.Lerp(_minColor.b, _maxColor.b, _value / 10));
 
-        _audioManager.glbGlb.volume = (10 - _value) / 10;
+        _audioManager.volumeGlbGlb = (10 - _value) / 12;
         OnFlameValueChange?.Invoke(_value);
         if(_value <= 5)
         {
