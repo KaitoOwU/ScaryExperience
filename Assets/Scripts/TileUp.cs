@@ -176,6 +176,8 @@ public class TileUp : Tile
                     break;
 
                 case TileUpType.Key:
+                    GetComponent<SpriteRenderer>().material = spritesUp.normalMat;
+
                     if (lightKey != null)
                     {
                         UnityEditor.EditorApplication.delayCall += () =>
@@ -199,6 +201,10 @@ public class TileUp : Tile
                             DestroyImmediate(grilleTrappe);
                         };
                     }
+                    break;
+
+                case TileUpType.Collectible:
+                    GetComponent<SpriteRenderer>().material = spritesUp.normalMat;
                     break;
 
                 default:
@@ -336,6 +342,8 @@ public class TileUp : Tile
 
             case TileUpType.Key:
                 GetComponent<SpriteRenderer>().sprite = spritesUp.spriteKey[0];
+                GetComponent<SpriteRenderer>().sharedMaterial = new Material(spritesUp.collectibleMat);
+
                 if (lightKey == null)
                 {
                     GameObject tempLightK = Instantiate(lightPrefab, transform);
@@ -479,6 +487,7 @@ public class TileUp : Tile
                 break;
                 
             case TileUpType.Collectible:
+                GetComponent<SpriteRenderer>().sharedMaterial = new Material(spritesUp.collectibleMat);
                 GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCollectible[0];
                 break;
 
