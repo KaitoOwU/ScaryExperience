@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +12,7 @@ public class BlockToMove : MonoBehaviour
     [HideInInspector] public Vector3 oldToGo;
     [HideInInspector] public TileUp lastTileUp;
     private MoveBubble _bubble;
-    [SerializeField] List<Sprite> waterRock;
+    public SpriteDown spritesDown;
 
     AudioManager _audioManager;
 
@@ -141,7 +142,7 @@ public class BlockToMove : MonoBehaviour
 
         // si tomber dans l'eau ou le void on ne met pas le block sur la prochaine case
         // sinon on met le block sur la prochaine case
-        if (tileDownToMove.type != TileDown.TileType.Water && tileDownToMove.type != TileDown.TileType.Void && tileDownToMove.type != TileDown.TileType.Ice && tileDownToMove.type != TileDown.TileType.WaterRock)
+        if (tileDownToMove.type != TileDown.TileType.Water && tileDownToMove.type != TileDown.TileType.Void && tileDownToMove.type != TileDown.TileType.Ice)
         {
             tileUpToMove.block = gameObject;
             tileUpToMove.type = TileUp.TileUpType.Block;
@@ -194,15 +195,21 @@ public class BlockToMove : MonoBehaviour
                 break;
 
             case TileDown.TileType.Void:
-                Destroy(gameObject, 0.4f);
+                Destroy(gameObject, .9f);
                 tempTileUp.type = TileUp.TileUpType.None;
+                transform.DOScale(0.72f, 0.2f).OnComplete(() => transform.DOScale(0, 1f));
                 break;
 
             case TileDown.TileType.Water:
                 _audioManager.PlaySFX(_audioManager.waterSound);
                 tempTile.type = TileDown.TileType.WaterRock;
                 int idTemp = tempTile.GetComponent<TileDown>().idWater;
-                tempTile.GetComponent<SpriteRenderer>().sprite = waterRock[idTemp];
+
+                tempTile.GetComponent<SpriteRenderer>().sharedMaterial = spritesDown.waterMat;
+                tempTile.GetComponent<SpriteRenderer>().sprite = spritesDown.spriteWater[idTemp];
+                tempTile.GetComponent<SpriteRenderer>().material.SetTexture("_TextureOut", spritesDown.spriteOutWaterBlock[idTemp].texture);
+                tempTile.GetComponent<SpriteRenderer>().material.SetTexture("_TextureIn", spritesDown.spriteInWaterBlock[idTemp].texture);
+
                 Destroy(gameObject, 0.4f);
                 tempTileUp.type = TileUp.TileUpType.None;
                 break;

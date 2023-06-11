@@ -6,29 +6,78 @@ using UnityEngine.InputSystem.EnhancedTouch;
 public class DataManager : MonoBehaviour
 {
     public static DataManager Instance;
-
     [SerializeField] List<LevelLoadData> _levels;
-    Dictionary<int, LevelData> _levelData = new();
+    Dictionary<int, LevelData> _levelData;
     [SerializeField, ReadOnly] int _currentLevel;
 
     public Dictionary<int, LevelData> LevelData { get => _levelData; }
     public IReadOnlyList<LevelLoadData> LevelList { get => _levels; }
     public int CurrentLevel { get => _currentLevel; set => _currentLevel = value; }
     public bool IsLevelLaunchedFromMainMenu { get; set; } = true;
+    private string CurrentVersion { get => Application.version; }
+    public bool IsMusicMuted { get; set; } = false;
+
+    public bool IsSoundMuted { get; set; } = false;
+
 
     private void Awake()
     {
-        EnhancedTouchSupport.Enable();
-
-        Instance = this;
-        DontDestroyOnLoad(this);
-
-        for (int i = 0; i < _levels.Count; i++)
+        if (Instance == null)
         {
-            _levelData[i] = new(i);
-            _levelData[i].IsUnlocked = true;
+            _levelData = new();
+            for (int i = 0; i < _levels.Count; i++)
+            {
+                _levelData[i] = new(i);
+                if (i == 0)
+                {
+                    _levelData[i].IsUnlocked = true;
+                }
+            }
+
+            var data = SaveSystem.LoadData();
+            if (data == null)
+            {
+                Debug.LogWarning("No level data detected");
+                for (int i = 0; i < _levels.Count; i++)
+                {
+                    _levelData[i] = new(i);
+                    if (i == 0)
+                    {
+                        _levelData[i].IsUnlocked = true;
+                    }
+                }
+                SaveSystem.SaveData(_levelData);
+            }
+            else
+            {
+                if (CurrentVersion != data.version)
+                {
+                    SaveSystem.RemoveData();
+                    for (int i = 0; i < _levels.Count; i++)
+                    {
+                        _levelData[i] = new(i);
+                        if (i == 0)
+                        {
+                            _levelData[i].IsUnlocked = true;
+                        }
+                    }
+                    SaveSystem.SaveData(_levelData);
+                }
+                else
+                {
+                    _levelData = data.levelData;
+                }
+            }
+
+            EnhancedTouchSupport.Enable();
+
+            Instance = this;
+            DontDestroyOnLoad(this);
+        } else
+        {
+            Destroy(gameObject);
         }
-        SaveSystem.SaveData(_levelData);
+        
     }
 }
 
