@@ -12,17 +12,17 @@ EditorBuildSettings:
     path: Assets/Scenes/TutoDeplac.unity
     guid: 262d4acef22c5f8449a6af6236ae00f1
   - enabled: 1
-    path: Assets/Scenes/Tuto/Tuto Block.unity
-    guid: 0d4bfa7b18ae2fc45bf765fb39d0958f
-  - enabled: 1
     path: Assets/Scenes/Tuto/Tuto Glace.unity
     guid: 162cba39c58395e46828e914f1745cba
+  - enabled: 1
+    path: Assets/Scenes/Tuto Vent mais qui marche.unity
+    guid: 7c374e4d0596295489a0d8abe7bf3f40
   - enabled: 1
     path: Assets/Scenes/TutoDallesBoom.unity
     guid: 06f2d5dc431937a4f8bf14df6033453c
   - enabled: 1
-    path: Assets/Scenes/Tuto/Tuto Vent.unity
-    guid: e3632a198aa11aa4983dc0ee96eff9e2
+    path: Assets/Scenes/Tuto/Tuto Block.unity
+    guid: 0d4bfa7b18ae2fc45bf765fb39d0958f
   - enabled: 1
     path: Assets/Scenes/LD to Validate/level-adrien_block 2.unity
     guid: 2fbc0b0acee1ab144afca85572e338ca
@@ -32,6 +32,30 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LD to Validate/01_LD_Sang_A.unity
     guid: bcc5337223b7322458bef99ca615ae0a
+  - enabled: 1
+    path: Assets/Scenes/LD to Validate/LD_Virgile_01.unity
+    guid: 25dc1aee83de87845932d810c816052d
+  - enabled: 1
+    path: Assets/Scenes/LD to Validate/level_adrien_bock.unity
+    guid: d7d26b8015e9ff447ac71cd9974b9197
+  - enabled: 1
+    path: Assets/Scenes/LD to Validate/level_adrien_faill.unity
+    guid: b535314bfab5bbd43bc7ca251839c657
+  - enabled: 1
+    path: Assets/Scenes/LD to Validate/level_adrien_vent 2.unity
+    guid: 6bcea575c28646d4faef2ef4b169df33
+  - enabled: 1
+    path: Assets/Scenes/LD to Validate/level_V.unity
+    guid: ad8429f28b194c64b8177b4cc7abb569
+  - enabled: 1
+    path: Assets/Scenes/LD to Validate/level_vent 1.unity
+    guid: d0a2e5db9e0f292459593c7bc347e3cb
+  - enabled: 1
+    path: Assets/Scenes/LD to Validate/XX_LD_Cailloux_N1.unity
+    guid: 8e7bb38e74f000d4a9d078e71a7cd9bc
+  - enabled: 1
+    path: "Assets/Scenes/LD Final/04_LD D\xE9placements_N.unity"
+    guid: 1cf9e36f83928a047a6920371884e796
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 192fb96f9bfa53045ab9c0bd532b0a94, type: 2}
     com.unity.adaptiveperformance.samsung.android.provider_settings: {fileID: 11400000, guid: bb18aef228e5f8a4dafc46e87c1ff4f3, type: 2}
