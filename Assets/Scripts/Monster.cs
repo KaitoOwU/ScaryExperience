@@ -12,6 +12,7 @@ public class Monster : MonoBehaviour
     PlayableGraph playableGraph;
     AnimationPlayableOutput playableOutput;
     public MonsterSpawn monsterSpawn;
+    public SpriteRenderer spriteRenderer;
     private void Awake()
     {
 
@@ -20,11 +21,12 @@ public class Monster : MonoBehaviour
         playableGraph.SetTimeUpdateMode(DirectorUpdateMode.GameTime);
 
         playableOutput = AnimationPlayableOutput.Create(playableGraph, "Animation", GetComponent<Animator>());
-
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void Start()
     {
+        
         flameManager = player.GetComponent<FlameManager>();
     }
     public void PlayClip()
@@ -48,7 +50,8 @@ public class Monster : MonoBehaviour
         {
             if (Vector3.Distance(player.position, transform.position) <= playerRadius)
             {
-                gameObject.SetActive(false);
+                /*gameObject.SetActive(false);*/
+                spriteRenderer.color = new Color(255, 255, 255, 0);
             }
         }
         else
@@ -57,10 +60,7 @@ public class Monster : MonoBehaviour
             {
                 gameObject.SetActive(false);
             }
-            /*if (Vector3.Distance(player.position, transform.position) < playerRadius)
-            {
-                gameObject.SetActive(false);
-            }*/
+
             Vector3 dir = (transform.position - player.position).normalized;
 
             transform.localPosition = dir * (monsterSpawn._radius - 0.5f);

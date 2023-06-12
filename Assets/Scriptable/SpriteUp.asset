@@ -47,6 +47,10 @@ MonoBehaviour:
   - {fileID: 21300000, guid: b41a97b802424b943b6a047a4ed6636f, type: 3}
   - {fileID: 21300000, guid: bd0b318b6dc15d64aa911a936993d996, type: 3}
   - {fileID: 21300000, guid: 9a892c5cd4e5f0b498b2aac0f95745f9, type: 3}
+  - {fileID: 21300000, guid: 59d40a06251521f42bdd3b9dd09137fe, type: 3}
+  - {fileID: 21300000, guid: d9b1cf5ba97584848b1e31fd7524ea05, type: 3}
+  - {fileID: 21300000, guid: 3ca78b26774a9ea4eb8afcd3a886570c, type: 3}
+  - {fileID: 21300000, guid: 60028eb5dc7517346821665917cd2db9, type: 3}
   spriteKey:
   - {fileID: 21300000, guid: 8de3fb304a933d3408c9a67ff8e375b1, type: 3}
   spriteBrasero:
