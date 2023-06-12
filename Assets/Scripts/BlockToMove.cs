@@ -104,7 +104,7 @@ public class BlockToMove : MonoBehaviour
             return;
         }
 
-        // si on retire le block d'une case ou il y avait du vent avec le même block qui la arreter
+        // si on retire le block d'une case ou il y avait du vent avec le mï¿½me block qui la arreter
         else if (lastTileUp != null && lastTileUp.wasWind && tileBefore.type == TileUp.TileUpType.Wind && lastTileUp.direction == tileBefore.direction && !tileBefore.isActivated)
         {
             if (direction == lastTileUp.direction)
@@ -118,7 +118,7 @@ public class BlockToMove : MonoBehaviour
             RecursiveCheckNextWind(lastTileUp.transform.position, lastTileUp.direction, false, lastTileUp.spritesUp.spriteWind[0]);
         }
 
-        // ce n'est pas le même block qui a blocker le vent alors on remet vent mais arreter
+        // ce n'est pas le mï¿½me block qui a blocker le vent alors on remet vent mais arreter
         else if (lastTileUp != null && lastTileUp.isActivated && tileBefore.isActivated)
         {
             lastTileUp.type = TileUp.TileUpType.Wind;
@@ -133,7 +133,7 @@ public class BlockToMove : MonoBehaviour
             lastTileUp.type = TileUp.TileUpType.None;
         }
 
-        //si la direction dans laquelle on pousse est la même que la direction du vent
+        //si la direction dans laquelle on pousse est la mï¿½me que la direction du vent
         if (lastTileUp != null && direction == lastTileUp.direction && lastTileUp.wasWind && tileBefore.type == TileUp.TileUpType.Wind && tileBefore.isActivated == false)
         {
             lastTileUp.block = null;
@@ -204,14 +204,16 @@ public class BlockToMove : MonoBehaviour
                 break;
 
             case TileDown.TileType.Void:
-                Destroy(gameObject, .9f);
+                Destroy(gameObject, 1.3f);
                 tempTileUp.type = TileUp.TileUpType.None;
                 transform.DOScale(0.72f, 0.2f).OnComplete(() => transform.DOScale(0, 1f));
                 break;
 
             case TileDown.TileType.Water:
+                tempTileUp.type = TileUp.TileUpType.None;
                 _audioManager.PlaySFX(_audioManager.waterSound);
                 tempTile.type = TileDown.TileType.WaterRock;
+                Debug.LogWarning(tempTileUp.gameObject);
                 int idTemp = tempTile.GetComponent<TileDown>().idWater;
 
                 tempTile.GetComponent<SpriteRenderer>().sharedMaterial = spritesDown.waterMat;

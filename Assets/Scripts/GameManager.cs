@@ -54,8 +54,13 @@ public class GameManager : MonoBehaviour
 
     private void CheckForLoseCondition(float flameValue)
     {
-        //Debug.LogWarning(flameValue);
-        if(flameValue <= 0 && _loseScreen != null)
+        StartCoroutine(LostCondition(flameValue));
+    }
+
+    private IEnumerator LostCondition(float flameValue)
+    {
+        yield return new WaitForSecondsRealtime(0.1f);
+        if (flameValue <= 0 && _loseScreen != null && !_winScreen.activeInHierarchy)
         {
             _loseScreen.SetActive(true);
         }

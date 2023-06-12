@@ -326,6 +326,18 @@ public class TileUp : Tile
                             case WallCornerOrientation.TDownDouble:
                                 GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[13];
                                 break;
+                            case WallCornerOrientation.TLeftDouble:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[14];
+                                break;
+                            case WallCornerOrientation.TRightDouble:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[15];
+                                break;
+                            case WallCornerOrientation.CornerRightUpLeftDown:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[16];
+                                break;
+                            case WallCornerOrientation.CornerRightDownLeftUp:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[17];
+                                break;
 
                         }
                         break;
@@ -337,7 +349,7 @@ public class TileUp : Tile
                 
                 ShadowCaster2D shadowCastTemp = GetComponent<ShadowCaster2D>();
                 shadowCastTemp.useRendererSilhouette = false;
-                shadowCastTemp.selfShadows = true;
+                shadowCastTemp.selfShadows = false;
                 break;
 
             case TileUpType.Key:
@@ -578,6 +590,7 @@ public class TileUp : Tile
     {
         DOTween.To(() => lightTorch.GetComponent<Light2D>().pointLightOuterRadius, x => lightTorch.GetComponent<Light2D>().pointLightOuterRadius = x, 0, 0.5f).SetEase(Ease.OutExpo);
         Destroy(flameTorch);
+        Destroy(lightTorch);
     }
     public enum WallPosition
     {
@@ -618,7 +631,11 @@ public class TileUp : Tile
         LeftUpDouble,
         RightUpDouble,
         TUpDouble,
-        TDownDouble
+        TDownDouble,
+        TLeftDouble,
+        TRightDouble,
+        CornerRightUpLeftDown,
+        CornerRightDownLeftUp,
     }
 
     public enum WallSideOrientation

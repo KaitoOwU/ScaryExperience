@@ -35,6 +35,7 @@ public class TileDown : Tile
         WaterRock,
         Ice,
         Void,
+        FlashMeng
     }
 
     private void OnValidate()
@@ -231,7 +232,7 @@ public class TileDown : Tile
                         idWater = 1;
                         break;
 
-                    case WaterType.Middle:
+                    case WaterType.MiddleHorizontal:
                         GetComponent<SpriteRenderer>().sprite = spritesDown.spriteWater[2];
                         GetComponent<SpriteRenderer>().sharedMaterial.SetTexture("_TextureOut", spritesDown.spriteOutWater[2].texture);
                         GetComponent<SpriteRenderer>().sharedMaterial.SetTexture("_TextureIn", spritesDown.spriteInWater[2].texture);
@@ -244,6 +245,26 @@ public class TileDown : Tile
                         GetComponent<SpriteRenderer>().sharedMaterial.SetTexture("_TextureIn", spritesDown.spriteInWater[3].texture);
                         idWater = 3;
                         break;
+                    case WaterType.SideU:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteWater[4];
+                        GetComponent<SpriteRenderer>().sharedMaterial.SetTexture("_TextureOut", spritesDown.spriteOutWater[4].texture);
+                        GetComponent<SpriteRenderer>().sharedMaterial.SetTexture("_TextureIn", spritesDown.spriteInWater[4].texture);
+                        idWater = 1;
+                        break;
+
+                    case WaterType.MiddleVertical:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteWater[5];
+                        GetComponent<SpriteRenderer>().sharedMaterial.SetTexture("_TextureOut", spritesDown.spriteOutWater[5].texture);
+                        GetComponent<SpriteRenderer>().sharedMaterial.SetTexture("_TextureIn", spritesDown.spriteInWater[5].texture);
+                        idWater = 2;
+                        break;
+
+                    case WaterType.SideD:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteWater[6];
+                        GetComponent<SpriteRenderer>().sharedMaterial.SetTexture("_TextureOut", spritesDown.spriteOutWater[6].texture);
+                        GetComponent<SpriteRenderer>().sharedMaterial.SetTexture("_TextureIn", spritesDown.spriteInWater[6].texture);
+                        idWater = 3;
+                        break;
 
                 }
                 
@@ -251,6 +272,9 @@ public class TileDown : Tile
                 break;
             case TileType.Breakable:
                 GetComponent<SpriteRenderer>().sprite = spritesDown.spriteBreakable[0];
+                break;
+            case TileType.FlashMeng:
+                GetComponent<SpriteRenderer>().sprite = spritesDown.spriteFlashMeng[0];
                 break;
         }
 
@@ -298,8 +322,11 @@ public class TileDown : Tile
     {
         Normal,
         SideR,
-        Middle,
-        SideL
+        MiddleHorizontal,
+        SideL,
+        SideU,
+        MiddleVertical,
+        SideD
     }
 
     public enum IceType

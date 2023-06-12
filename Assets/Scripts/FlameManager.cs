@@ -12,7 +12,7 @@ public class FlameManager : MonoBehaviour
     [SerializeField, ReadOnly] float _value;
     [SerializeField] int _max;
 
-    [SerializeField] Light2D _light;
+    public Light2D _light;
     [SerializeField] Color _maxColor;
     [SerializeField] Color _minColor;
 
@@ -22,7 +22,7 @@ public class FlameManager : MonoBehaviour
     [SerializeField] CinemachineVirtualCamera _vCam;
     CinemachineBasicMultiChannelPerlin _noise;
 
-    float _maxSizeLight;
+    [HideInInspector] public float _maxSizeLight;
 
     [SerializeField] MonsterSpawn monsterSpawn;
 
@@ -44,6 +44,7 @@ public class FlameManager : MonoBehaviour
         _noise = _vCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         _value = _max;
         _maxSizeLight = _light.pointLightOuterRadius;
+        _light.pointLightOuterRadius = 0;
     }
 
     public void ModifyFlame(bool substract, int amount)

@@ -60,25 +60,29 @@ public class AudioManager : MonoBehaviour
 
     private void Update()
     {
-        if (DataManager.Instance != null && DataManager.Instance.IsMusicMuted)
+        if(DataManager.Instance != null)
         {
-            music.volume = 0;
-        }
-        else
-        {
-            music.volume = volumeMusic;
-        }
+            if (DataManager.Instance.IsMusicMuted)
+            {
+                music.volume = 0;
+            }
+            else
+            {
+                music.volume = volumeMusic;
+            }
 
-        if (DataManager.Instance != null && DataManager.Instance.IsSoundMuted)
-        {
-            SFX.volume = 0;
-            glbGlb.volume = 0;
+            if (DataManager.Instance.IsSoundMuted)
+            {
+                SFX.volume = 0;
+                glbGlb.volume = 0;
+            }
+            else
+            {
+                SFX.volume = volumeSFX;
+                glbGlb.volume = volumeGlbGlb;
+            }
         }
-        else
-        {
-            SFX.volume = volumeSFX;
-            glbGlb.volume = volumeGlbGlb;
-        }
+        
     }
 
 }
