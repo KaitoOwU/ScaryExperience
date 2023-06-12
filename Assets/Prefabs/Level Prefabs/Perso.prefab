@@ -258,25 +258,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   _curveLerpWind:
     serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
+    m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -301,9 +283,10 @@ MonoBehaviour:
   _light: {fileID: 8143406517399669317}
   _maxColor: {r: 1, g: 1, b: 1, a: 0}
   _minColor: {r: 1, g: 0.7741164, b: 0, a: 0}
-  _playerCanva: {fileID: 3155407140877558272}
+  _playerCanva: {fileID: 0}
   _indicateur: {fileID: 5226063348176831103, guid: d18b4889d2b619449a83c4b46a7e450a, type: 3}
   _vCam: {fileID: 0}
+  _maxSizeLight: 0
   monsterSpawn: {fileID: 0}
   _fadeDuration: 1
   isDeadFromMonsters: 1
