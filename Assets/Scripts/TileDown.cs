@@ -35,6 +35,7 @@ public class TileDown : Tile
         WaterRock,
         Ice,
         Void,
+        FlashMeng
     }
 
     private void OnValidate()
@@ -271,6 +272,9 @@ public class TileDown : Tile
                 break;
             case TileType.Breakable:
                 GetComponent<SpriteRenderer>().sprite = spritesDown.spriteBreakable[0];
+                break;
+            case TileType.FlashMeng:
+                GetComponent<SpriteRenderer>().sprite = spritesDown.spriteFlashMeng[0];
                 break;
         }
 
