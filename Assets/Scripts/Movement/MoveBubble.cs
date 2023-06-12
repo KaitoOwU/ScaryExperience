@@ -8,6 +8,8 @@ using UnityEngine.Rendering.Universal;
 using DG.Tweening;
 using UnityEngine.UI;
 using NaughtyAttributes;
+using static Tile;
+using static UnityEngine.Rendering.DebugUI;
 
 public class MoveBubble : MonoBehaviour
 {
@@ -224,11 +226,9 @@ public class MoveBubble : MonoBehaviour
                         _refs.Grid.DOColor(new(1, 1, 1, 0), 3f);
                     });
                     Destroy(_refs.gameObject, 6f);
-
                     OnKeyTaken?.Invoke();
                 }
                 break;
-
             case TileUp.TileUpType.Brasero:
                 GetComponent<FlameManager>().ModifyFlame(false, tempTileUp.refillAmountBrasero);
                 _shouldStopCheckingTile = true;
