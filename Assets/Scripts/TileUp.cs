@@ -337,7 +337,7 @@ public class TileUp : Tile
                 
                 ShadowCaster2D shadowCastTemp = GetComponent<ShadowCaster2D>();
                 shadowCastTemp.useRendererSilhouette = false;
-                shadowCastTemp.selfShadows = true;
+                shadowCastTemp.selfShadows = false;
                 break;
 
             case TileUpType.Key:
@@ -578,6 +578,7 @@ public class TileUp : Tile
     {
         DOTween.To(() => lightTorch.GetComponent<Light2D>().pointLightOuterRadius, x => lightTorch.GetComponent<Light2D>().pointLightOuterRadius = x, 0, 0.5f).SetEase(Ease.OutExpo);
         Destroy(flameTorch);
+        Destroy(lightTorch);
     }
     public enum WallPosition
     {
