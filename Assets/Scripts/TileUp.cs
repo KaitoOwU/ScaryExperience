@@ -337,7 +337,7 @@ public class TileUp : Tile
                 
                 ShadowCaster2D shadowCastTemp = GetComponent<ShadowCaster2D>();
                 shadowCastTemp.useRendererSilhouette = false;
-                shadowCastTemp.selfShadows = true;
+                shadowCastTemp.selfShadows = false;
                 break;
 
             case TileUpType.Key:
