@@ -15,6 +15,7 @@ public class SpriteDown : ScriptableObject
     public List<Sprite> spriteVoid;
     public List<Sprite> spriteWater;
     public List<Sprite> spriteBreakable;
+    public List<Sprite> spriteFlashMeng;
 
     [Header("- Color -")]
     public Color colorRock;
