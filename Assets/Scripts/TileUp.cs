@@ -23,6 +23,9 @@ public class TileUp : Tile
     [ShowIf("isVentilateur")]
     public TileDown.Direction dirWind;
     private TileDown.Direction oldDirWind;
+    [ShowIf("isVentilateur")]
+    public TypeVentilateur typeVentilateur;
+
 
     [ShowIf("isWind")]
     public TileDown.Direction direction;
@@ -117,7 +120,6 @@ public class TileUp : Tile
 
         if (oldType != type)
         {
-            Debug.LogWarning("Changement de type");
             RefreshColorSprite(true);
 
             switch (oldType)
@@ -134,7 +136,6 @@ public class TileUp : Tile
                     break;
 
                 case TileUpType.Ventilateur:
-                    Debug.LogWarning("VENTILO CHANGE 1");
                     Vector3 nextPos = transform.position + DirectionAddMovePos(dirWind);
                     RecursiveCheckNextWind(nextPos, dirWind, true, spritesUp.spriteNone[0]);
                     oldType = type;
@@ -175,6 +176,8 @@ public class TileUp : Tile
                     break;
 
                 case TileUpType.Key:
+                    GetComponent<SpriteRenderer>().material = spritesUp.normalMat;
+
                     if (lightKey != null)
                     {
                         UnityEditor.EditorApplication.delayCall += () =>
@@ -200,6 +203,10 @@ public class TileUp : Tile
                     }
                     break;
 
+                case TileUpType.Collectible:
+                    GetComponent<SpriteRenderer>().material = spritesUp.normalMat;
+                    break;
+
                 default:
                     break;
             }
@@ -207,7 +214,6 @@ public class TileUp : Tile
 
         if (oldDirWind != dirWind && type == TileUpType.Ventilateur)   
         {
-            Debug.LogWarning("VENTILO CHANGE 2");
             Vector3 nextPosSuppr = transform.position + DirectionAddMovePos(oldDirWind);
             RecursiveCheckNextWind(nextPosSuppr, oldDirWind, true, spritesUp.spriteNone[0]);
 
@@ -336,6 +342,8 @@ public class TileUp : Tile
 
             case TileUpType.Key:
                 GetComponent<SpriteRenderer>().sprite = spritesUp.spriteKey[0];
+                GetComponent<SpriteRenderer>().sharedMaterial = new Material(spritesUp.collectibleMat);
+
                 if (lightKey == null)
                 {
                     GameObject tempLightK = Instantiate(lightPrefab, transform);
@@ -398,10 +406,70 @@ public class TileUp : Tile
                 break;
 
             case TileUpType.Ventilateur:
-                Debug.LogWarning("VENTILO CHANGE 3");
                 Vector3 nextPos = transform.position + DirectionAddMovePos(dirWind);
                 RecursiveCheckNextWind(nextPos, dirWind, false, spritesUp.spriteWind[0]);
-                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteVentilateur[0];
+                switch (typeVentilateur)
+                {
+                    case TypeVentilateur.Block:
+                        switch (dirWind)
+                        {
+                            case TileDown.Direction.Left:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteVentilateur[1];
+                                break;
+                            case TileDown.Direction.Right:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteVentilateur[2];
+                                break;
+                            case TileDown.Direction.Up:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteVentilateur[3];
+                                break;
+                            case TileDown.Direction.Down:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteVentilateur[0];
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case TypeVentilateur.Wall:
+                        switch (dirWind)
+                        {
+                            case TileDown.Direction.Left:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteVentilateur[5];
+                                break;
+                            case TileDown.Direction.Right:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteVentilateur[6];
+                                break;
+                            case TileDown.Direction.Up:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteVentilateur[7];
+                                break;
+                            case TileDown.Direction.Down:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteVentilateur[4];
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case TypeVentilateur.DoubleWall:
+                        switch (dirWind)
+                        {
+                            case TileDown.Direction.Left:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteVentilateur[9];
+                                break;
+                            case TileDown.Direction.Right:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteVentilateur[10];
+                                break;
+                            case TileDown.Direction.Up:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteVentilateur[11];
+                                break;
+                            case TileDown.Direction.Down:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteVentilateur[8];
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                }      
+                
+                
                 break;
 
             case TileUpType.Wind:
@@ -414,9 +482,12 @@ public class TileUp : Tile
                     GameObject temp = Instantiate(blockPrefab, transform);
                     block = temp;
                 }
+                block.GetComponent<BlockToMove>().spritesDown = spritesDown;
+
                 break;
                 
             case TileUpType.Collectible:
+                GetComponent<SpriteRenderer>().sharedMaterial = new Material(spritesUp.collectibleMat);
                 GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCollectible[0];
                 break;
 
@@ -455,9 +526,9 @@ public class TileUp : Tile
             
             tempTileUp.pushNumberTiles = 1;
             tempTileUp.GetComponent<SpriteRenderer>().sprite = spriteReplace;
-            tempTileUp.GetComponent<SpriteRenderer>().material = spritesUp.windMat;
+            tempTileUp.GetComponent<SpriteRenderer>().material = spritesUp.windMat[(int) tempTileUp.direction];
 
-            RotateDirectionWind(tempTileUp, tempTileUp.direction);
+            //RotateDirectionWind(tempTileUp, tempTileUp.direction);
 
             RecursiveCheckNextWind(pos, direction, isPutting, spriteReplace);
         }
@@ -493,11 +564,9 @@ public class TileUp : Tile
 
     public void PutOrWithdrawShaderWind (bool isStopped)
     {
-        Debug.Log(spritesUp.windMat);
-
         if (!isStopped)
         {
-            GetComponent<SpriteRenderer>().material = spritesUp.windMat;
+            GetComponent<SpriteRenderer>().material = spritesUp.windMat[(int) direction];
         }
         else
         {
@@ -515,6 +584,13 @@ public class TileUp : Tile
         None,
         Side,
         Corner
+    }
+
+    public enum TypeVentilateur
+    {
+        Block,
+        Wall,
+        DoubleWall
     }
 
     private bool isWall() { return type == TileUpType.Wall; }

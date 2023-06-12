@@ -24,7 +24,14 @@ public class SpriteDown : ScriptableObject
     public Color colorBreakable;
 
     [Header("- Material -")]
-    public Material voidMat;
     public Material normalMat;
+    public Material voidMat;
+    public Material waterMat;
+
+    public List<Sprite> spriteOutWater;
+    public List<Sprite> spriteInWater;
+
+    public List<Sprite> spriteOutWaterBlock;
+    public List<Sprite> spriteInWaterBlock;
 }
 

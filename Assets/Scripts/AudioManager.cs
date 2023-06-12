@@ -29,6 +29,9 @@ public class AudioManager : MonoBehaviour
     public AudioClip button;
     public AudioClip levelWin;
 
+    public float volumeGlbGlb;
+    public float volumeMusic;
+    public float volumeSFX;
 
 
     private void Awake()
@@ -37,7 +40,8 @@ public class AudioManager : MonoBehaviour
         glbGlb.loop = true;
         PlayMusic();
         PlayGlbGlbSound();
-
+        volumeSFX = SFX.volume;
+        volumeMusic = music.volume;
     }
     public void PlaySFX(AudioClip clip)
     {
@@ -52,6 +56,29 @@ public class AudioManager : MonoBehaviour
     public void PlayGlbGlbSound()
     {
         glbGlb.Play();
+    }
+
+    private void Update()
+    {
+        if (DataManager.Instance.IsMusicMuted)
+        {
+            music.volume = 0;
+        }
+        else
+        {
+            music.volume = volumeMusic;
+        }
+
+        if (DataManager.Instance.IsSoundMuted)
+        {
+            SFX.volume = 0;
+            glbGlb.volume = 0;
+        }
+        else
+        {
+            SFX.volume = volumeSFX;
+            glbGlb.volume = volumeGlbGlb;
+        }
     }
 
 }
