@@ -142,7 +142,7 @@ public class BlockToMove : MonoBehaviour
 
         // si tomber dans l'eau ou le void on ne met pas le block sur la prochaine case
         // sinon on met le block sur la prochaine case
-        if (tileDownToMove.type != TileDown.TileType.Water && tileDownToMove.type != TileDown.TileType.Void && tileDownToMove.type != TileDown.TileType.Ice)
+        if (tileDownToMove.type != TileDown.TileType.WaterRock && tileDownToMove.type != TileDown.TileType.Void && tileDownToMove.type != TileDown.TileType.Ice)
         {
             tileUpToMove.block = gameObject;
             tileUpToMove.type = TileUp.TileUpType.Block;
@@ -195,14 +195,16 @@ public class BlockToMove : MonoBehaviour
                 break;
 
             case TileDown.TileType.Void:
-                Destroy(gameObject, .9f);
+                Destroy(gameObject, 1.3f);
                 tempTileUp.type = TileUp.TileUpType.None;
                 transform.DOScale(0.72f, 0.2f).OnComplete(() => transform.DOScale(0, 1f));
                 break;
 
             case TileDown.TileType.Water:
+                tempTileUp.type = TileUp.TileUpType.None;
                 _audioManager.PlaySFX(_audioManager.waterSound);
                 tempTile.type = TileDown.TileType.WaterRock;
+                Debug.LogWarning(tempTileUp.gameObject);
                 int idTemp = tempTile.GetComponent<TileDown>().idWater;
 
                 tempTile.GetComponent<SpriteRenderer>().sharedMaterial = spritesDown.waterMat;
@@ -211,7 +213,6 @@ public class BlockToMove : MonoBehaviour
                 tempTile.GetComponent<SpriteRenderer>().material.SetTexture("_TextureIn", spritesDown.spriteInWaterBlock[idTemp].texture);
 
                 Destroy(gameObject, 0.4f);
-                tempTileUp.type = TileUp.TileUpType.None;
                 break;
 
             default:

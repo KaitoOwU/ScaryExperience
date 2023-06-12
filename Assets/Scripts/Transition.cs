@@ -31,8 +31,9 @@ public class Transition : MonoBehaviour
 
         //START ANIMATION
         yield return _levelNumber.DOColor(new(1, 1, 1), .5f).SetEase(Ease.OutExpo).WaitForCompletion();
-        _rightLine.DOScaleX(25000, 1.5f).SetEase(Ease.OutExpo);
-        yield return _leftLine.DOScaleX(25000, 1.5f).SetEase(Ease.OutExpo).WaitForCompletion();
+        _rightLine.DOScaleX(35000, 3f).SetEase(Ease.OutExpo);
+        _leftLine.DOScaleX(35000, 3f).SetEase(Ease.OutExpo).WaitForCompletion();
+        yield return new WaitForSecondsRealtime(0.5f);
         _levelName.DOScale(1, 10f);
         yield return _levelName.DOColor(new(1, 1, 1), 1f).SetEase(Ease.OutExpo).WaitForCompletion();
         yield return new WaitForSecondsRealtime(2f);

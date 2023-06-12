@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEditor.Rendering;
+using Unity.VisualScripting;
 
 public class MonsterSpawn : MonoBehaviour
 {
@@ -63,6 +65,7 @@ public class MonsterSpawn : MonoBehaviour
             Spawn(temp);
             temp.SetActive(false);
         }
+         
         _audioManager.PlayGlbGlbSound();
     }
 
@@ -70,7 +73,7 @@ public class MonsterSpawn : MonoBehaviour
     {
 
         yield return new WaitForSeconds(time);
-        
+
         monster.SetActive(false);
         yield return new WaitForSeconds(0.5f);
         Spawn(monster);
@@ -167,7 +170,5 @@ public class MonsterSpawn : MonoBehaviour
 
     }
 
-
-    
 
 }
