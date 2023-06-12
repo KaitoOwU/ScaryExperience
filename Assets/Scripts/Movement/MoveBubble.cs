@@ -23,6 +23,8 @@ public class MoveBubble : MonoBehaviour
     [SerializeField] AnimationCurve _curveLerpWind;
     [SerializeField] ParticleSystem _particleSlide;
 
+    //[SerializeField] ParticleSystem _particleMove;
+
     [SerializeField] TileMap tileMapEDITORforButton;
 
     //runtime public
@@ -77,6 +79,12 @@ public class MoveBubble : MonoBehaviour
         OnDie += Die;
 
         currentDelayLerpMove = _delayLerpMove;
+    }
+
+    private void OnDisable()
+    {
+        Etouch.Touch.onFingerDown -= Touch_onFingerDown;
+        Etouch.Touch.onFingerUp -= Touch_onFingerUp;
     }
 
     [Button("ActualisePOS")]
@@ -149,7 +157,11 @@ public class MoveBubble : MonoBehaviour
     {
         _startPos = transform.position;
 
-        // si l'on va en diagonal
+        ////particules movement
+        //_particleMove.Play();
+        //_particleMove.transform.rotation = Quaternion.LookRotation(_startPos - goToPosition);
+
+        //movement intermediaire
         while (_prePosList.Count > 0)
         {
             yield return StartCoroutine(MoveToPos(_prePosList[0], _delayLerpMove));

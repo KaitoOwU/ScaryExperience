@@ -11,6 +11,8 @@ public class BlockToMove : MonoBehaviour
     [HideInInspector] public Vector3 toGoPosBlock;
     [HideInInspector] public Vector3 oldToGo;
     [HideInInspector] public TileUp lastTileUp;
+
+    private bool isInWater;
     private MoveBubble _bubble;
     public SpriteDown spritesDown;
 
@@ -43,9 +45,16 @@ public class BlockToMove : MonoBehaviour
 
     public bool StartMoving (TileDown.Direction direction, MoveBubble bubble)
     {
-        _audioManager.PlaySFX(_audioManager.rockSound[Random.Range(0, _audioManager.rockSound.Count)]);
+        
         oldToGo = toGoPosBlock;
         MoveNextTile(direction, bubble);
+
+        //joue le son que lorsque le block a bouger
+        if (oldToGo != toGoPosBlock)
+        {
+            _audioManager.PlaySFX(_audioManager.rockSound[Random.Range(0, _audioManager.rockSound.Count)]);
+        }
+
         StartCoroutine(PushBlockCorout(bubble));
 
         //check if blocked
@@ -142,7 +151,7 @@ public class BlockToMove : MonoBehaviour
 
         // si tomber dans l'eau ou le void on ne met pas le block sur la prochaine case
         // sinon on met le block sur la prochaine case
-        if (tileDownToMove.type != TileDown.TileType.Water && tileDownToMove.type != TileDown.TileType.Void && tileDownToMove.type != TileDown.TileType.Ice)
+        if (!isInWater && tileDownToMove.type != TileDown.TileType.Water && tileDownToMove.type != TileDown.TileType.Void && tileDownToMove.type != TileDown.TileType.Ice)
         {
             tileUpToMove.block = gameObject;
             tileUpToMove.type = TileUp.TileUpType.Block;
@@ -212,6 +221,7 @@ public class BlockToMove : MonoBehaviour
 
                 Destroy(gameObject, 0.4f);
                 tempTileUp.type = TileUp.TileUpType.None;
+                isInWater = true;
                 break;
 
             default:

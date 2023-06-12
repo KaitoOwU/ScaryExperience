@@ -60,7 +60,7 @@ public class AudioManager : MonoBehaviour
 
     private void Update()
     {
-        if (DataManager.Instance.IsMusicMuted)
+        if (DataManager.Instance != null && DataManager.Instance.IsMusicMuted)
         {
             music.volume = 0;
         }
@@ -69,7 +69,7 @@ public class AudioManager : MonoBehaviour
             music.volume = volumeMusic;
         }
 
-        if (DataManager.Instance.IsSoundMuted)
+        if (DataManager.Instance != null && DataManager.Instance.IsSoundMuted)
         {
             SFX.volume = 0;
             glbGlb.volume = 0;
