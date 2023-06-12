@@ -86,8 +86,8 @@ MonoBehaviour:
   colorLightTorch: {r: 1, g: 0.5000122, b: 0, a: 1}
   radiusLightKey: 0.5
   colorLightKey: {r: 1, g: 0.85272884, b: 0, a: 1}
-  radiusLightTrappe: 0.5
-  colorLightTrappe: {r: 1, g: 1, b: 1, a: 1}
+  radiusLightTrappe: 1
+  colorLightTrappe: {r: 1, g: 0.9462366, b: 0, a: 1}
   normalMat: {fileID: 2100000, guid: e6e35d6c38690f046ac81507002ae7b6, type: 2}
   windMat:
   - {fileID: 2100000, guid: 2a6c18c436bc7d84d9df20eec51642e4, type: 2}
