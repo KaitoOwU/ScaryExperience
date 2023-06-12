@@ -56,7 +56,18 @@ MonoBehaviour:
   spriteTorch:
   - {fileID: 21300000, guid: 757d7fc60d9992643901f543aaecab2c, type: 3}
   spriteVentilateur:
-  - {fileID: 7482667652216324306, guid: 60180494567d32d4db482294b96209e8, type: 3}
+  - {fileID: 21300000, guid: b7bdd2e70c08cfd4cbf0924f2dca8d45, type: 3}
+  - {fileID: 21300000, guid: dee5a07682568cd4eb7324555a803881, type: 3}
+  - {fileID: 21300000, guid: be779b68d8e698244a1b890e5ead5a35, type: 3}
+  - {fileID: 21300000, guid: 220e3d56e97cd0f48a4a7b913e48053e, type: 3}
+  - {fileID: 21300000, guid: e608439cc46309a438f640c52920326a, type: 3}
+  - {fileID: 21300000, guid: 78cb0519034a1bf468e279a89d6788a4, type: 3}
+  - {fileID: 21300000, guid: dd46a94782a22d74ebc2bd1e5f95b052, type: 3}
+  - {fileID: 21300000, guid: 2218a76ac615d884082855079f5d307c, type: 3}
+  - {fileID: 21300000, guid: a5b97759e8d9640448c97963da00f4ca, type: 3}
+  - {fileID: 21300000, guid: 0e779d288cfb26846b855644424092a6, type: 3}
+  - {fileID: 21300000, guid: 149694b2d7a79b04e8ef5e93b834ad68, type: 3}
+  - {fileID: 21300000, guid: 4ca1b7ea61cc5604ba98b6ee96a7a500, type: 3}
   spriteWind:
   - {fileID: 7482667652216324306, guid: c79affc3b101484459e2bfbe79c3d4e1, type: 3}
   spriteCollectible:
@@ -75,7 +86,12 @@ MonoBehaviour:
   colorLightTorch: {r: 1, g: 0.5000122, b: 0, a: 1}
   radiusLightKey: 0.5
   colorLightKey: {r: 1, g: 0.85272884, b: 0, a: 1}
-  radiusLightTrappe: 0.5
-  colorLightTrappe: {r: 1, g: 1, b: 1, a: 1}
-  windMat: {fileID: 2100000, guid: 00c7187c1da760248891b696881cb47f, type: 2}
+  radiusLightTrappe: 1
+  colorLightTrappe: {r: 1, g: 0.9462366, b: 0, a: 1}
   normalMat: {fileID: 2100000, guid: e6e35d6c38690f046ac81507002ae7b6, type: 2}
+  windMat:
+  - {fileID: 2100000, guid: 2a6c18c436bc7d84d9df20eec51642e4, type: 2}
+  - {fileID: 2100000, guid: 523a4679be9a194429a88c431b8288cb, type: 2}
+  - {fileID: 2100000, guid: 00c7187c1da760248891b696881cb47f, type: 2}
+  - {fileID: 2100000, guid: 3f49586813211274c9b8f9c3fe65c4f4, type: 2}
+  collectibleMat: {fileID: 2100000, guid: d4177b7545e5387408b789f48d646fbd, type: 2}

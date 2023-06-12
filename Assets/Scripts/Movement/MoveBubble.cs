@@ -8,6 +8,8 @@ using UnityEngine.Rendering.Universal;
 using DG.Tweening;
 using UnityEngine.UI;
 using NaughtyAttributes;
+using static Tile;
+using static UnityEngine.Rendering.DebugUI;
 
 public class MoveBubble : MonoBehaviour
 {
@@ -20,6 +22,8 @@ public class MoveBubble : MonoBehaviour
     [SerializeField] float _delayLerpMove;
     [SerializeField] AnimationCurve _curveLerp;
     [SerializeField] AnimationCurve _curveLerpIce;
+    [SerializeField] AnimationCurve _curveLerpWind;
+    [SerializeField] ParticleSystem _particleSlide;
 
     [SerializeField] TileMap tileMapEDITORforButton;
 
@@ -154,6 +158,12 @@ public class MoveBubble : MonoBehaviour
             _prePosList.RemoveAt(0);
         }
 
+        if (_tileMoving == TileDown.TileType.Ice)
+        {
+            _particleSlide.Play();
+            _particleSlide.transform.rotation = Quaternion.LookRotation(_startPos - goToPosition);
+        }
+
         _startPos = transform.position;
         _moveTimer = 0;
 
@@ -165,6 +175,11 @@ public class MoveBubble : MonoBehaviour
 
             transform.position = Vector3.Lerp(_startPos, goToPosition, _currentAnimCurve.Evaluate(_moveTimer / currentDelayLerpMove));
 
+            if (_moveTimer/currentDelayLerpMove > 0.8f && _particleSlide.isPlaying)
+            {
+                _particleSlide.Stop();
+            }
+
             yield return new WaitForFixedUpdate();
         }
 
@@ -174,6 +189,11 @@ public class MoveBubble : MonoBehaviour
         _tileMoving = TileDown.TileType.Rock;
         _tileMovingUp = TileUp.TileUpType.None;
         _isSliding = false;
+
+        if (_particleSlide.isPlaying)
+        {
+            _particleSlide.Stop();
+        }
     }
 
     private void SwitchOnTileUp (TileUp tempTileUp, TileDown.Direction direction)
@@ -206,11 +226,9 @@ public class MoveBubble : MonoBehaviour
                         _refs.Grid.DOColor(new(1, 1, 1, 0), 3f);
                     });
                     Destroy(_refs.gameObject, 6f);
-
                     OnKeyTaken?.Invoke();
                 }
                 break;
-
             case TileUp.TileUpType.Brasero:
                 GetComponent<FlameManager>().ModifyFlame(false, tempTileUp.refillAmountBrasero);
                 _shouldStopCheckingTile = true;
@@ -223,6 +241,8 @@ public class MoveBubble : MonoBehaviour
                     tempTileUp.isActivated = true;
                     tempTileUp.SwitchOffTorch();
                     _shouldStopCheckingTile = true;
+                    tempTileUp.type = TileUpType.None;
+                    tempTileUp.GoBackToWhite();
                 }
                 break;
 
@@ -353,6 +373,7 @@ public class MoveBubble : MonoBehaviour
             case TileDown.TileType.Void:
                 _isSliding = false;
                 _audioManager.PlaySFX(_audioManager.fallSound);
+                transform.DOScale(0, 1f);
                 OnDie?.Invoke();
                 break;
             case TileDown.TileType.Water:
@@ -382,6 +403,7 @@ public class MoveBubble : MonoBehaviour
                 else
                 {
                     _audioManager.PlaySFX(_audioManager.fallSound);
+                    transform.DOScale(0, 1f);
                     OnDie?.Invoke();
                     break;
                 }
@@ -566,11 +588,9 @@ public class MoveBubble : MonoBehaviour
         //trouve le vector d'ajout de position selon la direction du slide
         goToPosition += VectorAddMovePos(fingerTouchDelta);
 
-
         //trouve le millieu de la tile ou l'on atterie
         goToPosition = GameManager.Instance.tileMap.FindTileWithPos(goToPosition).transform.position;
 
-        
         //verifie si la tile ou l'on va bouger contiens un effet, si oui applique l'effet
         CheckNextTileEffect(FingerToDirection(finger));
 
@@ -579,6 +599,8 @@ public class MoveBubble : MonoBehaviour
 
         if (_firstMove)
         {
+            DOTween.To(() => _flameManager._light.pointLightOuterRadius, x => _flameManager._light.pointLightOuterRadius = x, _flameManager._maxSizeLight, 1f).SetEase(Ease.OutExpo);
+
             _firstMove = false;
             _monsterSpawn.StartSpawn();
             DOTween.To(() => _generalLight.intensity, x => _generalLight.intensity = x, 0f, 1f).SetEase(Ease.OutExpo);
@@ -587,7 +609,6 @@ public class MoveBubble : MonoBehaviour
         // si l'on bouge pas encore, lance l'animation
         if (!_isMoving)
         {
-
             StartCoroutine(MoveToPosition());
             _isMoving = true;
         }
@@ -624,7 +645,7 @@ public class MoveBubble : MonoBehaviour
         switch (_tileMovingUp)
         {
             case TileUp.TileUpType.Wind:
-                _currentAnimCurve = _curveLerpIce;
+                _currentAnimCurve = _curveLerpWind;
                 break;
         }
     }
