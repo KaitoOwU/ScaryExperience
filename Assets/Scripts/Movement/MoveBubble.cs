@@ -8,6 +8,8 @@ using UnityEngine.Rendering.Universal;
 using DG.Tweening;
 using UnityEngine.UI;
 using NaughtyAttributes;
+using static Tile;
+using static UnityEngine.Rendering.DebugUI;
 
 public class MoveBubble : MonoBehaviour
 {
@@ -224,11 +226,9 @@ public class MoveBubble : MonoBehaviour
                         _refs.Grid.DOColor(new(1, 1, 1, 0), 3f);
                     });
                     Destroy(_refs.gameObject, 6f);
-
                     OnKeyTaken?.Invoke();
                 }
                 break;
-
             case TileUp.TileUpType.Brasero:
                 GetComponent<FlameManager>().ModifyFlame(false, tempTileUp.refillAmountBrasero);
                 _shouldStopCheckingTile = true;
@@ -241,6 +241,8 @@ public class MoveBubble : MonoBehaviour
                     tempTileUp.isActivated = true;
                     tempTileUp.SwitchOffTorch();
                     _shouldStopCheckingTile = true;
+                    tempTileUp.type = TileUpType.None;
+                    tempTileUp.GoBackToWhite();
                 }
                 break;
 
@@ -597,6 +599,8 @@ public class MoveBubble : MonoBehaviour
 
         if (_firstMove)
         {
+            DOTween.To(() => _flameManager._light.pointLightOuterRadius, x => _flameManager._light.pointLightOuterRadius = x, _flameManager._maxSizeLight, 1f).SetEase(Ease.OutExpo);
+
             _firstMove = false;
             _monsterSpawn.StartSpawn();
             DOTween.To(() => _generalLight.intensity, x => _generalLight.intensity = x, 0f, 1f).SetEase(Ease.OutExpo);
