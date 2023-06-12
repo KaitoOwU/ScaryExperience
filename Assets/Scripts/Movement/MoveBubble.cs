@@ -241,6 +241,8 @@ public class MoveBubble : MonoBehaviour
                     tempTileUp.isActivated = true;
                     tempTileUp.SwitchOffTorch();
                     _shouldStopCheckingTile = true;
+                    tempTileUp.type = TileUpType.None;
+                    tempTileUp.GoBackToWhite();
                 }
                 break;
 
