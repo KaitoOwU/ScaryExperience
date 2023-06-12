@@ -597,6 +597,8 @@ public class MoveBubble : MonoBehaviour
 
         if (_firstMove)
         {
+            DOTween.To(() => _flameManager._light.pointLightOuterRadius, x => _flameManager._light.pointLightOuterRadius = x, _flameManager._maxSizeLight, 1f).SetEase(Ease.OutExpo);
+
             _firstMove = false;
             _monsterSpawn.StartSpawn();
             DOTween.To(() => _generalLight.intensity, x => _generalLight.intensity = x, 0f, 1f).SetEase(Ease.OutExpo);
