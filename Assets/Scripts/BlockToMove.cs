@@ -11,6 +11,8 @@ public class BlockToMove : MonoBehaviour
     [HideInInspector] public Vector3 toGoPosBlock;
     [HideInInspector] public Vector3 oldToGo;
     [HideInInspector] public TileUp lastTileUp;
+
+    private bool isInWater;
     private MoveBubble _bubble;
     public SpriteDown spritesDown;
 
@@ -43,9 +45,16 @@ public class BlockToMove : MonoBehaviour
 
     public bool StartMoving (TileDown.Direction direction, MoveBubble bubble)
     {
-        _audioManager.PlaySFX(_audioManager.rockSound[Random.Range(0, _audioManager.rockSound.Count)]);
+        
         oldToGo = toGoPosBlock;
         MoveNextTile(direction, bubble);
+
+        //joue le son que lorsque le block a bouger
+        if (oldToGo != toGoPosBlock)
+        {
+            _audioManager.PlaySFX(_audioManager.rockSound[Random.Range(0, _audioManager.rockSound.Count)]);
+        }
+
         StartCoroutine(PushBlockCorout(bubble));
 
         //check if blocked
@@ -95,7 +104,7 @@ public class BlockToMove : MonoBehaviour
             return;
         }
 
-        // si on retire le block d'une case ou il y avait du vent avec le même block qui la arreter
+        // si on retire le block d'une case ou il y avait du vent avec le mï¿½me block qui la arreter
         else if (lastTileUp != null && lastTileUp.wasWind && tileBefore.type == TileUp.TileUpType.Wind && lastTileUp.direction == tileBefore.direction && !tileBefore.isActivated)
         {
             if (direction == lastTileUp.direction)
@@ -109,7 +118,7 @@ public class BlockToMove : MonoBehaviour
             RecursiveCheckNextWind(lastTileUp.transform.position, lastTileUp.direction, false, lastTileUp.spritesUp.spriteWind[0]);
         }
 
-        // ce n'est pas le même block qui a blocker le vent alors on remet vent mais arreter
+        // ce n'est pas le mï¿½me block qui a blocker le vent alors on remet vent mais arreter
         else if (lastTileUp != null && lastTileUp.isActivated && tileBefore.isActivated)
         {
             lastTileUp.type = TileUp.TileUpType.Wind;
@@ -124,7 +133,7 @@ public class BlockToMove : MonoBehaviour
             lastTileUp.type = TileUp.TileUpType.None;
         }
 
-        //si la direction dans laquelle on pousse est la même que la direction du vent
+        //si la direction dans laquelle on pousse est la mï¿½me que la direction du vent
         if (lastTileUp != null && direction == lastTileUp.direction && lastTileUp.wasWind && tileBefore.type == TileUp.TileUpType.Wind && tileBefore.isActivated == false)
         {
             lastTileUp.block = null;
@@ -142,7 +151,7 @@ public class BlockToMove : MonoBehaviour
 
         // si tomber dans l'eau ou le void on ne met pas le block sur la prochaine case
         // sinon on met le block sur la prochaine case
-        if (tileDownToMove.type != TileDown.TileType.WaterRock && tileDownToMove.type != TileDown.TileType.Void && tileDownToMove.type != TileDown.TileType.Ice)
+        if (!isInWater && tileDownToMove.type != TileDown.TileType.Water && tileDownToMove.type != TileDown.TileType.Void && tileDownToMove.type != TileDown.TileType.Ice)
         {
             tileUpToMove.block = gameObject;
             tileUpToMove.type = TileUp.TileUpType.Block;
@@ -213,6 +222,8 @@ public class BlockToMove : MonoBehaviour
                 tempTile.GetComponent<SpriteRenderer>().material.SetTexture("_TextureIn", spritesDown.spriteInWaterBlock[idTemp].texture);
 
                 Destroy(gameObject, 0.4f);
+                tempTileUp.type = TileUp.TileUpType.None;
+                isInWater = true;
                 break;
 
             default:

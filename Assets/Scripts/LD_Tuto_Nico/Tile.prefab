@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4567674033034044756}
   - component: {fileID: 4567674033034044759}
   - component: {fileID: 5778450117238579301}
+  - component: {fileID: 2022935071168230294}
   m_Layer: 0
   m_Name: Tile
   m_TagString: Untagged
@@ -99,11 +100,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   size: 0
   height: 1
+  spritesUp: {fileID: 0}
+  spritesDown: {fileID: 0}
   type: 0
-  direction: 0
-  pushNumberTiles: 0
   position: 0
   orientationSide: 0
   orientationCorner: 0
-  sprites: {fileID: 11400000, guid: 7ac51c4c3e540e542a391fd563d3e822, type: 2}
+  waterType: 0
+  iceType: 0
+  idWater: 0
   isActivated: 0
+--- !u!1818360608 &2022935071168230294
+PositionConstraint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4567674033034044758}
+  m_Enabled: 1
+  m_Weight: 0
+  m_TranslationAtRest: {x: 0, y: 0, z: 0}
+  m_TranslationOffset: {x: 0, y: 0, z: 0}
+  m_AffectTranslationX: 1
+  m_AffectTranslationY: 1
+  m_AffectTranslationZ: 1
+  m_IsContraintActive: 1
+  m_IsLocked: 1
+  m_Sources:
+  - sourceTransform: {fileID: 4567674033034044756}
+    weight: 1
