@@ -94,6 +94,7 @@ public class MonsterSpawn : MonoBehaviour
                 monster.SetActive(true);
                 monster.GetComponent<Monster>().PlayClip();
                 StartCoroutine(SpawningCooldown(monster.GetComponent<Monster>().clip.length, monster));
+                
             }
             else
             {
@@ -117,7 +118,7 @@ public class MonsterSpawn : MonoBehaviour
         foreach (GameObject monster in monstersCircle)
         {
             monster.SetActive(false);
-            SpawningCooldown(0.5f, monster);
+            SpawningCooldown(2f, monster);
         }
     }
 
