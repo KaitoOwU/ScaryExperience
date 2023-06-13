@@ -14,6 +14,7 @@ public class WinScreen : MonoBehaviour
     {
         GameManager.Instance.SetTouchControlsActive(false);
         DOTween.Kill(transform);
+
         transform.DOScale(1, 1f).SetEase(Ease.OutExpo).OnComplete(() =>
         {
             if (DataManager.Instance.LevelData[DataManager.Instance.CurrentLevel].CollectibleAcquired)

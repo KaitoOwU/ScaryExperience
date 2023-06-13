@@ -1,3 +1,5 @@
+using GooglePlayGames;
+using GooglePlayGames.BasicApi;
 using NaughtyAttributes;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,15 +11,20 @@ public class DataManager : MonoBehaviour
     [SerializeField] List<LevelLoadData> _levels;
     Dictionary<int, LevelData> _levelData;
     [SerializeField, ReadOnly] int _currentLevel;
+    private bool _isConnectedToGooglePlayServices;
 
+    public bool IsConnectedToGooglePlayServices { get => _isConnectedToGooglePlayServices; }
     public Dictionary<int, LevelData> LevelData { get => _levelData; }
     public IReadOnlyList<LevelLoadData> LevelList { get => _levels; }
     public int CurrentLevel { get => _currentLevel; set => _currentLevel = value; }
-    public bool IsLevelLaunchedFromMainMenu { get; set; } = true;
+    public bool IsLevelLaunchedFromMainMenu { get; set; } = false;
     private string CurrentVersion { get => Application.version; }
     public bool IsMusicMuted { get; set; } = false;
 
     public bool IsSoundMuted { get; set; } = false;
+    public int DeathAmount { get; set; }
+    public int LevelCompletedAmount { get; set; }
+    public int SkullObtained { get; set; }
 
 
     private void Awake()
@@ -49,7 +56,7 @@ public class DataManager : MonoBehaviour
                         _levelData[i].IsUnlocked = true;
                     }
                 }
-                SaveSystem.SaveData(_levelData);
+                SaveSystem.SaveData(_levelData, DeathAmount, SkullObtained, LevelCompletedAmount);
             }
             else
             {
@@ -64,11 +71,19 @@ public class DataManager : MonoBehaviour
                             _levelData[i].IsUnlocked = true;
                         }
                     }
-                    SaveSystem.SaveData(_levelData);
+
+                    DeathAmount = 0;
+                    SkullObtained = 0;
+                    LevelCompletedAmount = 0;
+
+                    SaveSystem.SaveData(_levelData, DeathAmount, SkullObtained, LevelCompletedAmount);
                 }
                 else
                 {
                     _levelData = data.levelData;
+                    DeathAmount = data.numberOfDeaths;
+                    SkullObtained = data.amountOfSkulls;
+                    LevelCompletedAmount = data.amountOfLevelCompleted;
                 }
             }
 
@@ -80,8 +95,38 @@ public class DataManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        
+
+        PlayGamesPlatform.DebugLogEnabled = true;
+        PlayGamesPlatform.Activate();
     }
+
+    private void Start()
+    {
+        PlayGamesPlatform.Instance.Authenticate((result) =>
+        {
+            switch (result)
+            {
+                case SignInStatus.Success:
+                    _isConnectedToGooglePlayServices = true;
+                    break;
+                default:
+                    _isConnectedToGooglePlayServices = false;
+                    break;
+            }
+        });
+    }
+
+    public bool AchievementToNextStep(string achievementId, float percentOfCompletion)
+    {
+        if (!_isConnectedToGooglePlayServices)
+            return false;
+
+        percentOfCompletion = Mathf.Clamp(percentOfCompletion, 0f, 100f);
+
+        Social.ReportProgress(achievementId, percentOfCompletion, null);
+        return true;
+    }
+
 }
 
 
@@ -105,13 +150,27 @@ public class LevelData
     public void Complete(bool withCollectible)
     {
 
-        if(!_collectibleAcquired)
+        if (!_collectibleAcquired)
+        {
             _collectibleAcquired = withCollectible;
+            DataManager.Instance.SkullObtained++;
+        }
+            
 
         if (DataManager.Instance.LevelData.ContainsKey(_levelId + 1))
         {
-            DataManager.Instance.LevelData[_levelId + 1].IsUnlocked = true;
+            if(!DataManager.Instance.LevelData[_levelId + 1].IsUnlocked)
+            {
+                DataManager.Instance.LevelData[_levelId + 1].IsUnlocked = true;
+                DataManager.Instance.LevelCompletedAmount++;
+            }
         }
+
+        DataManager.Instance.AchievementToNextStep(GPGSIds.achievement_budding_archaeologist, (5f / DataManager.Instance.LevelList.Count) * 100f);
+        DataManager.Instance.AchievementToNextStep(GPGSIds.achievement_gold_digger, (10f / DataManager.Instance.LevelList.Count) * 100f);
+        DataManager.Instance.AchievementToNextStep(GPGSIds.achievement_the_feeling_of_a_job_well_done, (15f / DataManager.Instance.LevelList.Count) * 100f);
+        DataManager.Instance.AchievementToNextStep(GPGSIds.achievement_franko_would_be_proud, (DataManager.Instance.SkullObtained / DataManager.Instance.LevelList.Count) * 100f);
+        DataManager.Instance.AchievementToNextStep(GPGSIds.achievement_the_light_at_the_end_of_the_tunnel, (DataManager.Instance.LevelCompletedAmount / DataManager.Instance.LevelList.Count) * 100f);
     }
 }
 
