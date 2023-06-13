@@ -26,7 +26,7 @@ public class MoveBubble : MonoBehaviour
     [SerializeField] ParticleSystem _particleSlide;
 
     //[SerializeField] ParticleSystem _particleMove;
-
+    [Header("- EDITOR -")]
     [SerializeField] TileMap tileMapEDITORforButton;
 
     //runtime public
