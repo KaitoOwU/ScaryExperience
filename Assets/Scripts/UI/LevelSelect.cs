@@ -11,13 +11,13 @@ using ETouch = UnityEngine.InputSystem.EnhancedTouch;
 public class LevelSelect : MonoBehaviour
 {
     [SerializeField] DataManager _dataManager;
-    [SerializeField] Transform _parent;
+    [SerializeField] Transform _parent, _dotParent, _moveTransform;
     [SerializeField] RectTransform _firstLevelPosition;
     [SerializeField] Image _transition;
-    [SerializeField] GameObject _levelPrefab;
+    [SerializeField] GameObject _levelPrefab, _dot;
 
     private const float LEVEL_HEIGHT_DIFFERENCE = 400f;
-    private float RANDOM_X_AXIS { get => Random.Range(-200f, 300f); }
+    private float RANDOM_X_AXIS { get => Random.Range(-80f, 80f); }
 
     private Vector2 fingerPos;
     private float minY, maxY;
@@ -25,8 +25,8 @@ public class LevelSelect : MonoBehaviour
 
     private void Awake()
     {
-        maxY = _firstLevelPosition.localPosition.y;
-        minY = maxY - (_dataManager.LevelList.Count - 5) * 400;
+        maxY = _moveTransform.localPosition.y;
+        minY = maxY - (_dataManager.LevelList.Count - 5) * LEVEL_HEIGHT_DIFFERENCE;
     }
 
     [Button]
@@ -44,6 +44,16 @@ public class LevelSelect : MonoBehaviour
                 RectTransform rect = obj.GetComponent<RectTransform>();
                 rect.localPosition += new Vector3(RANDOM_X_AXIS, LEVEL_HEIGHT_DIFFERENCE * i);
             }
+        }
+
+        for(int i = 0; i < _dataManager.LevelList.Count - 1; i++)
+        {
+            Vector3 _level = _parent.transform.GetChild(i).GetComponent<RectTransform>().localPosition;
+            Vector3 _diff = _parent.transform.GetChild(i + 1).GetComponent<RectTransform>().localPosition - _level;
+
+            Vector3 _firstDot = (_diff / 5) * 2, _secondDot = (_diff / 5) * 3;
+            Instantiate(_dot, _dotParent).GetComponent<RectTransform>().localPosition = _level + _firstDot;
+            Instantiate(_dot, _dotParent).GetComponent<RectTransform>().localPosition = _level + _secondDot;
         }
     }
 
@@ -85,9 +95,9 @@ public class LevelSelect : MonoBehaviour
     {
         Vector2 currentPos = Camera.main.ScreenToWorldPoint(obj.screenPosition);
         Vector2 delta = currentPos - fingerPos;
-        if((_firstLevelPosition.localPosition + new Vector3(0, delta.y * 150f, 0)).y <= maxY &&
-            (_firstLevelPosition.localPosition + new Vector3(0, delta.y * 150f, 0)).y >= minY)
-            _firstLevelPosition.localPosition += new Vector3(0, delta.y * 150f, 0);
+        if((_moveTransform.localPosition + new Vector3(0, delta.y * 150f, 0)).y <= maxY &&
+            (_moveTransform.localPosition + new Vector3(0, delta.y * 150f, 0)).y >= minY)
+            _moveTransform.localPosition += new Vector3(0, delta.y * 150f, 0);
 
         fingerPos = currentPos;
     }

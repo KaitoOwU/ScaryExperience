@@ -135,7 +135,7 @@ public class MoveBubble : MonoBehaviour
         if(DataManager.Instance != null)
         {
             DataManager.Instance.LevelData[DataManager.Instance.CurrentLevel].Complete(_collectibleAcquired);
-            SaveSystem.SaveData(DataManager.Instance.LevelData);
+            SaveSystem.SaveData(DataManager.Instance.LevelData, DataManager.Instance.DeathAmount, DataManager.Instance.SkullObtained, DataManager.Instance.LevelCompletedAmount);
         }
 
         GameManager.Instance.WinScreen.SetActive(true);
@@ -386,6 +386,7 @@ public class MoveBubble : MonoBehaviour
                 _isSliding = false;
                 _audioManager.PlaySFX(_audioManager.fallSound);
                 transform.DOScale(0, 1f);
+                DataManager.Instance.AchievementToNextStep(GPGSIds.achievement_a_lack_of_equilibrium, 100f);
                 OnDie?.Invoke();
                 break;
             case TileDown.TileType.Water:

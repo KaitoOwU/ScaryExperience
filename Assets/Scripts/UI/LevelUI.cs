@@ -15,21 +15,35 @@ public class LevelUI : MonoBehaviour
     [SerializeField] Color _golded;
     [SerializeField] TextMeshProUGUI _levelName;
     [SerializeField] Button _play;
+    [SerializeField] GameObject _collectible;
+    [SerializeField] Transform _dotParent;
     LevelSelect levelSelect;
+
+    public Transform DotParent { get => _dotParent; }
 
     public void SetupUI(int levelNumber)
     {
         this.levelNumber = levelNumber;
-        _levelName.text = "" + (levelNumber + 1);
     }
 
     private void Start()
     {
         levelSelect = FindObjectOfType<LevelSelect>();
-        _play.interactable = DataManager.Instance.LevelData[levelNumber].IsUnlocked;
-        if (DataManager.Instance.LevelData[levelNumber].CollectibleAcquired)
+        Image img = GetComponent<Image>();
+
+        if (!DataManager.Instance.LevelData[levelNumber].IsUnlocked)
         {
-            _play.GetComponent<Image>().color = _golded;
+            img.color = new(.2f, .2f, .2f);
+            transform.localScale = new(.6f, .6f, .6f);
+            _levelName.text = "";
+
+        } else
+        {
+            img.color = new(1, 1, 1);
+            transform.localScale = new(1, 1, 1);
+            _levelName.text = "" + (levelNumber + 1);
+
+            _collectible.SetActive(DataManager.Instance.LevelData[levelNumber].CollectibleAcquired);
         }
     }
 

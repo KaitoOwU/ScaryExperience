@@ -349,7 +349,7 @@ public class TileUp : Tile
                 
                 ShadowCaster2D shadowCastTemp = GetComponent<ShadowCaster2D>();
                 shadowCastTemp.useRendererSilhouette = false;
-                shadowCastTemp.selfShadows = false;
+                shadowCastTemp.selfShadows = true;
                 break;
 
             case TileUpType.Key:
@@ -479,9 +479,17 @@ public class TileUp : Tile
                                 break;
                         }
                         break;
-                }      
-                
-                
+                }
+
+                if (GetComponent<ShadowCaster2D>() == null)
+                {
+                    gameObject.AddComponent<ShadowCaster2D>();
+                }
+
+                ShadowCaster2D shadowCastTemp2 = GetComponent<ShadowCaster2D>();
+                shadowCastTemp2.useRendererSilhouette = false;
+                shadowCastTemp2.selfShadows = true;
+
                 break;
 
             case TileUpType.Wind:
