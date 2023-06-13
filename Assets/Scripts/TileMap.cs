@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using NaughtyAttributes;
+using UnityEngine.Animations;
 
 public class TileMap : MonoBehaviour
 {
@@ -82,6 +84,20 @@ public class TileMap : MonoBehaviour
             tile.spritesDown = spritesDownTiles;
             tile.spritesUp = spritesUpTiles;
             tile.RefreshColorSprite();
+
+            if (tile.GetComponent<PositionConstraint>() == null)
+            {
+                tile.gameObject.AddComponent<PositionConstraint>();
+                ConstraintSource source = new ConstraintSource();
+                source.weight = 1;
+                source.sourceTransform = tile.transform;
+                PositionConstraint posConsTemp = tile.GetComponent<PositionConstraint>();
+
+                posConsTemp.AddSource(source);
+                posConsTemp.locked = true;
+                posConsTemp.weight = 0;
+                posConsTemp.constraintActive = true;
+            }
         }
     }
 

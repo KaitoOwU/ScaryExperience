@@ -99,11 +99,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   size: 0
   height: 1
+  spritesUp: {fileID: 0}
+  spritesDown: {fileID: 0}
   type: 0
-  direction: 0
-  pushNumberTiles: 0
   position: 0
   orientationSide: 0
   orientationCorner: 0
-  sprites: {fileID: 11400000, guid: 7ac51c4c3e540e542a391fd563d3e822, type: 2}
+  waterType: 0
+  iceType: 0
+  idWater: 0
   isActivated: 0

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4567674033034044756}
   - component: {fileID: 4567674033034044759}
   - component: {fileID: 6571607938308805259}
+  - component: {fileID: -5264422111291767913}
   m_Layer: 0
   m_Name: TileUp
   m_TagString: Untagged
@@ -106,8 +107,10 @@ MonoBehaviour:
   refillAmountBrasero: 10
   refillAmountTorch: 5
   dirWind: 0
+  typeVentilateur: 0
   direction: 0
   pushNumberTiles: 0
+  cornerLockDir: 0
   block: {fileID: 0}
   wallPosition: 0
   _wallSideOrientation: 0
@@ -122,6 +125,7 @@ MonoBehaviour:
   tileMap: {fileID: 0}
   tileUpMap: {fileID: 0}
   wasWind: 0
+  blockerBlock: 0
   lightBrasero: {fileID: 0}
   flameBrasero: {fileID: 0}
   lightTorch: {fileID: 0}
@@ -129,3 +133,22 @@ MonoBehaviour:
   lightKey: {fileID: 0}
   lightTrappe: {fileID: 0}
   grilleTrappe: {fileID: 0}
+--- !u!1818360608 &-5264422111291767913
+PositionConstraint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4567674033034044758}
+  m_Enabled: 1
+  m_Weight: 0
+  m_TranslationAtRest: {x: 0, y: 0, z: 0}
+  m_TranslationOffset: {x: 0, y: 0, z: 0}
+  m_AffectTranslationX: 1
+  m_AffectTranslationY: 1
+  m_AffectTranslationZ: 1
+  m_IsContraintActive: 1
+  m_IsLocked: 1
+  m_Sources:
+  - sourceTransform: {fileID: 4567674033034044756}
+    weight: 1

@@ -326,6 +326,18 @@ public class TileUp : Tile
                             case WallCornerOrientation.TDownDouble:
                                 GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[13];
                                 break;
+                            case WallCornerOrientation.TLeftDouble:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[14];
+                                break;
+                            case WallCornerOrientation.TRightDouble:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[15];
+                                break;
+                            case WallCornerOrientation.CornerRightUpLeftDown:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[16];
+                                break;
+                            case WallCornerOrientation.CornerRightDownLeftUp:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[17];
+                                break;
 
                         }
                         break;
@@ -337,7 +349,7 @@ public class TileUp : Tile
                 
                 ShadowCaster2D shadowCastTemp = GetComponent<ShadowCaster2D>();
                 shadowCastTemp.useRendererSilhouette = false;
-                shadowCastTemp.selfShadows = false;
+                shadowCastTemp.selfShadows = true;
                 break;
 
             case TileUpType.Key:
@@ -467,9 +479,17 @@ public class TileUp : Tile
                                 break;
                         }
                         break;
-                }      
-                
-                
+                }
+
+                if (GetComponent<ShadowCaster2D>() == null)
+                {
+                    gameObject.AddComponent<ShadowCaster2D>();
+                }
+
+                ShadowCaster2D shadowCastTemp2 = GetComponent<ShadowCaster2D>();
+                shadowCastTemp2.useRendererSilhouette = false;
+                shadowCastTemp2.selfShadows = true;
+
                 break;
 
             case TileUpType.Wind:
@@ -619,7 +639,11 @@ public class TileUp : Tile
         LeftUpDouble,
         RightUpDouble,
         TUpDouble,
-        TDownDouble
+        TDownDouble,
+        TLeftDouble,
+        TRightDouble,
+        CornerRightUpLeftDown,
+        CornerRightDownLeftUp,
     }
 
     public enum WallSideOrientation
