@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     public bool HaveKey { get => !_levelWithoutKey; }
     public GameObject Grid { get => _grid; }
     public AudioManager AudioManager { get => _audioManager; }
+    public int LocalDeathAmount { get; set; } = 0;
 
     private void Awake()
     {
@@ -63,6 +64,7 @@ public class GameManager : MonoBehaviour
         if (flameValue <= 0 && _loseScreen != null && !_winScreen.activeInHierarchy)
         {
             _loseScreen.SetActive(true);
+            DataManager.Instance.AchievementToNextStep(GPGSIds.achievement_welcome_among_us, 100f);
         }
     }
 
