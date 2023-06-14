@@ -136,6 +136,15 @@ public class TileUp : Tile
                     break;
 
                 case TileUpType.Ventilateur:
+                    if (GetComponent<ShadowCaster2D>() != null)
+                    {
+                        UnityEditor.EditorApplication.delayCall += () =>
+                        {
+                            DestroyImmediate(GetComponent<ShadowCaster2D>());
+                        };
+                    }
+
+                    
                     Vector3 nextPos = transform.position + DirectionAddMovePos(dirWind);
                     RecursiveCheckNextWind(nextPos, dirWind, true, spritesUp.spriteNone[0]);
                     oldType = type;
@@ -593,6 +602,8 @@ public class TileUp : Tile
             GetComponent<SpriteRenderer>().material = spritesUp.normalMat;
         }
     }
+
+    
 
     public void SwitchOffTorch()
     {
