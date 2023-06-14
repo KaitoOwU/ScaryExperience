@@ -23,6 +23,9 @@ public class TileDown : Tile
     public IceType iceType;
 
 
+    [ShowIf("isVoid")]
+    public VoidType voidType;
+
     [HideInInspector] public int idWater;
 
     [HideInInspector] public bool isActivated = false;
@@ -207,9 +210,21 @@ public class TileDown : Tile
                 break;
 
             case TileType.Void:
-                GetComponent<SpriteRenderer>().sprite = spritesDown.spriteVoid[Random.Range(0, spritesDown.spriteVoid.Count)];
-                GetComponent<SpriteRenderer>().color = spritesDown.colorVoid;
-                GetComponent<SpriteRenderer>().material = spritesDown.voidMat;
+
+                switch (voidType)
+                {
+                    case VoidType.None:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteVoid[1];
+                        GetComponent<SpriteRenderer>().color = Color.black;
+                        GetComponent<SpriteRenderer>().material = spritesDown.voidMat;
+                        break;
+                    case VoidType.BorderUp:
+                        
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteVoid[0];
+                        GetComponent<SpriteRenderer>().color = new Color(164, 164, 164, 255);
+                        break;
+                }
+                
                 break;
 
             case TileType.Water:
@@ -361,10 +376,18 @@ public class TileDown : Tile
         SoloHorizontalLeft
     }
 
+    public enum VoidType
+    {
+        None,
+        BorderUp
+    }
+
     private bool isRock() { return type == TileType.Rock; }
     private bool isSide() { return position == Position.Side; }
     private bool isCorner() { return position == Position.Corner; }
     private bool isWater() { return type == TileType.Water; }
     private bool isIce() { return type == TileType.Ice; }
+
+    private bool isVoid() { return type == TileType.Void; }
 
 }
