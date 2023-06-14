@@ -171,6 +171,8 @@ public class LevelData
     public bool IsUnlocked { get => _isUnlocked; set => _isUnlocked = value; }
     public bool CollectibleAcquired { get => _collectibleAcquired; set => _collectibleAcquired = value; }
 
+    public bool StepAccountValidate { get => _collectibleAcquired; set => _collectibleAcquired = value; }
+
     public LevelData(int levelId)
     {
         _levelId = levelId;

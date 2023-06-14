@@ -4,7 +4,6 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Rock
   - Grass
   - Wood
   - Ice
@@ -13,6 +12,7 @@ TagManager:
   - Void
   - Water
   - Audio
+  - Grid
   layers:
   - Default
   - TransparentFX

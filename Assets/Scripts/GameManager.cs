@@ -21,8 +21,9 @@ public class GameManager : MonoBehaviour
     [Header("-- Level Data --")]
     [SerializeField] bool _levelWithoutKey;
     [SerializeField] GameObject _grid;
+    [SerializeField] int _stepAccountNeeded;
 
-    
+
     public GameObject LoseScreen { get => _loseScreen; private set => _loseScreen = value; }
     public GameObject WinScreen { get => _winScreen; private set => _winScreen = value; }
     public GameObject PauseScreen { get => _pauseScreen; private set => _pauseScreen = value; }
@@ -30,6 +31,8 @@ public class GameManager : MonoBehaviour
     public GameObject Grid { get => _grid; }
     public AudioManager AudioManager { get => _audioManager; }
     public int LocalDeathAmount { get; set; } = 0;
+
+    public int StepAccountNeeded { get => _stepAccountNeeded; set => _stepAccountNeeded = value; }
 
     private void Awake()
     {
