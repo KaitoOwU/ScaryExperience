@@ -24,8 +24,10 @@ public class MoveBubble : MonoBehaviour
     [SerializeField] AnimationCurve _curveLerpIce;
     [SerializeField] AnimationCurve _curveLerpWind;
     [SerializeField] ParticleSystem _particleSlide;
+    [SerializeField] float _noPassTime;
+    [SerializeField] float _noPassTimeAfter;
 
-    //[SerializeField] ParticleSystem _particleMove;
+    [SerializeField] ParticleSystem _particleMove;
     [Header("- EDITOR -")]
     [SerializeField] TileMap tileMapEDITORforButton;
 
@@ -125,6 +127,7 @@ public class MoveBubble : MonoBehaviour
         }
     }
 
+
     private void Win()
     {
         Debug.LogWarning("WINNN !!!!");
@@ -164,16 +167,23 @@ public class MoveBubble : MonoBehaviour
         //_particleMove.transform.rotation = Quaternion.LookRotation(_startPos - goToPosition);
 
         //movement intermediaire
-        while (_prePosList.Count > 0)
+        while (_prePosList.Count > 0 && _prePosList[0] != goToPosition)
         {
             yield return StartCoroutine(MoveToPos(_prePosList[0], _delayLerpMove));
             _prePosList.RemoveAt(0);
         }
+        _prePosList.Clear();
 
         if (_tileMoving == TileDown.TileType.Ice)
         {
             _particleSlide.Play();
             _particleSlide.transform.rotation = Quaternion.LookRotation(_startPos - goToPosition);
+        }
+
+        else if (_tileMoving == TileDown.TileType.Rock || _tileMoving == TileDown.TileType.Breakable)
+        {
+            _particleMove.Play();
+            _particleMove.transform.rotation = Quaternion.LookRotation(_startPos - goToPosition);
         }
 
         _startPos = transform.position;
@@ -192,6 +202,11 @@ public class MoveBubble : MonoBehaviour
                 _particleSlide.Stop();
             }
 
+            if (_particleMove.isPlaying && _moveTimer / currentDelayLerpMove > 0.8f)
+            {
+                _particleMove.Stop();
+            }
+
             yield return new WaitForFixedUpdate();
         }
 
@@ -206,6 +221,11 @@ public class MoveBubble : MonoBehaviour
         {
             _particleSlide.Stop();
         }
+
+        if (_particleMove.isPlaying)
+        {
+            _particleMove.Stop();
+        }
     }
 
     private void SwitchOnTileUp (TileUp tempTileUp, TileDown.Direction direction)
@@ -215,13 +235,28 @@ public class MoveBubble : MonoBehaviour
         switch (tempTileUp.type)
         {
             case TileUp.TileUpType.Wall:
+
                 _isSliding = false;
                 GoBack(direction);
+
+                //pas dans une animation
+                if (tempTileUp.moveTimer == 0)
+                {
+                    tempTileUp.StartCoroutine(tempTileUp.BlockedByWall(_noPassTime, _noPassTimeAfter));
+                }
+
+                
                 _shouldStopCheckingTile = true;
                 return;
 
             case TileUp.TileUpType.Ventilateur:
                 GoBack(direction);
+
+                //pas dans une animation
+                if (tempTileUp.moveTimer == 0)
+                {
+                    tempTileUp.StartCoroutine(tempTileUp.BlockedByWall(_noPassTime, _noPassTimeAfter));
+                }
                 _shouldStopCheckingTile = true;
                 return;
 
@@ -288,7 +323,6 @@ public class MoveBubble : MonoBehaviour
                     }
                     else
                     {
-                        Debug.LogWarning("zobizob");
                         GoBack(direction);
                         _shouldStopCheckingTile = true;
                         break;

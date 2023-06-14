@@ -42,5 +42,6 @@ public class SpriteUp : ScriptableObject
     public Material normalMat;
     public List<Material> windMat;
     public Material collectibleMat;
-    
+    public Material noPassMat;
+
 }
