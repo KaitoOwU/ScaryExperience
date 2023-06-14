@@ -64,7 +64,7 @@ public class DataManager : MonoBehaviour
                         _levelData[i].IsUnlocked = true;
                     }
                 }
-                SaveSystem.SaveData(_levelData, DeathAmount, SkullObtained, LevelCompletedAmount);
+                SaveSystem.SaveData(_levelData, DeathAmount, SkullObtained, LevelCompletedAmount, GoldenFlameObtained);
             }
             else
             {
@@ -85,7 +85,7 @@ public class DataManager : MonoBehaviour
                     LevelCompletedAmount = 0;
                     GoldenFlameObtained = 0;
 
-                    SaveSystem.SaveData(_levelData, DeathAmount, SkullObtained, LevelCompletedAmount);
+                    SaveSystem.SaveData(_levelData, DeathAmount, SkullObtained, LevelCompletedAmount, GoldenFlameObtained);
                 }
                 else
                 {
@@ -170,8 +170,7 @@ public class LevelData
 
     public bool IsUnlocked { get => _isUnlocked; set => _isUnlocked = value; }
     public bool CollectibleAcquired { get => _collectibleAcquired; set => _collectibleAcquired = value; }
-
-    public bool StepAccountValidate { get => _collectibleAcquired; set => _collectibleAcquired = value; }
+    public FlameState FlameState { get => _state; set => _state = value; }
 
     public LevelData(int levelId)
     {
@@ -183,14 +182,21 @@ public class LevelData
 
     public void Complete(bool withCollectible, FlameState flameState)
     {
-        _state = flameState;
-
         if (!_collectibleAcquired)
         {
             _collectibleAcquired = withCollectible;
             DataManager.Instance.SkullObtained++;
         }
-            
+
+        if(flameState > _state)
+        {
+            if(flameState == FlameState.Gold)
+            {
+                DataManager.Instance.GoldenFlameObtained++;
+            }
+            _state = flameState;
+            Debug.LogWarning(_state);
+        }
 
         if (DataManager.Instance.LevelData.ContainsKey(_levelId + 1))
         {
@@ -200,6 +206,8 @@ public class LevelData
                 DataManager.Instance.LevelCompletedAmount++;
             }
         }
+
+        SaveSystem.SaveData(DataManager.Instance.LevelData, DataManager.Instance.DeathAmount, DataManager.Instance.SkullObtained, DataManager.Instance.LevelCompletedAmount, DataManager.Instance.GoldenFlameObtained);
 
         DataManager.Instance.AchievementToNextStep(GPGSIds.achievement_budding_archaeologist, (5f / DataManager.Instance.LevelList.Count) * 100f);
         DataManager.Instance.AchievementToNextStep(GPGSIds.achievement_gold_digger, (10f / DataManager.Instance.LevelList.Count) * 100f);

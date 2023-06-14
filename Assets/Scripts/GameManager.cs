@@ -1,7 +1,4 @@
-using NaughtyAttributes;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Etouch = UnityEngine.InputSystem.EnhancedTouch;
 
@@ -32,7 +29,7 @@ public class GameManager : MonoBehaviour
     public AudioManager AudioManager { get => _audioManager; }
     public int LocalDeathAmount { get; set; } = 0;
 
-    public int StepAccountNeeded { get => _stepAccountNeeded; set => _stepAccountNeeded = value; }
+    public int StepAccount { get => _stepAccountNeeded; }
 
     private void Awake()
     {

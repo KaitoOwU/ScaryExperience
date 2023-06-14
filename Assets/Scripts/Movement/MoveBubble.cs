@@ -129,18 +129,29 @@ public class MoveBubble : MonoBehaviour
 
     private void Win()
     {
-        if(_numberOfSteps <= GameManager.Instance.StepAccountNeeded)
-        {
-            DataManager.Instance.LevelData[DataManager.Instance.CurrentLevel].StepAccountValidate = true;
-        }
-
         Etouch.Touch.onFingerDown -= Touch_onFingerDown;
         Etouch.Touch.onFingerUp -= Touch_onFingerUp;
 
         if(DataManager.Instance != null)
         {
-            DataManager.Instance.LevelData[DataManager.Instance.CurrentLevel].Complete(_collectibleAcquired);
-            SaveSystem.SaveData(DataManager.Instance.LevelData, DataManager.Instance.DeathAmount, DataManager.Instance.SkullObtained, DataManager.Instance.LevelCompletedAmount);
+            FlameState state;
+
+            if(_numberOfSteps <= GameManager.Instance.StepAccount)
+            {
+                if (_collectibleAcquired)
+                {
+                    state = FlameState.Gold;
+                } else
+                {
+                    state = FlameState.Silver;
+                }
+            } else
+            {
+                state = FlameState.None;
+            }
+
+            DataManager.Instance.LevelData[DataManager.Instance.CurrentLevel].Complete(_collectibleAcquired, state);
+            SaveSystem.SaveData(DataManager.Instance.LevelData, DataManager.Instance.DeathAmount, DataManager.Instance.SkullObtained, DataManager.Instance.LevelCompletedAmount, DataManager.Instance.GoldenFlameObtained);
         }
 
         GameManager.Instance.WinScreen.SetActive(true);
