@@ -1,6 +1,10 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scenes/Level_Virgile_Vengue.unity.meta
+guid: 9d6acac221767344a90c238d46fb2b64
+========
 guid: 806eb1d2d9b189a4daa82d6c1cd3123b
 folderAsset: yes
+>>>>>>>> gp:Assets/Art/Tiles/Void.meta
 DefaultImporter:
   externalObjects: {}
   userData: 
