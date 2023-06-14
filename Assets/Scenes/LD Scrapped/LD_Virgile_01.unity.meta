@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scenes/LD Scrapped/LD_Virgile_01.unity.meta
 guid: b531e636d34fbcc4da7ed64c81530a5a
+========
+guid: 8a51712d2a46abf4f80f7250405ccbcc
+>>>>>>>> gp:Assets/Art/Animations/Character/Dash.meta~Updated upstream.meta
 DefaultImporter:
   externalObjects: {}
   userData: 
