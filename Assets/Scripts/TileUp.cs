@@ -4,6 +4,7 @@ using NaughtyAttributes;
 using UnityEngine.Rendering.Universal;
 using DG.Tweening;
 using System.Collections.Generic;
+using System.Collections;
 
 public class TileUp : Tile
 {
@@ -69,6 +70,8 @@ public class TileUp : Tile
     [HideInInspector] public GameObject lightKey;
     [HideInInspector] public GameObject lightTrappe;
     [HideInInspector] public GameObject grilleTrappe;
+    [HideInInspector] public SpriteRenderer spriteRenderer;
+    [HideInInspector] public float moveTimer;
 
     public enum DirectionLock
     {
@@ -93,6 +96,11 @@ public class TileUp : Tile
         Wind
     }
 
+    private void Start()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
     public void GoBackToWhite ()
     {
         GetComponent<SpriteRenderer>().color = Color.white;
@@ -105,7 +113,37 @@ public class TileUp : Tile
         RefreshColorSprite(false);
     }
 
-    #if(UNITY_EDITOR)
+    //coroutine qui met et enleve le material de block
+    public IEnumerator BlockedByWall(float noPassTime, float noPassTimeAfter)
+    {
+        moveTimer = 0;
+        spriteRenderer.sharedMaterial = new Material(spritesUp.noPassMat);
+        bool _hasStopped = false;
+
+        while (moveTimer < noPassTime)
+        {
+            moveTimer += Time.fixedDeltaTime;
+
+            float temp = Mathf.PingPong(moveTimer / noPassTime * 2, 1f);
+
+            if (!_hasStopped && temp > 0.95f)
+            {
+                yield return new WaitForSeconds(noPassTimeAfter);
+                _hasStopped = true;
+            }
+
+            spriteRenderer.sharedMaterial.SetFloat("_TimeControlled", temp);
+
+            yield return new WaitForFixedUpdate();
+        }
+
+        Destroy(spriteRenderer.sharedMaterial);
+
+        spriteRenderer.sharedMaterial = spritesUp.normalMat;
+        moveTimer = 0;
+    }
+
+#if (UNITY_EDITOR)
     // change la door lorqu'on la met dans l'inspecteur
     private void OnValidate()
     {
@@ -136,6 +174,15 @@ public class TileUp : Tile
                     break;
 
                 case TileUpType.Ventilateur:
+                    if (GetComponent<ShadowCaster2D>() != null)
+                    {
+                        UnityEditor.EditorApplication.delayCall += () =>
+                        {
+                            DestroyImmediate(GetComponent<ShadowCaster2D>());
+                        };
+                    }
+
+                    
                     Vector3 nextPos = transform.position + DirectionAddMovePos(dirWind);
                     RecursiveCheckNextWind(nextPos, dirWind, true, spritesUp.spriteNone[0]);
                     oldType = type;
@@ -593,6 +640,8 @@ public class TileUp : Tile
             GetComponent<SpriteRenderer>().material = spritesUp.normalMat;
         }
     }
+
+    
 
     public void SwitchOffTorch()
     {
