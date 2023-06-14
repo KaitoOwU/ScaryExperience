@@ -1,9 +1,13 @@
+using DG.Tweening;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 using NaughtyAttributes;
+using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem.EnhancedTouch;
+using UnityEngine.SceneManagement;
 
 public class DataManager : MonoBehaviour
 {
@@ -11,6 +15,7 @@ public class DataManager : MonoBehaviour
     [SerializeField] List<LevelLoadData> _levels;
     Dictionary<int, LevelData> _levelData;
     [SerializeField, ReadOnly] int _currentLevel;
+    [SerializeField] TextMeshProUGUI _version, _logged;
     private bool _isConnectedToGooglePlayServices;
 
     public bool IsConnectedToGooglePlayServices { get => _isConnectedToGooglePlayServices; }
@@ -25,12 +30,15 @@ public class DataManager : MonoBehaviour
     public int DeathAmount { get; set; }
     public int LevelCompletedAmount { get; set; }
     public int SkullObtained { get; set; }
+    public int GoldenFlameObtained { get; set; }
 
 
     private void Awake()
     {
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 60;
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
 
         if (Instance == null)
         {
@@ -56,7 +64,7 @@ public class DataManager : MonoBehaviour
                         _levelData[i].IsUnlocked = true;
                     }
                 }
-                SaveSystem.SaveData(_levelData, DeathAmount, SkullObtained, LevelCompletedAmount);
+                SaveSystem.SaveData(_levelData, DeathAmount, SkullObtained, LevelCompletedAmount, GoldenFlameObtained);
             }
             else
             {
@@ -75,8 +83,9 @@ public class DataManager : MonoBehaviour
                     DeathAmount = 0;
                     SkullObtained = 0;
                     LevelCompletedAmount = 0;
+                    GoldenFlameObtained = 0;
 
-                    SaveSystem.SaveData(_levelData, DeathAmount, SkullObtained, LevelCompletedAmount);
+                    SaveSystem.SaveData(_levelData, DeathAmount, SkullObtained, LevelCompletedAmount, GoldenFlameObtained);
                 }
                 else
                 {
@@ -84,6 +93,7 @@ public class DataManager : MonoBehaviour
                     DeathAmount = data.numberOfDeaths;
                     SkullObtained = data.amountOfSkulls;
                     LevelCompletedAmount = data.amountOfLevelCompleted;
+                    GoldenFlameObtained = data.goldenFlameObtained;
                 }
             }
 
@@ -98,6 +108,26 @@ public class DataManager : MonoBehaviour
 
         PlayGamesPlatform.DebugLogEnabled = true;
         PlayGamesPlatform.Activate();
+    }
+
+    private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
+    {
+        if(arg0.name == "MainMenu")
+        {
+            _version.text = "";
+            _version.DOText("V." + Application.version, 1f);
+            _logged.text = "";
+
+            if (_isConnectedToGooglePlayServices)
+            {
+                _logged.color = Color.green;
+                _logged.DOText("Connected to Google Play services", 1f);
+            } else
+            {
+                _logged.color = Color.red;
+                _logged.DOText("Not connected to Google Play services", 1f);
+            }
+        }
     }
 
     private void Start()
@@ -136,26 +166,37 @@ public class LevelData
     int _levelId;
     bool _isUnlocked;
     bool _collectibleAcquired;
+    FlameState _state;
 
     public bool IsUnlocked { get => _isUnlocked; set => _isUnlocked = value; }
     public bool CollectibleAcquired { get => _collectibleAcquired; set => _collectibleAcquired = value; }
+    public FlameState FlameState { get => _state; set => _state = value; }
 
     public LevelData(int levelId)
     {
         _levelId = levelId;
         _isUnlocked = false;
         _collectibleAcquired = false;
+        _state = FlameState.None;
     }
 
-    public void Complete(bool withCollectible)
+    public void Complete(bool withCollectible, FlameState flameState)
     {
-
         if (!_collectibleAcquired)
         {
             _collectibleAcquired = withCollectible;
             DataManager.Instance.SkullObtained++;
         }
-            
+
+        if(flameState > _state)
+        {
+            if(flameState == FlameState.Gold)
+            {
+                DataManager.Instance.GoldenFlameObtained++;
+            }
+            _state = flameState;
+            Debug.LogWarning(_state);
+        }
 
         if (DataManager.Instance.LevelData.ContainsKey(_levelId + 1))
         {
@@ -165,6 +206,8 @@ public class LevelData
                 DataManager.Instance.LevelCompletedAmount++;
             }
         }
+
+        SaveSystem.SaveData(DataManager.Instance.LevelData, DataManager.Instance.DeathAmount, DataManager.Instance.SkullObtained, DataManager.Instance.LevelCompletedAmount, DataManager.Instance.GoldenFlameObtained);
 
         DataManager.Instance.AchievementToNextStep(GPGSIds.achievement_budding_archaeologist, (5f / DataManager.Instance.LevelList.Count) * 100f);
         DataManager.Instance.AchievementToNextStep(GPGSIds.achievement_gold_digger, (10f / DataManager.Instance.LevelList.Count) * 100f);
@@ -179,4 +222,11 @@ public struct LevelLoadData
 {
     public string _levelSceneName;
     public string _levelName;
+}
+
+public enum FlameState
+{
+    None,
+    Silver,
+    Gold
 }

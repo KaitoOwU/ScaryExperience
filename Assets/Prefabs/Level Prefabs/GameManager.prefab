@@ -52,5 +52,7 @@ MonoBehaviour:
   _flameManager: {fileID: 0}
   _moveBubble: {fileID: 0}
   _playerAnim: {fileID: 0}
+  _audioManager: {fileID: 0}
   _levelWithoutKey: 0
   _grid: {fileID: 0}
+  _stepAccountNeeded: 25

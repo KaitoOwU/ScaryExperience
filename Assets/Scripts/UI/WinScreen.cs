@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class WinScreen : MonoBehaviour
 {
 
-    [SerializeField] Image _collectable, _missed;
+    [SerializeField] Image _collectable, _collectableMissed, _flameSilver, _flameGold, _flameMissed;
 
     private void OnEnable()
     {
@@ -24,7 +24,24 @@ public class WinScreen : MonoBehaviour
                 _collectable.transform.DOScale(1, 1f).SetEase(Ease.InOutExpo);
             } else
             {
-                _missed.DOColor(new(1, 1, 1, 1f), 1f).SetEase(Ease.OutExpo);
+                _collectableMissed.DOColor(new(1, 1, 1, 1f), 1f).SetEase(Ease.OutExpo);
+            }
+
+            switch (DataManager.Instance.LevelData[DataManager.Instance.CurrentLevel].FlameState)
+            {
+                case FlameState.None:
+                    _flameMissed.DOColor(new(1, 1, 1, 1f), 1f).SetEase(Ease.OutExpo);
+                    break;
+                case FlameState.Silver:
+                    _flameSilver.transform.DOScale(1.5f, 0);
+                    _flameSilver.DOColor(new(1, 1, 1), .5f);
+                    _flameSilver.transform.DOScale(1, 1f).SetEase(Ease.InOutExpo);
+                    break;
+                case FlameState.Gold:
+                    _flameGold.transform.DOScale(1.5f, 0);
+                    _flameGold.DOColor(new(1, 1, 1), .5f);
+                    _flameGold.transform.DOScale(1, 1f).SetEase(Ease.InOutExpo);
+                    break;
             }
         });
     }

@@ -15,7 +15,7 @@ public class LevelUI : MonoBehaviour
     [SerializeField] Color _golded;
     [SerializeField] TextMeshProUGUI _levelName;
     [SerializeField] Button _play;
-    [SerializeField] GameObject _collectible;
+    [SerializeField] GameObject _collectible, _goldenFlame, _silverFlame;
     [SerializeField] Transform _dotParent;
     LevelSelect levelSelect;
 
@@ -36,14 +36,25 @@ public class LevelUI : MonoBehaviour
             img.color = new(.2f, .2f, .2f);
             transform.localScale = new(.6f, .6f, .6f);
             _levelName.text = "";
+            GetComponent<Button>().interactable = false;
 
         } else
         {
             img.color = new(1, 1, 1);
             transform.localScale = new(1, 1, 1);
             _levelName.text = "" + (levelNumber + 1);
+            GetComponent<Button>().interactable = true;
 
             _collectible.SetActive(DataManager.Instance.LevelData[levelNumber].CollectibleAcquired);
+            switch (DataManager.Instance.LevelData[levelNumber].FlameState)
+            {
+                case FlameState.Silver:
+                    _silverFlame.SetActive(true);
+                    break;
+                case FlameState.Gold:
+                    _goldenFlame.SetActive(true);
+                    break;
+            }
         }
     }
 
