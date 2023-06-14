@@ -36,12 +36,14 @@ public class LevelUI : MonoBehaviour
             img.color = new(.2f, .2f, .2f);
             transform.localScale = new(.6f, .6f, .6f);
             _levelName.text = "";
+            GetComponent<Button>().interactable = false;
 
         } else
         {
             img.color = new(1, 1, 1);
             transform.localScale = new(1, 1, 1);
             _levelName.text = "" + (levelNumber + 1);
+            GetComponent<Button>().interactable = true;
 
             _collectible.SetActive(DataManager.Instance.LevelData[levelNumber].CollectibleAcquired);
         }
