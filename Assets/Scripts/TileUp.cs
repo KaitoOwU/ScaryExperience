@@ -386,16 +386,16 @@ public class TileUp : Tile
                                 GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[17];
                                 break;
                             case WallCornerOrientation.CornerRightDownRightUp:
-                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[17];
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[18];
                                 break;
                             case WallCornerOrientation.CornerLeftDownLeftUp:
-                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[17];
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[19];
                                 break;
                             case WallCornerOrientation.CornerRightDownLeftDown:
-                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[17];
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[20];
                                 break;
                             case WallCornerOrientation.CornerRightUpLeftUp:
-                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[17];
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[21];
                                 break;
 
                         }
