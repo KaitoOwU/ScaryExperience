@@ -15,8 +15,7 @@ public class DataManager : MonoBehaviour
     [SerializeField] List<LevelLoadData> _levels;
     Dictionary<int, LevelData> _levelData;
     [SerializeField, ReadOnly] int _currentLevel;
-    [SerializeField] TextMeshProUGUI _version, _logged;
-    private bool _isConnectedToGooglePlayServices;
+    private bool _isConnectedToGooglePlayServices = false;
 
     public bool IsConnectedToGooglePlayServices { get => _isConnectedToGooglePlayServices; }
     public Dictionary<int, LevelData> LevelData { get => _levelData; }
@@ -37,8 +36,6 @@ public class DataManager : MonoBehaviour
     {
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 60;
-
-        SceneManager.sceneLoaded += OnSceneLoaded;
 
         if (Instance == null)
         {
@@ -108,26 +105,6 @@ public class DataManager : MonoBehaviour
 
         PlayGamesPlatform.DebugLogEnabled = true;
         PlayGamesPlatform.Activate();
-    }
-
-    private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
-    {
-        if(arg0.name == "MainMenu")
-        {
-            _version.text = "";
-            _version.DOText("V." + Application.version, 1f);
-            _logged.text = "";
-
-            if (_isConnectedToGooglePlayServices)
-            {
-                _logged.color = Color.green;
-                _logged.DOText("Connected to Google Play services", 1f);
-            } else
-            {
-                _logged.color = Color.red;
-                _logged.DOText("Not connected to Google Play services", 1f);
-            }
-        }
     }
 
     private void Start()

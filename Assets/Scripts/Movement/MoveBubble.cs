@@ -158,6 +158,8 @@ public class MoveBubble : MonoBehaviour
         }
 
         GameManager.Instance.WinScreen.SetActive(true);
+        long[] pattern = { 100, 100, 500 };
+        Vibration.Vibrate(pattern, 0);
     }
     private void Die ()
     {
@@ -167,6 +169,8 @@ public class MoveBubble : MonoBehaviour
         Etouch.Touch.onFingerUp -= Touch_onFingerUp;
         _monsterSpawn.playerIsDead = true;
         GameManager.Instance.LoseScreen.SetActive(true);
+
+        Vibration.Vibrate(100);
     }
 
     private void ChangeRendering (bool isVisible)
@@ -248,6 +252,7 @@ public class MoveBubble : MonoBehaviour
     private void SwitchOnTileUp (TileUp tempTileUp, TileDown.Direction direction)
     {
         _shouldStopCheckingTile = false;
+        GameManager.Instance.AnimatePlayer(direction);
 
         switch (tempTileUp.type)
         {
@@ -256,11 +261,12 @@ public class MoveBubble : MonoBehaviour
                 _isSliding = false;
                 GoBack(direction);
 
-                ////pas dans une animation : blocked wall
-                //if (tempTileUp.moveTimer == 0)
-                //{
-                //    tempTileUp.StartCoroutine(tempTileUp.BlockedByWall(_noPassTime, _noPassTimeAfter));
-                //}
+                //pas dans une animation
+                if (tempTileUp.moveTimer == 0)
+                {
+                    tempTileUp.StartCoroutine(tempTileUp.BlockedByWall(_noPassTime, _noPassTimeAfter));
+                    Vibration.Vibrate(25);
+                }
 
                 
                 _shouldStopCheckingTile = true;
@@ -312,7 +318,7 @@ public class MoveBubble : MonoBehaviour
                 {
                     // si l'on peut pousser le block
                     //_shouldStopCheckingTile = true;
-
+                    Vibration.Vibrate(100);
                     //re-check car on vient de modif la tileup sur laquelle on va marcher (block -> wind)
                     if (tempTileUp.type == TileUpType.Wind)
                     {
@@ -349,6 +355,7 @@ public class MoveBubble : MonoBehaviour
                 {
                     tempTileUp.isActivated = true;
                     _collectibleAcquired = true;
+                    Vibration.Vibrate(25);
                 }
                 break;
 
@@ -571,6 +578,7 @@ public class MoveBubble : MonoBehaviour
                 temp.type = TileUpType.None;
                 Destroy(temp.lightKey);
                 AddKeyFragment(1);
+                Vibration.Vibrate(25);
                 temp.GoBackToWhite();
             }
 
