@@ -34,7 +34,7 @@ public class Transition : MonoBehaviour
         _rightLine.DOScaleX(35000, 3f).SetEase(Ease.OutExpo);
         _leftLine.DOScaleX(35000, 3f).SetEase(Ease.OutExpo).WaitForCompletion();
         yield return new WaitForSecondsRealtime(0.5f);
-        _levelName.DOScale(1, 10f);
+        _levelName.DOScale(.8f, 10f);
         yield return _levelName.DOColor(new(1, 1, 1), 1f).SetEase(Ease.OutExpo).WaitForCompletion();
         yield return new WaitForSecondsRealtime(2f);
         _bg.DOColor(new(0, 0, 0, 0), 2f);

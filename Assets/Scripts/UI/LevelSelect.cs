@@ -95,9 +95,9 @@ public class LevelSelect : MonoBehaviour
     {
         Vector2 currentPos = Camera.main.ScreenToWorldPoint(obj.screenPosition);
         Vector2 delta = currentPos - fingerPos;
-        if((_moveTransform.localPosition + new Vector3(0, delta.y * 150f, 0)).y <= maxY &&
-            (_moveTransform.localPosition + new Vector3(0, delta.y * 150f, 0)).y >= minY)
-            _moveTransform.localPosition += new Vector3(0, delta.y * 150f, 0);
+        if((_moveTransform.localPosition + new Vector3(0, delta.y * 250f, 0)).y <= maxY &&
+            (_moveTransform.localPosition + new Vector3(0, delta.y * 250f, 0)).y >= minY)
+            _moveTransform.localPosition += new Vector3(0, delta.y * 250f, 0);
 
         fingerPos = currentPos;
     }

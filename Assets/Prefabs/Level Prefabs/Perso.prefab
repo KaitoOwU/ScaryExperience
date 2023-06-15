@@ -5077,7 +5077,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _generalLight: {fileID: 0}
   _monsterSpawn: {fileID: 0}
-  _slideSensitivity: 1
+  _slideSensitivity: 50
   _delayLerpMove: 0.2
   _curveLerp:
     serializedVersion: 2
@@ -5152,10 +5152,13 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _particleSlide: {fileID: 520221109}
+  _noPassTime: 0
+  _noPassTimeAfter: 0
   _particleMove: {fileID: 810157186}
   tileMapEDITORforButton: {fileID: 0}
   currentDelayLerpMove: 0
   goToPosition: {x: 0, y: 0, z: 0}
+  _numberOfSteps: 0
 --- !u!114 &4759499246184789609
 MonoBehaviour:
   m_ObjectHideFlags: 0

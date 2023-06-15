@@ -385,6 +385,42 @@ public class TileUp : Tile
                             case WallCornerOrientation.CornerRightDownLeftUp:
                                 GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[17];
                                 break;
+                            case WallCornerOrientation.CornerRightDownRightUp:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[18];
+                                break;
+                            case WallCornerOrientation.CornerLeftDownLeftUp:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[19];
+                                break;
+                            case WallCornerOrientation.CornerRightDownLeftDown:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[20];
+                                break;
+                            case WallCornerOrientation.CornerRightUpLeftUp:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[21];
+                                break;
+                            case WallCornerOrientation.LeftDoubleDownSoloUp:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[22];
+                                break;
+                            case WallCornerOrientation.LeftDoubleUpSoloDown:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[23];
+                                break;
+                            case WallCornerOrientation.RightDoubleDownSoloUp:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[24];
+                                break;
+                            case WallCornerOrientation.RightDoubleUpSoloDown:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[25];
+                                break;
+                            case WallCornerOrientation.UpDoubleLeftSoloRight:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[26];
+                                break;
+                            case WallCornerOrientation.UpDoubleRightSoloLeft:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[27];
+                                break;
+                            case WallCornerOrientation.DownDoubleLeftSoloRight:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[28];
+                                break;
+                            case WallCornerOrientation.DownDoubleRightSoloLeft:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[29];
+                                break;
 
                         }
                         break;
@@ -693,6 +729,18 @@ public class TileUp : Tile
         TRightDouble,
         CornerRightUpLeftDown,
         CornerRightDownLeftUp,
+        CornerRightDownRightUp,
+        CornerLeftDownLeftUp,
+        CornerRightDownLeftDown,
+        CornerRightUpLeftUp,
+        LeftDoubleUpSoloDown,
+        LeftDoubleDownSoloUp,
+        RightDoubleUpSoloDown,
+        RightDoubleDownSoloUp,
+        UpDoubleLeftSoloRight,
+        UpDoubleRightSoloLeft,
+        DownDoubleLeftSoloRight,
+        DownDoubleRightSoloLeft
     }
 
     public enum WallSideOrientation
