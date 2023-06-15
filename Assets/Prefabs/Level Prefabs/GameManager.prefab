@@ -55,4 +55,4 @@ MonoBehaviour:
   _audioManager: {fileID: 0}
   _levelWithoutKey: 0
   _grid: {fileID: 0}
-  _stepAccountNeeded: 25
+  _stepAccountNeeded: 75
