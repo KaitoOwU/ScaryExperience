@@ -341,7 +341,15 @@ public class TileDown : Tile
         SideLeft,
         SideUp,
         MiddleVertical,
-        SideDown
+        SideDown,
+        CornerLeftUp,
+        CornerLeftDown,
+        CornerRightUp,
+        CornerRightDown,
+        TDown,
+        TUp,
+        TRight,
+        TLeft,
     }
 
     public enum IceType
