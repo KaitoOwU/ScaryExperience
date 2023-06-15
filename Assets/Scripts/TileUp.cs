@@ -397,6 +397,30 @@ public class TileUp : Tile
                             case WallCornerOrientation.CornerRightUpLeftUp:
                                 GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[21];
                                 break;
+                            case WallCornerOrientation.LeftDoubleDownSoloUp:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[22];
+                                break;
+                            case WallCornerOrientation.LeftDoubleUpSoloDown:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[23];
+                                break;
+                            case WallCornerOrientation.RightDoubleDownSoloUp:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[24];
+                                break;
+                            case WallCornerOrientation.RightDoubleUpSoloDown:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[25];
+                                break;
+                            case WallCornerOrientation.UpDoubleLeftSoloRight:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[26];
+                                break;
+                            case WallCornerOrientation.UpDoubleRightSoloLeft:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[27];
+                                break;
+                            case WallCornerOrientation.DownDoubleLeftSoloRight:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[28];
+                                break;
+                            case WallCornerOrientation.DownDoubleRightSoloLeft:
+                                GetComponent<SpriteRenderer>().sprite = spritesUp.spriteCornerWall[29];
+                                break;
 
                         }
                         break;
@@ -708,7 +732,15 @@ public class TileUp : Tile
         CornerRightDownRightUp,
         CornerLeftDownLeftUp,
         CornerRightDownLeftDown,
-        CornerRightUpLeftUp
+        CornerRightUpLeftUp,
+        LeftDoubleUpSoloDown,
+        LeftDoubleDownSoloUp,
+        RightDoubleUpSoloDown,
+        RightDoubleDownSoloUp,
+        UpDoubleLeftSoloRight,
+        UpDoubleRightSoloLeft,
+        DownDoubleLeftSoloRight,
+        DownDoubleRightSoloLeft
     }
 
     public enum WallSideOrientation
