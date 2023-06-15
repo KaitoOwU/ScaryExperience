@@ -4982,6 +4982,7 @@ GameObject:
   - component: {fileID: 4759499246184789610}
   - component: {fileID: 4759499246184789611}
   - component: {fileID: 4759499246184789609}
+  - component: {fileID: 762500623227705239}
   - component: {fileID: 4759499246008313780}
   - component: {fileID: 4759499246008313779}
   - component: {fileID: 4759499246008313782}
@@ -5001,7 +5002,7 @@ Transform:
   m_GameObject: {fileID: 4759499246184789606}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 11.01, y: -23.11, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8928103016207432894}
@@ -5176,13 +5177,27 @@ MonoBehaviour:
   _light: {fileID: 8143406517399669317}
   _maxColor: {r: 1, g: 1, b: 1, a: 0}
   _minColor: {r: 1, g: 0.7741164, b: 0, a: 0}
-  _playerCanva: {fileID: 0}
+  _playerCanva: {fileID: 3155407140877558272}
   _indicateur: {fileID: 5226063348176831103, guid: d18b4889d2b619449a83c4b46a7e450a, type: 3}
   _vCam: {fileID: 0}
   _maxSizeLight: 0
   monsterSpawn: {fileID: 0}
   _fadeDuration: 1
   isDeadFromMonsters: 1
+--- !u!114 &762500623227705239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4759499246184789606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75bcbb648fb6fc74290982cbb6ea07d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spawnParticles: {fileID: 7087121937983963152, guid: c44798c906947e74482b472f88dee9e7, type: 3}
+  _move: {fileID: 4759499246184789611}
 --- !u!50 &4759499246008313780
 Rigidbody2D:
   serializedVersion: 4
