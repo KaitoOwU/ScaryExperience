@@ -63,6 +63,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 56859cecab4e76f4988c8d23e1f05dd8, type: 3}
   - {fileID: 21300000, guid: 7d3cfe4fa229c5a419c979e6b1e1d2bd, type: 3}
   - {fileID: 21300000, guid: 2a946d447675f1b419f527bdfb1a6499, type: 3}
+  - {fileID: 21300000, guid: a0472e659ef0a1d4a818c22dc4295262, type: 3}
   spriteKey:
   - {fileID: 21300000, guid: 8de3fb304a933d3408c9a67ff8e375b1, type: 3}
   spriteBrasero:
