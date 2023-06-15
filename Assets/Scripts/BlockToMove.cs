@@ -45,7 +45,6 @@ public class BlockToMove : MonoBehaviour
 
     public bool StartMoving (TileDown.Direction direction, MoveBubble bubble)
     {
-        
         oldToGo = toGoPosBlock;
         MoveNextTile(direction, bubble);
 
@@ -105,7 +104,7 @@ public class BlockToMove : MonoBehaviour
         }
 
         // si on retire le block d'une case ou il y avait du vent avec le m�me block qui la arreter
-        else if (lastTileUp != null && lastTileUp.wasWind && tileBefore.type == TileUp.TileUpType.Wind && lastTileUp.direction == tileBefore.direction && !tileBefore.isActivated)
+        else if (lastTileUp != null && lastTileUp.wasWind && (tileBefore.type == TileUp.TileUpType.Wind && lastTileUp.direction == tileBefore.direction || tileBefore.type == TileUp.TileUpType.Ventilateur) && !tileBefore.isActivated)
         {
             if (direction == lastTileUp.direction)
             {
