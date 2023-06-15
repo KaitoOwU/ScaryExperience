@@ -194,6 +194,7 @@ public class MoveBubble : MonoBehaviour
         }
         _prePosList.Clear();
 
+        //particules
         if (_tileMoving == TileDown.TileType.Ice)
         {
             _particleSlide.Play();
@@ -274,11 +275,6 @@ public class MoveBubble : MonoBehaviour
             case TileUp.TileUpType.Ventilateur:
                 GoBack(direction);
 
-                //pas dans une animation
-                if (tempTileUp.moveTimer == 0)
-                {
-                    tempTileUp.StartCoroutine(tempTileUp.BlockedByWall(_noPassTime, _noPassTimeAfter));
-                }
                 _shouldStopCheckingTile = true;
                 return;
 
@@ -685,6 +681,13 @@ public class MoveBubble : MonoBehaviour
         // si l'on bouge pas encore, lance l'animation
         if (!_isMoving)
         {
+            Debug.LogWarning("go to pos : " + goToPosition + " / Position : " + transform.position);
+            if (goToPosition == transform.position)
+            {
+                _prePosList.Add(goToPosition + VectorAddMovePos(fingerTouchDelta) / 3);
+                _prePosList.Add(goToPosition);
+            }
+
             StartCoroutine(MoveToPosition());
             _isMoving = true;
         }

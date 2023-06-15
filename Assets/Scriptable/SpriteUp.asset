@@ -55,6 +55,15 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 229058aa05865b741a51a2dead69b360, type: 3}
   - {fileID: 21300000, guid: 9d9fcb3b829b90f4b882dec94018eec1, type: 3}
   - {fileID: 21300000, guid: dd8e9142bbf71d24f8d7caccc4abb346, type: 3}
+  - {fileID: 21300000, guid: f20cacb20da2d324b9f9056ac26c62fd, type: 3}
+  - {fileID: 21300000, guid: d313feb2d0a00d543bf998d650c8218e, type: 3}
+  - {fileID: 21300000, guid: b082548a22e4c414eb168fea01ea095e, type: 3}
+  - {fileID: 21300000, guid: 53acf4a468434974081ae18cdae5f57d, type: 3}
+  - {fileID: 21300000, guid: fa132497488c1b94e8316e449e4152bc, type: 3}
+  - {fileID: 21300000, guid: 56859cecab4e76f4988c8d23e1f05dd8, type: 3}
+  - {fileID: 21300000, guid: 7d3cfe4fa229c5a419c979e6b1e1d2bd, type: 3}
+  - {fileID: 21300000, guid: 2a946d447675f1b419f527bdfb1a6499, type: 3}
+  - {fileID: 21300000, guid: a0472e659ef0a1d4a818c22dc4295262, type: 3}
   spriteKey:
   - {fileID: 21300000, guid: 8de3fb304a933d3408c9a67ff8e375b1, type: 3}
   spriteBrasero:
