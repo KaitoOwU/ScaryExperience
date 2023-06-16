@@ -7820,14 +7820,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _levels:
-  - _levelSceneName: 02_level_adrien_deplacement_facile_1
-    _levelName: Chemin tout trace
-  - _levelSceneName: 03_level_adrien_deplacement_facile 2
-    _levelName: Sortie isolee
-  - _levelSceneName: 04_TutoDallesBoom
-    _levelName: Qui s'y frotte s'effrite
-  - _levelSceneName: 05_level_adrien_faill 1
-    _levelName: Sol fragile
+  - _levelSceneName: 01_TutoDeplac
+    _levelName: "Glisser pour se d\xE9placer"
+  - _levelSceneName: 09_level_adrien_facile_sang
+    _levelName: Pierres glissantes
+  - _levelSceneName: 18_level_adrien_block_facile 1
+    _levelName: Creer le chemin
+  - _levelSceneName: 21_Level_Virgile_Vent_01
+    _levelName: Escorter le rocher - II
   - _levelSceneName: 06_level_adrien_fail_3
     _levelName: Rebrousser chemin
   - _levelSceneName: 07_Tuto Glace
