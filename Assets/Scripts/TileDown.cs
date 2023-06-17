@@ -281,6 +281,61 @@ public class TileDown : Tile
                         idWater = 6;
                         break;
 
+                    case WaterType.CornerLeftDown:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteWater[7];
+                        GetComponent<SpriteRenderer>().sharedMaterial.SetTexture("_TextureOut", spritesDown.spriteOutWater[7].texture);
+                        GetComponent<SpriteRenderer>().sharedMaterial.SetTexture("_TextureIn", spritesDown.spriteInWater[7].texture);
+                        idWater = 7;
+                        break;
+
+                    case WaterType.CornerLeftUp:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteWater[8];
+                        GetComponent<SpriteRenderer>().sharedMaterial.SetTexture("_TextureOut", spritesDown.spriteOutWater[8].texture);
+                        GetComponent<SpriteRenderer>().sharedMaterial.SetTexture("_TextureIn", spritesDown.spriteInWater[8].texture);
+                        idWater = 8;
+                        break;
+
+                    case WaterType.CornerRightDown:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteWater[9];
+                        GetComponent<SpriteRenderer>().sharedMaterial.SetTexture("_TextureOut", spritesDown.spriteOutWater[9].texture);
+                        GetComponent<SpriteRenderer>().sharedMaterial.SetTexture("_TextureIn", spritesDown.spriteInWater[9].texture);
+                        idWater = 9;
+                        break;
+
+                    case WaterType.CornerRightUp:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteWater[10];
+                        GetComponent<SpriteRenderer>().sharedMaterial.SetTexture("_TextureOut", spritesDown.spriteOutWater[10].texture);
+                        GetComponent<SpriteRenderer>().sharedMaterial.SetTexture("_TextureIn", spritesDown.spriteInWater[10].texture);
+                        idWater = 10;
+                        break;
+
+                    case WaterType.TDown:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteWater[11];
+                        GetComponent<SpriteRenderer>().sharedMaterial.SetTexture("_TextureOut", spritesDown.spriteOutWater[11].texture);
+                        GetComponent<SpriteRenderer>().sharedMaterial.SetTexture("_TextureIn", spritesDown.spriteInWater[11].texture);
+                        idWater = 11;
+                        break;
+
+                    case WaterType.TLeft:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteWater[12];
+                        GetComponent<SpriteRenderer>().sharedMaterial.SetTexture("_TextureOut", spritesDown.spriteOutWater[12].texture);
+                        GetComponent<SpriteRenderer>().sharedMaterial.SetTexture("_TextureIn", spritesDown.spriteInWater[12].texture);
+                        idWater = 12;
+                        break;
+
+                    case WaterType.TUp:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteWater[13];
+                        GetComponent<SpriteRenderer>().sharedMaterial.SetTexture("_TextureOut", spritesDown.spriteOutWater[13].texture);
+                        GetComponent<SpriteRenderer>().sharedMaterial.SetTexture("_TextureIn", spritesDown.spriteInWater[13].texture);
+                        idWater = 13;
+                        break;
+
+                    case WaterType.TRight:
+                        GetComponent<SpriteRenderer>().sprite = spritesDown.spriteWater[14];
+                        GetComponent<SpriteRenderer>().sharedMaterial.SetTexture("_TextureOut", spritesDown.spriteOutWater[14].texture);
+                        GetComponent<SpriteRenderer>().sharedMaterial.SetTexture("_TextureIn", spritesDown.spriteInWater[14].texture);
+                        idWater = 14;
+                        break;
                 }
                 
 
@@ -341,7 +396,15 @@ public class TileDown : Tile
         SideLeft,
         SideUp,
         MiddleVertical,
-        SideDown
+        SideDown,
+        CornerLeftUp,
+        CornerLeftDown,
+        CornerRightUp,
+        CornerRightDown,
+        TDown,
+        TUp,
+        TRight,
+        TLeft,
     }
 
     public enum IceType
