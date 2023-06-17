@@ -10,6 +10,12 @@ public class PlayerAnimation : MonoBehaviour
 
     private void Start()
     {
+        if(DataManager.Instance == null)
+        {
+            transform.localScale = new Vector3(1, 1, 1);
+            return;
+        }
+
         _move.SetTouchControlsActive(false);
         transform.DOScale(0, DataManager.Instance.IsLevelLaunchedFromMainMenu ? 4f : 0f).OnComplete(() =>
         {
