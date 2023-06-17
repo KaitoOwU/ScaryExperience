@@ -74,6 +74,7 @@ public class FlameManager : MonoBehaviour
 
                 _audioManager.PlaySFX(_audioManager.deathByMonsterSound);
                 monsterSpawn.playerIsDead = true;
+                Social.ReportProgress(GPGSIds.achievement_welcome_among_us, 100f, null);
             }
         }
         else

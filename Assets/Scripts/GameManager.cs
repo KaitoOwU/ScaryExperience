@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
     public int LocalDeathAmount { get; set; } = 0;
 
     public int StepAccount { get => _stepAccountNeeded; }
+    public bool LevelWin { get; internal set; } = false;
 
     private void Awake()
     {
@@ -60,11 +61,10 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator LostCondition(float flameValue)
     {
-        yield return new WaitForSecondsRealtime(0.1f);
+        yield return new WaitForSecondsRealtime(0.2f);
         if (flameValue <= 0 && _loseScreen != null && !_winScreen.activeInHierarchy)
         {
             _loseScreen.SetActive(true);
-            DataManager.Instance.AchievementToNextStep(GPGSIds.achievement_welcome_among_us, 100f);
         }
     }
 

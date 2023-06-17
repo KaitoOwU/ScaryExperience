@@ -24,18 +24,21 @@
 
 public static class GPGSIds
 {
-        public const string achievement_die_100_times = "CgkI0Mnw4d0YEAIQDA"; // <GPGSID>
-        public const string achievement_the_light_at_the_end_of_the_tunnel = "CgkI0Mnw4d0YEAIQCA"; // <GPGSID>
-        public const string achievement_budding_archaeologist = "CgkI0Mnw4d0YEAIQBA"; // <GPGSID>
-        public const string achievement_gold_digger = "CgkI0Mnw4d0YEAIQBQ"; // <GPGSID>
-        public const string achievement_welcome_among_us = "CgkI0Mnw4d0YEAIQAQ"; // <GPGSID>
-        public const string achievement_ouch = "CgkI0Mnw4d0YEAIQCQ"; // <GPGSID>
-        public const string achievement_die_50_times = "CgkI0Mnw4d0YEAIQCw"; // <GPGSID>
-        public const string achievement_die_25_times = "CgkI0Mnw4d0YEAIQCg"; // <GPGSID>
-        public const string achievement_a_lack_of_equilibrium = "CgkI0Mnw4d0YEAIQAw"; // <GPGSID>
-        public const string achievement_franko_would_be_proud = "CgkI0Mnw4d0YEAIQBw"; // <GPGSID>
-        public const string achievement_hardstuck = "CgkI0Mnw4d0YEAIQDQ"; // <GPGSID>
-        public const string achievement_the_feeling_of_a_job_well_done = "CgkI0Mnw4d0YEAIQBg"; // <GPGSID>
+        public const string achievement_ouch = "CgkI0Mnw4d0YEAIQEA"; // <GPGSID>
+        public const string achievement_beta_tester = "CgkI0Mnw4d0YEAIQHA"; // <GPGSID>
+        public const string achievement_step_saver = "CgkI0Mnw4d0YEAIQGQ"; // <GPGSID>
+        public const string achievement_beggining_of_a_long_journey = "CgkI0Mnw4d0YEAIQDw"; // <GPGSID>
+        public const string achievement_lost_cause = "CgkI0Mnw4d0YEAIQEg"; // <GPGSID>
+        public const string achievement_budding_archaeologist = "CgkI0Mnw4d0YEAIQFg"; // <GPGSID>
+        public const string achievement_bloup_bloup_bloup = "CgkI0Mnw4d0YEAIQFA"; // <GPGSID>
+        public const string achievement_unhealthy = "CgkI0Mnw4d0YEAIQGg"; // <GPGSID>
+        public const string achievement_laziness_or_talent = "CgkI0Mnw4d0YEAIQGw"; // <GPGSID>
+        public const string achievement_welcome_among_us = "CgkI0Mnw4d0YEAIQFQ"; // <GPGSID>
+        public const string achievement_francko_would_be_proud = "CgkI0Mnw4d0YEAIQHQ"; // <GPGSID>
+        public const string achievement_lack_of_balance = "CgkI0Mnw4d0YEAIQEw"; // <GPGSID>
+        public const string achievement_where_are_they_all = "CgkI0Mnw4d0YEAIQFw"; // <GPGSID>
+        public const string achievement_you_need_to_get_better = "CgkI0Mnw4d0YEAIQEQ"; // <GPGSID>
+        public const string achievement_gold_digger = "CgkI0Mnw4d0YEAIQGA"; // <GPGSID>
 
 }
 
