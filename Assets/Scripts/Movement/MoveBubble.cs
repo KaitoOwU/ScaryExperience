@@ -159,7 +159,7 @@ public class MoveBubble : MonoBehaviour
 
         GameManager.Instance.WinScreen.SetActive(true);
         long[] pattern = { 100, 100, 500 };
-        Vibration.Vibrate(pattern, 0);
+        Vibration.Vibrate(pattern, -1);
     }
     private void Die ()
     {
@@ -265,7 +265,7 @@ public class MoveBubble : MonoBehaviour
                 if (tempTileUp.moveTimer == 0)
                 {
                     tempTileUp.StartCoroutine(tempTileUp.BlockedByWall(_noPassTime, _noPassTimeAfter));
-                    Vibration.Vibrate(25);
+                    Vibration.Vibrate(200);
                 }
 
                 
@@ -355,7 +355,7 @@ public class MoveBubble : MonoBehaviour
                 {
                     tempTileUp.isActivated = true;
                     _collectibleAcquired = true;
-                    Vibration.Vibrate(25);
+                    Vibration.Vibrate(200);
                 }
                 break;
 

@@ -23,16 +23,19 @@ public class MainMenu : MonoBehaviour
         _version.DOText("V. " + Application.version, 1f);
         _logged.text = "";
 
-        if (DataManager.Instance.IsConnectedToGooglePlayServices)
+        transform.DOScale(1, 5f).OnComplete(() =>
         {
-            _logged.color = Color.green;
-            _logged.DOText("Connected to Google Play services", 1f);
-        }
-        else
-        {
-            _logged.color = Color.red;
-            _logged.DOText("Not connected to Google Play services", 1f);
-        }
+            if (DataManager.Instance.IsConnectedToGooglePlayServices)
+            {
+                _logged.color = Color.green;
+                _logged.DOText("Connected to Google Play services", 1f);
+            }
+            else
+            {
+                _logged.color = Color.red;
+                _logged.DOText("Not connected to Google Play services", 1f);
+            }
+        });
     }
 
     public void SwitchToLevelSelect()
