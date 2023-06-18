@@ -31,6 +31,7 @@ public class DataManager : MonoBehaviour
     public int SkullObtained { get => _skullObtained; set => _skullObtained = value; }
     public int GoldenFlameObtained { get; set; }
     public int SilverFlameObtained { get => _silverFlameObtained; set => _silverFlameObtained = value; }
+    public bool IsGameInFrench { get; set; } = false;
 
 
     private void Awake()
@@ -229,7 +230,8 @@ public class LevelData
 public struct LevelLoadData
 {
     public string _levelSceneName;
-    public string _levelName;
+    public string _levelNameEnglish;
+    public string _levelNameFrench;
 }
 
 public enum FlameState
