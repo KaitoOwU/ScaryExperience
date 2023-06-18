@@ -42,7 +42,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Niveaux In Game/11_Tuto Vent mais qui marche.unity
     guid: 7c374e4d0596295489a0d8abe7bf3f40
   - enabled: 1
-    path: "Assets/Scenes/Niveaux In Game/12_Level_Aliz\xE9e_3.unity"
+    path: "Assets/Scenes/Niveaux In Game/Level_Aliz\xE9e_3.unity"
     guid: 59e46cdd90d1c0b41b5d372be92d31db
   - enabled: 1
     path: Assets/Scenes/Niveaux In Game/13_level_vent 1.unity
@@ -51,7 +51,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Niveaux In Game/14_level adrien facile vent 2.unity
     guid: cd4f7eea822fd5649b23a158835d44f4
   - enabled: 1
-    path: "Assets/Scenes/Niveaux In Game/15_Level_Aliz\xE9e_4.unity"
+    path: "Assets/Scenes/Niveaux In Game/Level_Aliz\xE9e_4.unity"
     guid: bd050cd1cac729547afb53c677a2d9d0
   - enabled: 1
     path: Assets/Scenes/Niveaux In Game/16_level-adrien_block 2.unity
