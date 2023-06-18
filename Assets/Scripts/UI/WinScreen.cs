@@ -1,19 +1,38 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class WinScreen : MonoBehaviour
 {
-
+    [SerializeField] TextMeshProUGUI _title, _nextLevel, _restart, _mainMenu;
     [SerializeField] Image _collectable, _collectableMissed, _flameSilver, _flameGold, _flameMissed;
 
     private void OnEnable()
     {
         GameManager.Instance.SetTouchControlsActive(false);
         DOTween.Kill(transform);
+
+        if (DataManager.Instance.IsGameInFrench)
+        {
+            _title.text = "Vous avez réussi";
+            _title.fontSize = 72f;
+
+            _nextLevel.text = "Niveau suivant";
+            _restart.text = "Réessayer";
+            _mainMenu.text = "Menu Principal";
+        } else
+        {
+            _title.text = "You Escaped";
+            _title.fontSize = 100f;
+
+            _nextLevel.text = "Next Level";
+            _restart.text = "Try Again";
+            _mainMenu.text = "Main Menu";
+        }
 
         transform.DOScale(1, 1f).SetEase(Ease.OutExpo).OnComplete(() =>
         {

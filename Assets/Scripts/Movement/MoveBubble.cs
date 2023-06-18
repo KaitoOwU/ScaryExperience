@@ -132,6 +132,12 @@ public class MoveBubble : MonoBehaviour
 
     private void Win()
     {
+        if (GameManager.Instance.LevelWin)
+        {
+            return;
+        }
+
+        GameManager.Instance.LevelWin = true;
         Etouch.Touch.onFingerDown -= Touch_onFingerDown;
         Etouch.Touch.onFingerUp -= Touch_onFingerUp;
 
@@ -154,21 +160,24 @@ public class MoveBubble : MonoBehaviour
             }
 
             DataManager.Instance.LevelData[DataManager.Instance.CurrentLevel].Complete(_collectibleAcquired, state);
-            SaveSystem.SaveData(DataManager.Instance.LevelData, DataManager.Instance.DeathAmount, DataManager.Instance.SkullObtained, DataManager.Instance.LevelCompletedAmount, DataManager.Instance.GoldenFlameObtained);
+            SaveSystem.SaveData(DataManager.Instance.LevelData, DataManager.Instance.DeathAmount, DataManager.Instance.SkullObtained, DataManager.Instance.LevelCompletedAmount, DataManager.Instance.GoldenFlameObtained, DataManager.Instance.SilverFlameObtained);
         }
 
+        DataManager.Instance.CheckForGenericAchievement();
         GameManager.Instance.WinScreen.SetActive(true);
         long[] pattern = { 100, 100, 500 };
         Vibration.Vibrate(pattern, -1);
     }
     private void Die ()
     {
+        DataManager.Instance.DeathAmount++;
         _flameManager.isDeadFromMonsters = false;
         GetComponent<FlameManager>().ModifyFlame(true, 10000);
         Etouch.Touch.onFingerDown -= Touch_onFingerDown;
         Etouch.Touch.onFingerUp -= Touch_onFingerUp;
         _monsterSpawn.playerIsDead = true;
         GameManager.Instance.LoseScreen.SetActive(true);
+        DataManager.Instance.CheckForGenericAchievement();
 
         Vibration.Vibrate(100);
     }
@@ -443,13 +452,14 @@ public class MoveBubble : MonoBehaviour
                 _isSliding = false;
                 _audioManager.PlaySFX(_audioManager.fallSound);
                 transform.DOScale(0, 1f);
-                DataManager.Instance.AchievementToNextStep(GPGSIds.achievement_a_lack_of_equilibrium, 100f);
+                Social.ReportProgress(GPGSIds.achievement_lack_of_balance, 100f, null);
                 OnDie?.Invoke();
                 break;
             case TileDown.TileType.Water:
                 _isSliding = false;
                 _audioManager.PlaySFX(_audioManager.waterSound);
                 OnDie?.Invoke();
+                Social.ReportProgress(GPGSIds.achievement_bloup_bloup_bloup, 100f, null);
 
                 if (_tileMovingUp == TileUp.TileUpType.Wind)
                 {
@@ -476,6 +486,7 @@ public class MoveBubble : MonoBehaviour
                     _audioManager.PlaySFX(_audioManager.fallSound);
                     transform.DOScale(0, 1f);
                     OnDie?.Invoke();
+                    Social.ReportProgress(GPGSIds.achievement_lack_of_balance, 100f, null);
                     break;
                 }
 

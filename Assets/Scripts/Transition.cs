@@ -26,8 +26,14 @@ public class Transition : MonoBehaviour
     private IEnumerator StartAnimation()
     {
         LevelLoadData lvl = DataManager.Instance.LevelList[DataManager.Instance.CurrentLevel];
-        _levelNumber.text = "Level " + (DataManager.Instance.CurrentLevel + 1);
-        _levelName.text = lvl._levelName;
+        if (DataManager.Instance.IsGameInFrench)
+        {
+            _levelNumber.text = "Niveau " + (DataManager.Instance.CurrentLevel + 1);
+        } else
+        {
+            _levelNumber.text = "Level " + (DataManager.Instance.CurrentLevel + 1);
+        }
+        _levelName.text = DataManager.Instance.IsGameInFrench ? lvl._levelNameFrench : lvl._levelNameEnglish;
 
         //START ANIMATION
         yield return _levelNumber.DOColor(new(1, 1, 1), .5f).SetEase(Ease.OutExpo).WaitForCompletion();

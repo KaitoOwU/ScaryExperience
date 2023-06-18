@@ -296,7 +296,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Restart
+  m_text: "R\xE9essayer"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7f590b1e6419245449bcb52df33464a6, type: 2}
   m_sharedMaterial: {fileID: -1341054389891305671, guid: 7f590b1e6419245449bcb52df33464a6, type: 2}
@@ -1402,6 +1402,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 869b4935e9c83a846b42be475b17e849, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _backToGame: {fileID: 6402676020134752827}
+  _mainMenu: {fileID: 6402676019344957307}
 --- !u!1 &6402676018731347921
 GameObject:
   m_ObjectHideFlags: 0
@@ -1766,6 +1768,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8580c1e5b716a6342b1b12aa26003293, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _title: {fileID: 6402676020305491183}
+  _nextLevel: {fileID: 6402676019671702347}
+  _restart: {fileID: 9002594224105798068}
+  _mainMenu: {fileID: 6402676020201077557}
   _collectable: {fileID: 6402676019546181908}
   _collectableMissed: {fileID: 6102508317691160719}
   _flameSilver: {fileID: 5443380226913218132}
@@ -1983,7 +1989,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Llum is Dead
+  m_text: Llum est Mort
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1ec7b17956f5d4c43aa3b24781fa0853, type: 2}
   m_sharedMaterial: {fileID: 134566503670487784, guid: 1ec7b17956f5d4c43aa3b24781fa0853, type: 2}
@@ -2010,8 +2016,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 100
-  m_fontSizeBase: 100
+  m_fontSize: 90
+  m_fontSizeBase: 90
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2969,7 +2975,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Next Level
+  m_text: Niveau Suivant
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7f590b1e6419245449bcb52df33464a6, type: 2}
   m_sharedMaterial: {fileID: -1341054389891305671, guid: 7f590b1e6419245449bcb52df33464a6, type: 2}
@@ -3390,6 +3396,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42da20b653b50b949883cc7f77cdd0eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _title: {fileID: 6402676019143038272}
+  _restart: {fileID: 6402676020213264476}
+  _mainMenu: {fileID: 6402676020081974386}
 --- !u!1 &6402676019954374076
 GameObject:
   m_ObjectHideFlags: 0
@@ -3809,7 +3818,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Main Menu
+  m_text: Menu Principal
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7f590b1e6419245449bcb52df33464a6, type: 2}
   m_sharedMaterial: {fileID: -1341054389891305671, guid: 7f590b1e6419245449bcb52df33464a6, type: 2}
@@ -4020,7 +4029,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Back to Game
+  m_text: Revenir au jeu
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7f590b1e6419245449bcb52df33464a6, type: 2}
   m_sharedMaterial: {fileID: -1341054389891305671, guid: 7f590b1e6419245449bcb52df33464a6, type: 2}
@@ -4491,6 +4500,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 869b4935e9c83a846b42be475b17e849, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _backToGame: {fileID: 0}
+  _mainMenu: {fileID: 0}
 --- !u!1 &6402676020201077559
 GameObject:
   m_ObjectHideFlags: 0
@@ -4557,7 +4568,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Main Menu
+  m_text: Menu Principal
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7f590b1e6419245449bcb52df33464a6, type: 2}
   m_sharedMaterial: {fileID: -1341054389891305671, guid: 7f590b1e6419245449bcb52df33464a6, type: 2}
@@ -4692,7 +4703,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Try Again
+  m_text: "R\xE9essayer"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7f590b1e6419245449bcb52df33464a6, type: 2}
   m_sharedMaterial: {fileID: -1341054389891305671, guid: 7f590b1e6419245449bcb52df33464a6, type: 2}
@@ -4923,7 +4934,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: You Escaped
+  m_text: "Vous avez r\xE9ussi"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1ec7b17956f5d4c43aa3b24781fa0853, type: 2}
   m_sharedMaterial: {fileID: 134566503670487784, guid: 1ec7b17956f5d4c43aa3b24781fa0853, type: 2}
@@ -4950,8 +4961,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 100
-  m_fontSizeBase: 100
+  m_fontSize: 72
+  m_fontSizeBase: 72
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
