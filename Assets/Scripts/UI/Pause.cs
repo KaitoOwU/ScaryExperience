@@ -49,7 +49,6 @@ public class Pause : MonoBehaviour
 
     public void QuitPause()
     {
-        
         gameObject.SetActive(false);
     }
 

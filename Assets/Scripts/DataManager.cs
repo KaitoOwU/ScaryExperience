@@ -67,7 +67,7 @@ public class DataManager : MonoBehaviour
             }
             else
             {
-                if (CurrentVersion != data.version)
+                if (CurrentVersion == _lastResetVersion)
                 {
                     SaveSystem.RemoveData();
                     for (int i = 0; i < _levels.Count; i++)
@@ -160,6 +160,22 @@ public class DataManager : MonoBehaviour
             }
 
         }
+    }
+
+    [SerializeField, ReadOnly] string _lastResetVersion;
+    string _lastResetVersionRemember;
+
+    [Button]
+    public void ResetNextSave()
+    {
+        _lastResetVersionRemember = _lastResetVersion;
+        _lastResetVersion = Application.version;
+    }
+
+    [Button]
+    public void CancelSaveReset()
+    {
+        _lastResetVersion = _lastResetVersionRemember;
     }
 
 }
