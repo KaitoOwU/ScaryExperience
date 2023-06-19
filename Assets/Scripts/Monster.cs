@@ -56,10 +56,10 @@ public class Monster : MonoBehaviour
         }
         else
         {
-            if(flameManager.Value == 0)
+            /*if(flameManager.Value == 0)
             {
                 gameObject.SetActive(false);
-            }
+            }*/
 
             Vector3 dir = (transform.position - player.position).normalized;
 
