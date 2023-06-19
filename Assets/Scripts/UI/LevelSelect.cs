@@ -63,7 +63,7 @@ public class LevelSelect : MonoBehaviour
         DataManager.Instance.CurrentLevel = levelNumber;
 
         _transition.gameObject.SetActive(true);
-        _transition.DOColor(new(0, 0, 0, 1), 1f).SetEase(Ease.OutExpo).OnComplete(() =>
+        _transition.transform.DOLocalMoveY(0, 1f).SetEase(Ease.OutExpo).OnComplete(() =>
         {
             SceneManager.LoadScene(DataManager.Instance.LevelList[levelNumber]._levelSceneName);
         });
