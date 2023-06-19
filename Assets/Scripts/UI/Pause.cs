@@ -5,10 +5,13 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
 public class Pause : MonoBehaviour
 {
     AudioManager _audioManager;
     [SerializeField] TextMeshProUGUI _backToGame, _mainMenu;
+    [SerializeField] Image _transition;
 
     private void Awake()
     {
@@ -55,12 +58,12 @@ public class Pause : MonoBehaviour
         _audioManager.PlaySFX(_audioManager.pause);
         if(DataManager.Instance != null)
             DataManager.Instance.IsLevelLaunchedFromMainMenu = false;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        _transition.transform.DOLocalMoveY(0, 2f).SetEase(Ease.OutExpo).OnComplete(() => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex));
     }
 
     public void GoToMainMenu()
     {
-        SceneManager.LoadScene("MainMenu");
+        _transition.transform.DOLocalMoveY(0, 2f).SetEase(Ease.OutExpo).OnComplete(() => SceneManager.LoadScene("MainMenu"));
     }
 
 }

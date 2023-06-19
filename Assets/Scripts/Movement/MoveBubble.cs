@@ -459,6 +459,8 @@ public class MoveBubble : MonoBehaviour
                 _isSliding = false;
                 _audioManager.PlaySFX(_audioManager.waterSound);
                 OnDie?.Invoke();
+                transform.DOScale(0.7f, 1f);
+                GetComponent<SpriteRenderer>().DOColor(new(0, 0, 1, 0), 2f);
                 Social.ReportProgress(GPGSIds.achievement_bloup_bloup_bloup, 100f, null);
 
                 if (_tileMovingUp == TileUp.TileUpType.Wind)

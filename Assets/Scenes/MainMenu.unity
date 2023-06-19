@@ -16746,7 +16746,7 @@ MonoBehaviour:
   - _levelSceneName: 34_level_virgile_sang_block_1
     _levelNameEnglish: Test of strength
     _levelNameFrench: Epreuve de force
-  - _levelSceneName: 35_TorchAndRock_Kevin
+  - _levelSceneName: LD KEVIN_TorchAndRock_Kevin
     _levelNameEnglish: Unblock the path
     _levelNameFrench: "D\xE9bloquer le chemin"
   _currentLevel: 0
@@ -17724,13 +17724,14 @@ GameObject:
   - component: {fileID: 1486831490}
   - component: {fileID: 1486831492}
   - component: {fileID: 1486831491}
+  - component: {fileID: 1486831493}
   m_Layer: 5
   m_Name: Transition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1486831490
 RectTransform:
   m_ObjectHideFlags: 0
@@ -17746,10 +17747,10 @@ RectTransform:
   m_Father: {fileID: 528605287}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -2839}
+  m_SizeDelta: {x: 1400, y: 3000}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1486831491
 MonoBehaviour:
@@ -17764,14 +17765,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 0af89ea8919b899458c0057cc520c964, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -17789,6 +17790,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1486831489}
   m_CullTransparentMesh: 1
+--- !u!114 &1486831493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1486831489}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8f6fdfc795cdfc46964b96a5d42193c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1494301019
 GameObject:
   m_ObjectHideFlags: 0
