@@ -23,7 +23,8 @@ public class GameManager : MonoBehaviour
     [Header("-- Level Data --")]
     [SerializeField] bool _levelWithoutKey;
     [SerializeField] GameObject _grid;
-    [SerializeField] int _stepAccountNeeded;
+    [SerializeField] int _stepAccountNoCollectible;
+    [SerializeField] int _stepAccountWithCollectible;
 
 
     public GameObject LoseScreen { get => _loseScreen; private set => _loseScreen = value; }
@@ -44,7 +45,8 @@ public class GameManager : MonoBehaviour
             );
         } }
 
-    public int StepAccount { get => _stepAccountNeeded; }
+    public int StepAccountNoCollectible { get => _stepAccountNoCollectible; }
+    public int StepAccountWithCollectible { get => _stepAccountWithCollectible; }
     public bool LevelWin { get; internal set; } = false;
 
     private void Awake()

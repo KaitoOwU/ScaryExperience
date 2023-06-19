@@ -145,18 +145,30 @@ public class MoveBubble : MonoBehaviour
         {
             FlameState state;
 
-            if(_numberOfSteps <= GameManager.Instance.StepAccount)
+            if(_collectibleAcquired)
             {
-                if (_collectibleAcquired)
+                if (_numberOfSteps <= GameManager.Instance.StepAccountWithCollectible)
                 {
                     state = FlameState.Gold;
-                } else
+                }
+                else
                 {
                     state = FlameState.Silver;
                 }
+                
+                
             } else
             {
-                state = FlameState.None;
+                if(_numberOfSteps <= GameManager.Instance.StepAccountNoCollectible)
+                {
+                    state = FlameState.Silver;
+
+                }
+                else
+                {
+                    state = FlameState.None;
+                }
+                
             }
 
             DataManager.Instance.LevelData[DataManager.Instance.CurrentLevel].Complete(_collectibleAcquired, state);
