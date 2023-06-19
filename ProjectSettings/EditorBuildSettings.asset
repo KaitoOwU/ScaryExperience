@@ -102,7 +102,7 @@ EditorBuildSettings:
     path: "Assets/Scenes/Niveaux In Game/32_level_aliz\xE9e_faill 1.unity"
     guid: 833639aa94547ff4d957b135e87a1950
   - enabled: 1
-    path: Assets/Scenes/Niveaux In Game/34_level_virgile_sang_block_1.unity
+    path: "Assets/Scenes/Niveaux In Game/34_level_aliz\xE9e_sang_block_1.unity"
     guid: 5bba77f7bb0d3844fad08dd32d3af425
   - enabled: 1
     path: Assets/Scenes/Niveaux In Game/LD KEVIN_TorchAndRock_Kevin.unity
