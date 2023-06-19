@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LoseScreen : MonoBehaviour
 {
 
     [SerializeField] TextMeshProUGUI _title, _restart, _mainMenu;
+    [SerializeField] Image _transition;
 
     private void OnEnable()
     {
@@ -39,12 +41,14 @@ public class LoseScreen : MonoBehaviour
     public void RestartLevel()
     {
         DataManager.Instance.IsLevelLaunchedFromMainMenu = false;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        _transition.transform.DOLocalMoveY(0, 2f).SetEase(Ease.OutExpo).OnComplete(() => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex));
+        
     }
 
     public void GoToMainMenu()
     {
-        SceneManager.LoadScene("MainMenu");
+        _transition.transform.DOLocalMoveY(0, 2f).SetEase(Ease.OutExpo).OnComplete(() => SceneManager.LoadScene("MainMenu"));
     }
 
 }

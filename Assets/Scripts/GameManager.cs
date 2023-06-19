@@ -1,5 +1,10 @@
+using DG.Tweening;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using Etouch = UnityEngine.InputSystem.EnhancedTouch;
 
 public class GameManager : MonoBehaviour
@@ -29,6 +34,16 @@ public class GameManager : MonoBehaviour
     public AudioManager AudioManager { get => _audioManager; }
     public int LocalDeathAmount { get; set; } = 0;
 
+    private IReadOnlyList<Light2D> TorchLights { get
+        {
+            return FindObjectsOfType<Light2D>().ToList().FindAll(
+            delegate (Light2D light)
+            {
+                return light.GetComponentInParent<TileUp>() != null && light.GetComponentInParent<TileUp>().type != TileUp.TileUpType.WinTrappe;
+            }
+            );
+        } }
+
     public int StepAccount { get => _stepAccountNeeded; }
     public bool LevelWin { get; internal set; } = false;
 
@@ -47,6 +62,24 @@ public class GameManager : MonoBehaviour
         _flameManager.OnFlameValueChange += CheckForLoseCondition;
         PauseScreen.SetActive(true);
         PauseScreen.SetActive(false);
+
+        if(TorchLights.Count > 0)
+        {
+            foreach (Light2D _torchLight in TorchLights)
+            {
+                StartCoroutine(FlickerLight(_torchLight));
+            }
+        }
+
+    }
+
+    private IEnumerator FlickerLight(Light2D torchLight)
+    {
+        float baseIntensity = torchLight.intensity;
+        while (torchLight.gameObject != null)
+        {
+            yield return DOTween.To(() => torchLight.intensity, x => torchLight.intensity = x, Random.Range(baseIntensity - 0.3f, baseIntensity + 0.3f), Random.Range(0.2f, 0.6f)).WaitForCompletion();
+        }
     }
 
     private void OnDisable()
