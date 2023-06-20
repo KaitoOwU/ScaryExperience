@@ -22,7 +22,7 @@ public class DataManager : MonoBehaviour
     public IReadOnlyList<LevelLoadData> LevelList { get => _levels; }
     public int CurrentLevel { get => _currentLevel; set => _currentLevel = value; }
     public bool IsLevelLaunchedFromMainMenu { get; set; } = false;
-    private string CurrentVersion { get => Application.version; }
+    public string CurrentVersion { get; private set; }
     public bool IsMusicMuted { get; set; } = false;
 
     public bool IsSoundMuted { get; set; } = false;
@@ -63,7 +63,7 @@ public class DataManager : MonoBehaviour
                         _levelData[i].IsUnlocked = true;
                     }
                 }
-                SaveSystem.SaveData(_levelData, DeathAmount, SkullObtained, LevelCompletedAmount, GoldenFlameObtained, SilverFlameObtained);
+                SaveSystem.SaveData(_levelData, DeathAmount, SkullObtained, LevelCompletedAmount, GoldenFlameObtained, SilverFlameObtained, CurrentVersion);
             }
             else
             {
@@ -85,7 +85,9 @@ public class DataManager : MonoBehaviour
                     GoldenFlameObtained = 0;
                     SilverFlameObtained = 0;
 
-                    SaveSystem.SaveData(_levelData, DeathAmount, SkullObtained, LevelCompletedAmount, GoldenFlameObtained, SilverFlameObtained);
+                    CurrentVersion += "sr";
+
+                    SaveSystem.SaveData(_levelData, DeathAmount, SkullObtained, LevelCompletedAmount, GoldenFlameObtained, SilverFlameObtained, CurrentVersion);
                 }
                 else
                 {
@@ -241,7 +243,7 @@ public class LevelData
             }
         }
 
-        SaveSystem.SaveData(DataManager.Instance.LevelData, DataManager.Instance.DeathAmount, DataManager.Instance.SkullObtained, DataManager.Instance.LevelCompletedAmount, DataManager.Instance.GoldenFlameObtained, DataManager.Instance.SilverFlameObtained);
+        SaveSystem.SaveData(DataManager.Instance.LevelData, DataManager.Instance.DeathAmount, DataManager.Instance.SkullObtained, DataManager.Instance.LevelCompletedAmount, DataManager.Instance.GoldenFlameObtained, DataManager.Instance.SilverFlameObtained, DataManager.Instance.CurrentVersion);
         
     }
 }
