@@ -1,4 +1,5 @@
 using DG.Tweening;
+using NaughtyAttributes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ public class HealthBarManager : MonoBehaviour
     [SerializeField] FlameManager _flameManager;
     [SerializeField] TextMeshProUGUI _amountText, _shadowText;
     [SerializeField] Transform _fire;
+    [SerializeField] Vector3 _fullPos, _emptyPos;
     float _cooldown;
 
     private Action OnAlert;
@@ -19,6 +21,19 @@ public class HealthBarManager : MonoBehaviour
     private void Awake()
     {
         _flameManager.OnFlameValueChange += UpdateUI;
+        _fire.transform.localPosition = _fullPos;
+    }
+
+    [Button]
+    private void SetFullPos()
+    {
+        _fullPos = _fire.transform.localPosition;
+    }
+
+    [Button]
+    private void SetEmptyPos()
+    {
+        _emptyPos = _fire.transform.localPosition;
     }
 
     private void Update()
@@ -54,7 +69,7 @@ public class HealthBarManager : MonoBehaviour
             OnAlert -= Alert;
         }
 
-        _fire.DOScale(value / _flameManager.MaxValue, 1.5f).SetEase(Ease.OutExpo);
+        _fire.DOLocalMove(Vector3.Lerp(_emptyPos, _fullPos, value / 10f), 1.5f).SetEase(Ease.OutExpo);
     }
 
     private void Alert()

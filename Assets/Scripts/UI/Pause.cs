@@ -10,7 +10,6 @@ using UnityEngine.UI;
 public class Pause : MonoBehaviour
 {
     AudioManager _audioManager;
-    [SerializeField] TextMeshProUGUI _backToGame, _mainMenu;
     [SerializeField] Image _transition;
 
     private void Awake()
@@ -23,16 +22,6 @@ public class Pause : MonoBehaviour
         GameManager.Instance.SetTouchControlsActive(false);
         DOTween.Kill(transform);
         transform.DOScale(1, 1.5f).SetEase(Ease.OutExpo);
-
-        if (DataManager.Instance.IsGameInFrench)
-        {
-            _backToGame.text = "Revenir au jeu";
-            _mainMenu.text = "Menu Principal";
-        } else
-        {
-            _backToGame.text = "Back to Game";
-            _mainMenu.text = "Main Menu";
-        }
     }
 
     public void PlayPauseSound()
