@@ -148,18 +148,30 @@ public class MoveBubble : MonoBehaviour
         {
             FlameState state;
 
-            if(_numberOfSteps <= GameManager.Instance.StepAccount)
+            if(_collectibleAcquired)
             {
-                if (_collectibleAcquired)
+                if (_numberOfSteps <= GameManager.Instance.StepAccountWithCollectible)
                 {
                     state = FlameState.Gold;
-                } else
+                }
+                else
                 {
                     state = FlameState.Silver;
                 }
+                
+                
             } else
             {
-                state = FlameState.None;
+                if(_numberOfSteps <= GameManager.Instance.StepAccountNoCollectible)
+                {
+                    state = FlameState.Silver;
+
+                }
+                else
+                {
+                    state = FlameState.None;
+                }
+                
             }
 
             DataManager.Instance.LevelData[DataManager.Instance.CurrentLevel].Complete(_collectibleAcquired, state);
@@ -478,6 +490,8 @@ public class MoveBubble : MonoBehaviour
                 _isSliding = false;
                 _audioManager.PlaySFX(_audioManager.waterSound);
                 OnDie?.Invoke();
+                transform.DOScale(0.7f, 1f);
+                GetComponent<SpriteRenderer>().DOColor(new(0, 0, 1, 0), 2f);
                 Social.ReportProgress(GPGSIds.achievement_bloup_bloup_bloup, 100f, null);
 
                 if (_tileMovingUp == TileUp.TileUpType.Wind)

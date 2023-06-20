@@ -1,5 +1,10 @@
+using DG.Tweening;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using Etouch = UnityEngine.InputSystem.EnhancedTouch;
 
 public class GameManager : MonoBehaviour
@@ -18,7 +23,8 @@ public class GameManager : MonoBehaviour
     [Header("-- Level Data --")]
     [SerializeField] bool _levelWithoutKey;
     [SerializeField] GameObject _grid;
-    [SerializeField] int _stepAccountNeeded;
+    [SerializeField] int _stepAccountNoCollectible;
+    [SerializeField] int _stepAccountWithCollectible;
 
 
     public GameObject LoseScreen { get => _loseScreen; private set => _loseScreen = value; }
@@ -29,7 +35,18 @@ public class GameManager : MonoBehaviour
     public AudioManager AudioManager { get => _audioManager; }
     public int LocalDeathAmount { get; set; } = 0;
 
-    public int StepAccount { get => _stepAccountNeeded; }
+    private IReadOnlyList<Light2D> TorchLights { get
+        {
+            return FindObjectsOfType<Light2D>().ToList().FindAll(
+            delegate (Light2D light)
+            {
+                return light.GetComponentInParent<TileUp>() != null && light.GetComponentInParent<TileUp>().type != TileUp.TileUpType.WinTrappe;
+            }
+            );
+        } }
+
+    public int StepAccountNoCollectible { get => _stepAccountNoCollectible; }
+    public int StepAccountWithCollectible { get => _stepAccountWithCollectible; }
     public bool LevelWin { get; internal set; } = false;
 
     private void Awake()
@@ -47,6 +64,24 @@ public class GameManager : MonoBehaviour
         _flameManager.OnFlameValueChange += CheckForLoseCondition;
         PauseScreen.SetActive(true);
         PauseScreen.SetActive(false);
+
+        if(TorchLights.Count > 0)
+        {
+            foreach (Light2D _torchLight in TorchLights)
+            {
+                StartCoroutine(FlickerLight(_torchLight));
+            }
+        }
+
+    }
+
+    private IEnumerator FlickerLight(Light2D torchLight)
+    {
+        float baseIntensity = torchLight.intensity;
+        while (torchLight.gameObject != null)
+        {
+            yield return DOTween.To(() => torchLight.intensity, x => torchLight.intensity = x, Random.Range(baseIntensity - 0.3f, baseIntensity + 0.3f), Random.Range(0.2f, 0.6f)).WaitForCompletion();
+        }
     }
 
     private void OnDisable()
