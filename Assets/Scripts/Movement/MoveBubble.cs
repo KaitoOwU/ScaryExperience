@@ -1,15 +1,14 @@
+using DG.Tweening;
+using NaughtyAttributes;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Etouch = UnityEngine.InputSystem.EnhancedTouch;
-using System;
-using static TileUp;
 using UnityEngine.Rendering.Universal;
-using DG.Tweening;
 using UnityEngine.UI;
-using NaughtyAttributes;
-using static Tile;
+using static TileUp;
 using static UnityEngine.Rendering.DebugUI;
+using Etouch = UnityEngine.InputSystem.EnhancedTouch;
 
 public class MoveBubble : MonoBehaviour
 {
@@ -36,26 +35,30 @@ public class MoveBubble : MonoBehaviour
     [HideInInspector] public Vector3 goToPosition;
 
     //runtime private
+    //bool
     bool _firstMove = true;
-    float _movementAmount;
     bool _isMoving = false;
     bool _canMove = true;
-    float _moveTimer = 0;
     bool _isSliding = false;
+    bool _shouldStopCheckingTile;
+    bool _collectibleAcquired = false;
+
+    //vector
+    List<Vector3> _prePosList;
     Vector3 _distFromPlayer;
     Vector3 _startPos;
     Vector2 _startPositionFinger;
+
+    //number
+    float _movementAmount;
+    float _moveTimer = 0;
+    int _keyFragmentNumber;
+
+    //other
     AnimationCurve _currentAnimCurve;
     AudioManager _audioManager;
-
-    bool _shouldStopCheckingTile;
-
-    int _keyFragmentNumber;
-    bool _collectibleAcquired = false;
-    List<Vector3> _prePosList;
     TileDown.Direction _direction;
     FlameManager _flameManager;
-
     TileDown.TileType _oldType;
 
     //use for current standing
@@ -270,14 +273,14 @@ public class MoveBubble : MonoBehaviour
                 _isSliding = false;
                 GoBack(direction);
 
-                //pas dans une animation
+                // animation de blockage
+                ////pas dans une animation
                 if (tempTileUp.moveTimer == 0)
                 {
                     tempTileUp.StartCoroutine(tempTileUp.BlockedByWall(_noPassTime, _noPassTimeAfter));
                     Vibration.Vibrate(200);
                 }
 
-                
                 _shouldStopCheckingTile = true;
                 return;
 
@@ -323,15 +326,21 @@ public class MoveBubble : MonoBehaviour
                 break;
 
             case TileUp.TileUpType.Block:
-                if (_tileMovingUp != TileUp.TileUpType.Wind && !_isSliding && !PushBlock(direction, tempTileUp) )
+                if (_tileMovingUp != TileUp.TileUpType.Wind && !_isSliding)
                 {
-                    // si l'on peut pousser le block
-                    //_shouldStopCheckingTile = true;
-                    Vibration.Vibrate(100);
-                    //re-check car on vient de modif la tileup sur laquelle on va marcher (block -> wind)
-                    if (tempTileUp.type == TileUpType.Wind)
+                    //push le block
+                    bool isBlocked = PushBlock(direction, tempTileUp);
+
+                    //si pas blocker
+                    if (!isBlocked)
                     {
-                        SwitchOnTileUp(tempTileUp, direction);
+                        Vibration.Vibrate(100);
+
+                        //re-check car on vient de modif la tileup sur laquelle on va marcher (block -> wind)
+                        if (tempTileUp.type == TileUpType.Wind)
+                        {
+                            SwitchOnTileUp(tempTileUp, direction);
+                        }
                     }
                     break;
                 }
@@ -434,18 +443,27 @@ public class MoveBubble : MonoBehaviour
 
             case TileDown.TileType.Ice:
                 
+                // premier movement sur glace
                 if (!_isSliding)
                 {
                     _numberOfSteps += 1;
-                    _flameManager.ModifyFlame(true, 1);
                     _isSliding = true;
                 }
+
                 if (_tileMovingUp != TileUp.TileUpType.Wind)
                 {
-                    MoveNextTile(direction);
-                    currentDelayLerpMove += _delayLerpMove;
                     _tileMoving = TileDown.TileType.Ice;
+                    currentDelayLerpMove += _delayLerpMove;
+                    MoveNextTile(direction);
                 }
+
+                // fin de movement
+                if (_tileMoving == TileDown.TileType.Ice)
+                {
+                    _tileMoving = TileDown.TileType.Rock;
+                    _flameManager.ModifyFlame(true, 1);
+                }
+
                 break;
 
             case TileDown.TileType.Void:
@@ -455,6 +473,7 @@ public class MoveBubble : MonoBehaviour
                 Social.ReportProgress(GPGSIds.achievement_lack_of_balance, 100f, null);
                 OnDie?.Invoke();
                 break;
+
             case TileDown.TileType.Water:
                 _isSliding = false;
                 _audioManager.PlaySFX(_audioManager.waterSound);
@@ -502,8 +521,8 @@ public class MoveBubble : MonoBehaviour
 
         SwitchOnTileUp(tempTileUp, direction);
 
-        Vector3 test = tempTile.transform.position - DirectionAddMovePos(direction);
-        TileDown tempBeforeDown = GameManager.Instance.tileMap.FindTileWithPos(test);
+        Vector3 beforePos = tempTile.transform.position - DirectionAddMovePos(direction);
+        TileDown tempBeforeDown = GameManager.Instance.tileMap.FindTileWithPos(beforePos);
 
         if (tempBeforeDown.type == TileDown.TileType.Breakable && tempBeforeDown.isActivated)
         {
@@ -611,14 +630,14 @@ public class MoveBubble : MonoBehaviour
         goToPosition += DirectionAddMovePos(direction);
         Tile tileToMove = GameManager.Instance.tileUpMap.FindTileWithPos(goToPosition);
 
+        //trouve le millieu de la tile ou l'on atterie
+        goToPosition = tileToMove.transform.position;
+
         //hors du level
         if (tileToMove == null) {
             OnDie?.Invoke();
             return null;
         }
-        
-        //trouve le millieu de la tile ou l'on atterie
-        goToPosition = tileToMove.transform.position;
 
         //verifie si la tile ou l'on va bouger contiens un effet, si oui applique l'effet
         CheckNextTileEffect(direction);
