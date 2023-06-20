@@ -228,7 +228,7 @@ public class TileDown : Tile
                 break;
 
             case TileType.Water:
-
+                GetComponent<SpriteRenderer>().color = spritesDown.colorRock;
                 GetComponent<SpriteRenderer>().sharedMaterial = new Material(spritesDown.waterMat);
 
                 switch (waterType)

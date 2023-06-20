@@ -112,4 +112,4 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 00c7187c1da760248891b696881cb47f, type: 2}
   - {fileID: 2100000, guid: 3f49586813211274c9b8f9c3fe65c4f4, type: 2}
   collectibleMat: {fileID: 2100000, guid: d4177b7545e5387408b789f48d646fbd, type: 2}
-  noPassMat: {fileID: 2100000, guid: 4466ddd7918336d44bcdfd8f077b7b6d, type: 2}
+  noPassMat: {fileID: 2100000, guid: 248f1d9960c33ee47ba9d59d9571129a, type: 2}

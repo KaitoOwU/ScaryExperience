@@ -28,11 +28,11 @@ public class BlockToMove : MonoBehaviour
         _startPos = transform.position;
         _moveTimer = 0;
 
-        while (_moveTimer < playerMovement.currentDelayLerpMove)
+        while (_moveTimer < 0.2f)
         {
             _moveTimer += Time.fixedDeltaTime;
 
-            transform.position = Vector3.Lerp(_startPos, toGoPosBlock, _currentAnimCurve.Evaluate(_moveTimer / playerMovement.currentDelayLerpMove));
+            transform.position = Vector3.Lerp(_startPos, toGoPosBlock, _currentAnimCurve.Evaluate(_moveTimer / 0.2f));
 
             yield return new WaitForFixedUpdate();
         }
@@ -103,8 +103,8 @@ public class BlockToMove : MonoBehaviour
             return;
         }
 
-        // si on retire le block d'une case ou il y avait du vent avec le m�me block qui la arreter
-        else if (lastTileUp != null && lastTileUp.wasWind && (tileBefore.type == TileUp.TileUpType.Wind && lastTileUp.direction == tileBefore.direction || tileBefore.type == TileUp.TileUpType.Ventilateur) && !tileBefore.isActivated)
+        // si on retire le block d'une case ou il y avait du vent avec le meme block qui la arreter
+        else if (lastTileUp != null && lastTileUp.wasWind && ((tileBefore.type == TileUp.TileUpType.Wind && lastTileUp.direction == tileBefore.direction) || (tileBefore.type == TileUp.TileUpType.Ventilateur && lastTileUp.direction == tileBefore.dirWind)) && !tileBefore.isActivated)
         {
             if (direction == lastTileUp.direction)
             {
@@ -117,7 +117,7 @@ public class BlockToMove : MonoBehaviour
             RecursiveCheckNextWind(lastTileUp.transform.position, lastTileUp.direction, false, lastTileUp.spritesUp.spriteWind[0]);
         }
 
-        // ce n'est pas le m�me block qui a blocker le vent alors on remet vent mais arreter
+        // ce n'est pas le meme block qui a blocker le vent alors on remet vent mais arreter
         else if (lastTileUp != null && lastTileUp.isActivated && tileBefore.isActivated)
         {
             lastTileUp.type = TileUp.TileUpType.Wind;
