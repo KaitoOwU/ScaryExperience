@@ -12,7 +12,7 @@ public class LevelUI : MonoBehaviour
 {
 
     [SerializeField, ReadOnly] int levelNumber;
-    [SerializeField] Color _golded;
+    [SerializeField] Sprite _notActivated, _unlocked, _finished, _golded;
     [SerializeField] TextMeshProUGUI _levelName;
     [SerializeField] Button _play;
     [SerializeField] GameObject _collectible, _goldenFlame, _silverFlame;
@@ -33,14 +33,14 @@ public class LevelUI : MonoBehaviour
 
         if (!DataManager.Instance.LevelData[levelNumber].IsUnlocked)
         {
-            img.color = new(.2f, .2f, .2f);
+            img.sprite = _notActivated;
             transform.localScale = new(.6f, .6f, .6f);
             _levelName.text = "";
             GetComponent<Button>().interactable = false;
 
         } else
         {
-            img.color = new(1, 1, 1);
+            img.sprite = _unlocked;
             transform.localScale = new(1, 1, 1);
             _levelName.text = "" + (levelNumber + 1);
             GetComponent<Button>().interactable = true;
@@ -55,6 +55,17 @@ public class LevelUI : MonoBehaviour
                     _goldenFlame.SetActive(true);
                     break;
             }
+
+            if (DataManager.Instance.LevelData[levelNumber].IsCompleted)
+            {
+                img.sprite = _finished;
+            }
+
+            if(DataManager.Instance.LevelData[levelNumber].CollectibleAcquired && DataManager.Instance.LevelData[levelNumber].FlameState == FlameState.Gold)
+            {
+                img.sprite = _golded;
+            }
+
         }
     }
 

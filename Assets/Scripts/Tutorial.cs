@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Tutorial : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI _tutorial;
+    [SerializeField] TextMeshProUGUI _tutorial, _tutorialVFX;
     [SerializeField] RectTransform _listTuto;
     [SerializeField] TextMeshProUGUI _moveTitle, _moveDesc, _goalTitle, _goalDesc, _torchTitle, _torchDesc, _braseroTitle, _braseroDesc, _fragileGroundTitle, _fragileGroundDesc, _windTitle, _windDesc, _blockTitle, _blockDesc;
     [SerializeField] string _moveTitleFr, _moveTitleEn, _goalTitleFr, _goalTitleEn, _torchTitleFr, _torchTitleEn, _braseroTitleFr, _braseroTitleEn, _fragileGroundTitleFr, _fragileGroundTitleEn, _windTitleFr, _windTitleEn, _blockTitleFr, _blockTitleEn;
@@ -23,6 +23,7 @@ public class Tutorial : MonoBehaviour
         if (DataManager.Instance.IsGameInFrench)
         {
             _tutorial.text = "Tutoriel";
+            _tutorialVFX.text = "Tutoriel";
 
             _moveTitle.text = _moveTitleFr;
             _moveDesc.text = _moveDescFr;
@@ -47,6 +48,7 @@ public class Tutorial : MonoBehaviour
         } else
         {
             _tutorial.text = "Tutorial";
+            _tutorialVFX.text = "Tutorial";
 
             _moveTitle.text = _moveTitleEn;
             _moveDesc.text = _moveDescEn;

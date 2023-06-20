@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SoundMusicManager : MonoBehaviour
 {
-    [SerializeField] GameObject _sfxDisabled, _musicDisabled;
+    [SerializeField] Sprite _sfxDisabled, _musicDisabled, _sfxEnabled, _musicEnabled;
+    [SerializeField] Image _sfx, _music;
     bool _soundOn = true, _musicOn = true;
 
     private void Awake()
@@ -17,6 +19,16 @@ public class SoundMusicManager : MonoBehaviour
         /*_sfxDisabled.SetActive(_soundOn);*/
         _soundOn = !_soundOn;
         DataManager.Instance.IsSoundMuted = !_soundOn;
+
+        if (_soundOn)
+        {
+            _sfx.sprite = _sfxEnabled;
+        }
+        else
+        {
+            _sfx.sprite = _sfxDisabled;
+        }
+
     }
 
     public void SwitchMusic()
@@ -24,11 +36,14 @@ public class SoundMusicManager : MonoBehaviour
         /*_musicDisabled.SetActive(_musicOn);*/
         _musicOn = !_musicOn;
         DataManager.Instance.IsMusicMuted = !_musicOn;
-    }
 
-    private void Update()
-    {
-        _sfxDisabled.SetActive(DataManager.Instance.IsSoundMuted);
-        _musicDisabled.SetActive(DataManager.Instance.IsMusicMuted);
+        if (_musicOn)
+        {
+            _music.sprite = _musicEnabled;
+        } else
+        {
+            _music.sprite = _musicDisabled;
+        }
+
     }
 }

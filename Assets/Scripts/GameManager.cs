@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
     public bool HaveKey { get => !_levelWithoutKey; }
     public GameObject Grid { get => _grid; }
     public AudioManager AudioManager { get => _audioManager; }
+    public MoveBubble Movement { get => _moveBubble; }
     public int LocalDeathAmount { get; set; } = 0;
 
     private IReadOnlyList<Light2D> TorchLights { get
@@ -80,7 +81,7 @@ public class GameManager : MonoBehaviour
         float baseIntensity = torchLight.intensity;
         while (torchLight.gameObject != null)
         {
-            yield return DOTween.To(() => torchLight.intensity, x => torchLight.intensity = x, Random.Range(baseIntensity - 0.3f, baseIntensity + 0.3f), Random.Range(0.2f, 0.6f)).WaitForCompletion();
+            yield return DOTween.To(() => torchLight.intensity, x => torchLight.intensity = x, Random.Range(baseIntensity - 0.7f, baseIntensity + 0.7f), Random.Range(0.3f, 0.7f)).WaitForCompletion();
         }
     }
 

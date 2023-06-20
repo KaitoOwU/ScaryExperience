@@ -10,6 +10,7 @@ public class WinScreen : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI _title, _nextLevel, _restart, _mainMenu;
     [SerializeField] Image _collectable, _collectableMissed, _flameSilver, _flameGold, _flameMissed, _transition;
+    [SerializeField] TextMeshProUGUI _amountStep, _outOf, _stepsRequired;
 
     private void OnEnable()
     {
@@ -82,6 +83,23 @@ public class WinScreen : MonoBehaviour
                     _flameGold.transform.DOScale(1, 1f).SetEase(Ease.InOutExpo);
                     break;
             }
+
+            if (DataManager.Instance.IsGameInFrench)
+            {
+                _outOf.text = "coups sur";
+            } else
+            {
+                _outOf.text = "steps out of";
+            }
+
+            _amountStep.text = "" + GameManager.Instance.Movement._numberOfSteps;
+            _stepsRequired.text = "" + GameManager.Instance.StepAccountWithCollectible;
+
+            _amountStep.DOColor(Color.white, 1f);
+            _outOf.DOColor(Color.white, 1f);
+            _stepsRequired.DOColor(Color.white, 1f).OnComplete(() => _amountStep.DOColor(
+                GameManager.Instance.Movement._numberOfSteps <= GameManager.Instance.StepAccountWithCollectible ? new(0.5f, 1, 0.5f, 1) : new(1, 0.5f, 0.5f, 1)
+                , 1f)) ;
         });
     }
 

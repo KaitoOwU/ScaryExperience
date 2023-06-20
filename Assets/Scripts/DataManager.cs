@@ -187,11 +187,13 @@ public class LevelData
     int _levelId;
     bool _isUnlocked;
     bool _collectibleAcquired;
+    bool _isCompleted;
     FlameState _state;
 
     public bool IsUnlocked { get => _isUnlocked; set => _isUnlocked = value; }
     public bool CollectibleAcquired { get => _collectibleAcquired; set => _collectibleAcquired = value; }
     public FlameState FlameState { get => _state; set => _state = value; }
+    public bool IsCompleted { get => _isCompleted; set => _isCompleted = value; }
 
     public LevelData(int levelId)
     {
@@ -199,10 +201,12 @@ public class LevelData
         _isUnlocked = false;
         _collectibleAcquired = false;
         _state = FlameState.None;
+        _isCompleted = false;
     }
 
     public void Complete(bool withCollectible, FlameState flameState)
     {
+        _isCompleted = true;
         if (withCollectible && !_collectibleAcquired)
         {
             _collectibleAcquired = true;
