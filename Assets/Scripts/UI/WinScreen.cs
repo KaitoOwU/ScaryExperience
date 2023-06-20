@@ -8,9 +8,10 @@ using UnityEngine.UI;
 
 public class WinScreen : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI _title, _nextLevel, _restart, _mainMenu;
+    [SerializeField] TextMeshProUGUI _title;
     [SerializeField] Image _collectable, _collectableMissed, _flameSilver, _flameGold, _flameMissed, _transition;
-    [SerializeField] TextMeshProUGUI _amountStep, _outOf, _stepsRequired;
+    [SerializeField] TextMeshProUGUI _stepsRequired;
+    [SerializeField] Button _nextLevel;
 
     private void OnEnable()
     {
@@ -24,17 +25,11 @@ public class WinScreen : MonoBehaviour
 
             if(!DataManager.Instance.LevelData.ContainsKey(DataManager.Instance.CurrentLevel + 1))
             {
-                _nextLevel.GetComponentInParent<Button>().interactable = false;
-                _nextLevel.text = "Terminé !";
+                _nextLevel.interactable = false;
             } else
             {
-                _nextLevel.GetComponentInParent<Button>().interactable = true;
-                _nextLevel.text = "Niveau Suivant";
+                _nextLevel.interactable = true;
             }
-
-            
-            _restart.text = "Réessayer";
-            _mainMenu.text = "Menu Principal";
         } else
         {
             _title.text = "You Escaped";
@@ -42,17 +37,12 @@ public class WinScreen : MonoBehaviour
 
             if (!DataManager.Instance.LevelData.ContainsKey(DataManager.Instance.CurrentLevel + 1))
             {
-                _nextLevel.GetComponentInParent<Button>().interactable = false;
-                _nextLevel.text = "Finish !";
+                _nextLevel.interactable = false;
             }
             else
             {
-                _nextLevel.GetComponentInParent<Button>().interactable = true;
-                _nextLevel.text = "Next Level";
+                _nextLevel.interactable = true;
             }
-
-            _restart.text = "Try Again";
-            _mainMenu.text = "Main Menu";
         }
 
         transform.DOScale(1, 1f).SetEase(Ease.OutExpo).OnComplete(() =>
@@ -71,35 +61,48 @@ public class WinScreen : MonoBehaviour
             {
                 case FlameState.None:
                     _flameMissed.DOColor(new(1, 1, 1, 1f), 1f).SetEase(Ease.OutExpo);
+
+                    if (DataManager.Instance.IsGameInFrench)
+                    {
+                        _stepsRequired.DOText("Essayez de réussir le niveau en " + GameManager.Instance.StepAccountWithCollectible + " coups ou moins", 2f);
+                    }
+                    else
+                    {
+                        _stepsRequired.DOText("Try complete the level in " + GameManager.Instance.StepAccountWithCollectible + " steps or less", 2f);
+                    }
+
                     break;
                 case FlameState.Silver:
+
+                    if (DataManager.Instance.IsGameInFrench)
+                    {
+                        _stepsRequired.DOText("Flamme obtenue !", 2f);
+                    }
+                    else
+                    {
+                        _stepsRequired.DOText("Flame obtained !", 2f);
+                    }
+
                     _flameSilver.transform.DOScale(1.5f, 0);
                     _flameSilver.DOColor(new(1, 1, 1), .5f);
                     _flameSilver.transform.DOScale(1, 1f).SetEase(Ease.InOutExpo);
                     break;
                 case FlameState.Gold:
+
+                    if (DataManager.Instance.IsGameInFrench)
+                    {
+                        _stepsRequired.DOText("Flamme obtenue !", 2f);
+                    }
+                    else
+                    {
+                        _stepsRequired.DOText("Flame obtained !", 2f);
+                    }
+
                     _flameGold.transform.DOScale(1.5f, 0);
                     _flameGold.DOColor(new(1, 1, 1), .5f);
                     _flameGold.transform.DOScale(1, 1f).SetEase(Ease.InOutExpo);
                     break;
             }
-
-            if (DataManager.Instance.IsGameInFrench)
-            {
-                _outOf.text = "coups sur";
-            } else
-            {
-                _outOf.text = "steps out of";
-            }
-
-            _amountStep.text = "" + GameManager.Instance.Movement._numberOfSteps;
-            _stepsRequired.text = "" + GameManager.Instance.StepAccountWithCollectible;
-
-            _amountStep.DOColor(Color.white, 1f);
-            _outOf.DOColor(Color.white, 1f);
-            _stepsRequired.DOColor(Color.white, 1f).OnComplete(() => _amountStep.DOColor(
-                GameManager.Instance.Movement._numberOfSteps <= GameManager.Instance.StepAccountWithCollectible ? new(0.5f, 1, 0.5f, 1) : new(1, 0.5f, 0.5f, 1)
-                , 1f)) ;
         });
     }
 
