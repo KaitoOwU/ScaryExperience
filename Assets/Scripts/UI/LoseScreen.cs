@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class LoseScreen : MonoBehaviour
 {
 
-    [SerializeField] TextMeshProUGUI _title, _restart, _mainMenu;
+    [SerializeField] TextMeshProUGUI _title;
     [SerializeField] Image _transition;
 
     private void OnEnable()
@@ -21,13 +21,9 @@ public class LoseScreen : MonoBehaviour
         if (DataManager.Instance.IsGameInFrench)
         {
             _title.text = "Llum est Mort";
-            _restart.text = "Réessayer";
-            _mainMenu.text = "Menu Principal";
         } else
         {
             _title.text = "Llum is Dead";
-            _restart.text = "Try Again";
-            _mainMenu.text = "Main Menu";
         }
 
         GameManager.Instance.LocalDeathAmount++;

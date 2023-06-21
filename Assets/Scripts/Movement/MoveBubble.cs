@@ -175,7 +175,7 @@ public class MoveBubble : MonoBehaviour
             }
 
             DataManager.Instance.LevelData[DataManager.Instance.CurrentLevel].Complete(_collectibleAcquired, state);
-            SaveSystem.SaveData(DataManager.Instance.LevelData, DataManager.Instance.DeathAmount, DataManager.Instance.SkullObtained, DataManager.Instance.LevelCompletedAmount, DataManager.Instance.GoldenFlameObtained, DataManager.Instance.SilverFlameObtained);
+            SaveSystem.SaveData(DataManager.Instance.LevelData, DataManager.Instance.DeathAmount, DataManager.Instance.SkullObtained, DataManager.Instance.LevelCompletedAmount, DataManager.Instance.GoldenFlameObtained, DataManager.Instance.SilverFlameObtained, DataManager.Instance.CurrentVersion);
         }
 
         DataManager.Instance.CheckForGenericAchievement();

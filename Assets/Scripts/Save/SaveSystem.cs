@@ -6,13 +6,13 @@ using UnityEngine;
 public static class SaveSystem
 {
     
-    public static void SaveData(Dictionary<int, LevelData> data, int numberOfDeaths, int numberOfSkulls, int levelCompletedAmount, int goldenFlameNeeded, int silverFlameNeeded)
+    public static void SaveData(Dictionary<int, LevelData> data, int numberOfDeaths, int numberOfSkulls, int levelCompletedAmount, int goldenFlameNeeded, int silverFlameNeeded, string currentVersion)
     {
         BinaryFormatter bf = new BinaryFormatter();
         string path = Application.persistentDataPath + "/.data";
         FileStream stream = new FileStream(path, FileMode.Create);
 
-        SaveData saveData = new SaveData(data, numberOfDeaths, numberOfSkulls, levelCompletedAmount, goldenFlameNeeded, silverFlameNeeded);
+        SaveData saveData = new SaveData(data, numberOfDeaths, numberOfSkulls, levelCompletedAmount, goldenFlameNeeded, silverFlameNeeded, currentVersion);
         bf.Serialize(stream, saveData);
         stream.Close();
     }

@@ -12,8 +12,9 @@ public class SaveData
     public int amountOfLevelCompleted;
     public int goldenFlameObtained;
     public int silverFlameObtained;
+    public string currentVersion;
 
-    public SaveData(Dictionary<int, LevelData> levelData, int numberOfDeaths, int amountOfSkulls, int amountOfLevelCompleted, int goldenFlameObtained, int silverFlameObtained)
+    public SaveData(Dictionary<int, LevelData> levelData, int numberOfDeaths, int amountOfSkulls, int amountOfLevelCompleted, int goldenFlameObtained, int silverFlameObtained, string currentVersion)
     {
         this.levelData = levelData;
         this.numberOfDeaths = numberOfDeaths;
@@ -22,5 +23,6 @@ public class SaveData
         version = Application.version;
         this.goldenFlameObtained = goldenFlameObtained;
         this.silverFlameObtained = silverFlameObtained;
+        this.currentVersion = currentVersion;
     }
 }
