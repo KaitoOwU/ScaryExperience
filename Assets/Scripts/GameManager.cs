@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator FlickerLight(Light2D torchLight)
     {
         float baseIntensity = torchLight.intensity;
-        while (torchLight.gameObject != null)
+        while (torchLight != null && torchLight.gameObject != null)
         {
             yield return DOTween.To(() => torchLight.intensity, x => torchLight.intensity = x, Random.Range(baseIntensity - 0.7f, baseIntensity + 0.7f), Random.Range(0.3f, 0.7f)).WaitForCompletion();
         }
