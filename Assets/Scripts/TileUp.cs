@@ -113,35 +113,35 @@ public class TileUp : Tile
         RefreshColorSprite(false);
     }
 
-    //coroutine qui met et enleve le material de block
-    public IEnumerator BlockedByWall(float noPassTime, float noPassTimeAfter)
-    {
-        moveTimer = 0;
-        spriteRenderer.sharedMaterial = new Material(spritesUp.noPassMat);
-        bool _hasStopped = false;
+    ////coroutine qui met et enleve le material de block
+    //public IEnumerator BlockedByWall(float noPassTime, float noPassTimeAfter)
+    //{
+    //    moveTimer = 0;
+    //    spriteRenderer.sharedMaterial = new Material(spritesUp.noPassMat);
+    //    bool _hasStopped = false;
 
-        while (moveTimer < noPassTime)
-        {
-            moveTimer += Time.fixedDeltaTime;
+    //    while (moveTimer < noPassTime)
+    //    {
+    //        moveTimer += Time.fixedDeltaTime;
 
-            float temp = Mathf.PingPong(moveTimer / noPassTime * 2, 1f);
+    //        float temp = Mathf.PingPong(moveTimer / noPassTime * 2, 1f);
 
-            if (!_hasStopped && temp > 0.95f)
-            {
-                yield return new WaitForSeconds(noPassTimeAfter);
-                _hasStopped = true;
-            }
+    //        if (!_hasStopped && temp > 0.95f)
+    //        {
+    //            yield return new WaitForSeconds(noPassTimeAfter);
+    //            _hasStopped = true;
+    //        }
 
-            spriteRenderer.sharedMaterial.SetFloat("_TimeControlled", temp);
+    //        spriteRenderer.sharedMaterial.SetFloat("_TimeControlled", temp);
 
-            yield return new WaitForFixedUpdate();
-        }
+    //        yield return new WaitForFixedUpdate();
+    //    }
 
-        Destroy(spriteRenderer.sharedMaterial);
+    //    Destroy(spriteRenderer.sharedMaterial);
 
-        spriteRenderer.sharedMaterial = spritesUp.normalMat;
-        moveTimer = 0;
-    }
+    //    spriteRenderer.sharedMaterial = spritesUp.normalMat;
+    //    moveTimer = 0;
+    //}
 
 #if (UNITY_EDITOR)
     // change la door lorqu'on la met dans l'inspecteur
