@@ -285,20 +285,19 @@ public class MoveBubble : MonoBehaviour
                 _isSliding = false;
                 GoBack(direction);
 
-                // animation de blockage
-                ////pas dans une animation
-                if (tempTileUp.moveTimer == 0)
-                {
-                    tempTileUp.StartCoroutine(tempTileUp.BlockedByWall(_noPassTime, _noPassTimeAfter));
-                    Vibration.Vibrate(200);
-                }
+                // animation de blockage et pas dans une animation
+                //if (tempTileUp.moveTimer == 0)
+                //{
+                //    tempTileUp.StartCoroutine(tempTileUp.BlockedByWall(_noPassTime, _noPassTimeAfter));
+                //    Vibration.Vibrate(200);
+                //}
 
                 _shouldStopCheckingTile = true;
                 return;
 
             case TileUp.TileUpType.Ventilateur:
-                GoBack(direction);
 
+                GoBack(direction);
                 _shouldStopCheckingTile = true;
                 return;
 
@@ -353,6 +352,11 @@ public class MoveBubble : MonoBehaviour
                         {
                             SwitchOnTileUp(tempTileUp, direction);
                         }
+                    }
+                    else
+                    {
+                        GoBack(direction);
+                        _shouldStopCheckingTile = true;
                     }
                     break;
                 }

@@ -63,9 +63,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Niveaux In Game/17_level_virgile_vent2.unity
     guid: 214e071b6f51a3a408c1347a16632ccb
   - enabled: 1
-    path: Assets/Scenes/Niveaux In Game/18_level_adrien_block_facile 1.unity
-    guid: dd9f546a2bebd6849af3232975fd3846
-  - enabled: 1
     path: Assets/Scenes/Niveaux In Game/19_level_adrien_block_4.unity
     guid: 350fd1e2afa8bba4eabf771f3327b648
   - enabled: 1
@@ -108,9 +105,6 @@ EditorBuildSettings:
     path: "Assets/Scenes/Niveaux In Game/32_level_aliz\xE9e_faill 1.unity"
     guid: 833639aa94547ff4d957b135e87a1950
   - enabled: 1
-    path: "Assets/Scenes/Niveaux In Game/34_level_aliz\xE9e_sang_block_1.unity"
-    guid: 5bba77f7bb0d3844fad08dd32d3af425
-  - enabled: 1
     path: Assets/Scenes/Niveaux In Game/LD KEVIN_TorchAndRock_Kevin.unity
     guid: ef915a208c20795499e747e31603515a
   - enabled: 1
@@ -146,12 +140,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Niveaux In Game/Level_virgile_friable.unity
     guid: 98b927ae7f200534e96eec1039d1de9c
-  - enabled: 1
-    path: Assets/Scenes/Niveaux In Game/Level_Virgile_Vengue.unity
-    guid: e04e3b85f42d9504c97bd3c5a6431d53
-  - enabled: 1
-    path: Assets/Scenes/Niveaux In Game/Level_Virgile_Vent_01.unity
-    guid: 951d70c698972344aa548ba4f0852256
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 192fb96f9bfa53045ab9c0bd532b0a94, type: 2}
     com.unity.adaptiveperformance.samsung.android.provider_settings: {fileID: 11400000, guid: bb18aef228e5f8a4dafc46e87c1ff4f3, type: 2}

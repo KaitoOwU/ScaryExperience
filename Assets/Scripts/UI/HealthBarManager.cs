@@ -13,6 +13,14 @@ public class HealthBarManager : MonoBehaviour
     [SerializeField] FlameManager _flameManager;
     [SerializeField] TextMeshProUGUI _amountText, _shadowText;
     [SerializeField] Transform _fire;
+    [SerializeField] Image _fireRenderer;
+
+    [Header("- Shader Stats")]
+    [SerializeField] float _minShaderValue;
+    [SerializeField] float _maxShaderValue;
+    [SerializeField] float _shaderTimeMoving;
+    float _valueMat;
+
     [SerializeField] Vector3 _fullPos, _emptyPos;
     float _cooldown;
 
@@ -21,7 +29,11 @@ public class HealthBarManager : MonoBehaviour
     private void Awake()
     {
         _flameManager.OnFlameValueChange += UpdateUI;
-        _fire.transform.localPosition = _fullPos;
+        _fireRenderer.material.SetFloat("_value", 0.13f);
+        _valueMat = 0.13f;
+
+        //version kevin
+        //_fire.transform.localPosition = _fullPos;
     }
 
     [Button]
@@ -69,7 +81,19 @@ public class HealthBarManager : MonoBehaviour
             OnAlert -= Alert;
         }
 
-        _fire.DOLocalMove(Vector3.Lerp(_emptyPos, _fullPos, value / 10f), 1.5f).SetEase(Ease.OutExpo);
+        //version kevin
+        //_fire.DOLocalMove(Vector3.Lerp(_emptyPos, _fullPos, value / 10f), 1.5f).SetEase(Ease.OutExpo);
+
+        float actualValue = _fireRenderer.material.GetFloat("_value");
+
+        _valueMat = _maxShaderValue - _minShaderValue;
+        _valueMat /= 10;
+        _valueMat = (_maxShaderValue - (_valueMat * value));
+
+        DOTween.To(() => actualValue, x => actualValue = x, _valueMat, _shaderTimeMoving)
+            .OnUpdate(() => {
+                _fireRenderer.material.SetFloat("_value", actualValue);
+            });
     }
 
     private void Alert()
