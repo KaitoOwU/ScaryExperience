@@ -17,6 +17,8 @@ public class DataManager : MonoBehaviour
     [SerializeField, ReadOnly] int _currentLevel, _skullObtained, _silverFlameObtained;
     private bool _isConnectedToGooglePlayServices = false;
 
+    [SerializeField] bool _unlockAllLevels;
+
     public bool IsConnectedToGooglePlayServices { get => _isConnectedToGooglePlayServices; }
     public Dictionary<int, LevelData> LevelData { get => _levelData; }
     public IReadOnlyList<LevelLoadData> LevelList { get => _levels; }
@@ -38,6 +40,9 @@ public class DataManager : MonoBehaviour
     {
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 60;
+
+        PlayGamesPlatform.DebugLogEnabled = true;
+        PlayGamesPlatform.Activate();
 
         if (Instance == null)
         {
@@ -109,8 +114,16 @@ public class DataManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        PlayGamesPlatform.DebugLogEnabled = true;
-        PlayGamesPlatform.Activate();
+#if UNITY_EDITOR
+        if (_unlockAllLevels)
+        {
+            for (int i = 0; i < _levels.Count; i++)
+            {
+                _levelData[i] = new(i);
+                _levelData[i].IsUnlocked = true;
+            }
+        }
+#endif
     }
 
     private void Start()
@@ -221,10 +234,6 @@ public class LevelData
             if(flameState == FlameState.Gold)
             {
                 DataManager.Instance.GoldenFlameObtained++;
-                if(_state == FlameState.None)
-                {
-                    DataManager.Instance.SilverFlameObtained++;
-                }
             } else if(flameState == FlameState.Silver)
             {
                 DataManager.Instance.SilverFlameObtained++;

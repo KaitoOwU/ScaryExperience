@@ -156,10 +156,8 @@ public class MoveBubble : MonoBehaviour
                 }
                 else
                 {
-                    state = FlameState.Silver;
+                    state = FlameState.None;
                 }
-                
-                
             } else
             {
                 if(_numberOfSteps <= GameManager.Instance.StepAccountNoCollectible)

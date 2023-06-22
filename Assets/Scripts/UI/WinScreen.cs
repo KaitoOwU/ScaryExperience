@@ -10,7 +10,7 @@ public class WinScreen : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI _title;
     [SerializeField] Image _collectable, _collectableMissed, _flameSilver, _flameGold, _flameMissed, _transition;
-    [SerializeField] TextMeshProUGUI _stepsRequired;
+    [SerializeField] TextMeshProUGUI _stepsRequired, _steps;
     [SerializeField] Button _nextLevel;
 
     private void OnEnable()
@@ -57,10 +57,25 @@ public class WinScreen : MonoBehaviour
                 _collectableMissed.DOColor(new(1, 1, 1, 1f), 1f).SetEase(Ease.OutExpo);
             }
 
+            _steps.text = GameManager.Instance.Movement._numberOfSteps + (DataManager.Instance.IsGameInFrench ? " coups" : " steps");
+            _steps.DOColor(new(1, 1, 1, 1), 2f);
+
             switch (DataManager.Instance.LevelData[DataManager.Instance.CurrentLevel].FlameState)
             {
                 case FlameState.None:
                     _flameMissed.DOColor(new(1, 1, 1, 1f), 1f).SetEase(Ease.OutExpo);
+
+                    if (DataManager.Instance.IsGameInFrench)
+                    {
+                        _stepsRequired.DOText("Essayez de réussir le niveau en " + GameManager.Instance.StepAccountNoCollectible + " coups ou moins", 2f);
+                    }
+                    else
+                    {
+                        _stepsRequired.DOText("Try complete the level in " + GameManager.Instance.StepAccountNoCollectible + " steps or less", 2f);
+                    }
+
+                    break;
+                case FlameState.Silver:
 
                     if (DataManager.Instance.IsGameInFrench)
                     {
@@ -69,18 +84,6 @@ public class WinScreen : MonoBehaviour
                     else
                     {
                         _stepsRequired.DOText("Try complete the level in " + GameManager.Instance.StepAccountWithCollectible + " steps or less", 2f);
-                    }
-
-                    break;
-                case FlameState.Silver:
-
-                    if (DataManager.Instance.IsGameInFrench)
-                    {
-                        _stepsRequired.DOText("Flamme obtenue !", 2f);
-                    }
-                    else
-                    {
-                        _stepsRequired.DOText("Flame obtained !", 2f);
                     }
 
                     _flameSilver.transform.DOScale(1.5f, 0);
