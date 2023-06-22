@@ -85,7 +85,7 @@ Material:
     - _ZTest: 8
     - _ZWrite: 0
     - _ZWriteControl: 0
-    - _value: 0.39
+    - _value: 0.325
     m_Colors:
     - _Amplitude: {r: 0, g: 0.02, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
