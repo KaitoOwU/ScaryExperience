@@ -23394,7 +23394,8 @@ MonoBehaviour:
   _currentLevel: 0
   _skullObtained: 0
   _silverFlameObtained: 0
-  _lastResetVersion: 1.2.0b
+  _unlockAllLevels: 1
+  _lastResetVersion: 1.2.2
 --- !u!4 &1368866321
 Transform:
   m_ObjectHideFlags: 0
